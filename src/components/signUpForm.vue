@@ -1,4 +1,5 @@
 <template>
+  <!-- <loadingSpinner /> -->
   <form @submit="checkForm">
     <div class="form-inner">
       <h2>Enter up to 4 players for your group.</h2>
@@ -111,6 +112,7 @@
 
 <script>
 import { addToFirestore } from "../middleware/db.js";
+import loadingSpinner from "../components/loading.vue";
 export default {
   data() {
     return {
@@ -126,6 +128,7 @@ export default {
       player4__lastName: null,
       teamName: null,
       division: null,
+      needsGrouping: false,
     };
   },
   methods: {
@@ -137,6 +140,7 @@ export default {
         this.division
       ) {
         e.preventDefault();
+        this.removeErrors();
         this.preProcessData();
       }
 
@@ -149,7 +153,7 @@ export default {
       if (!this.player1__firstName) {
         this.errors.push("At least 1 player's first name required.");
       }
-      if (!this.player1__lasttName) {
+      if (!this.player1__lastName) {
         this.errors.push("At least 1 player's last name required.");
       }
       if (!this.division) {
@@ -157,14 +161,19 @@ export default {
       }
       e.preventDefault();
     },
+    removeErrors: function () {
+      const error = document.querySelector(".error");
+      if (error) document.removeChild(error);
+    },
     preProcessData: function () {
       let numOfPlayers = Number(this.numOfPlayers);
-      this.players = [];
+      this.teamObj = {};
+      const players = [];
       switch (numOfPlayers) {
         case 1:
           //set needs grouping flag
           this.needsGrouping = true;
-          this.players.push({
+          players.push({
             first_name: this.player1__firstName,
             last_name: this.player1__lastName,
           });
@@ -172,11 +181,11 @@ export default {
         case 2:
           //set needs grouping flag
           this.needsGrouping = true;
-          this.players.push({
+          players.push({
             first_name: this.player1__firstName,
             last_name: this.player1__lastName,
           });
-          this.players.push({
+          players.push({
             first_name: this.player2__firstName,
             last_name: this.player2__lastName,
           });
@@ -184,37 +193,36 @@ export default {
         case 3:
           //set needs grouping flag
           this.needsGrouping = true;
-          this.players.push({
+          players.push({
             first_name: this.player1__firstName,
             last_name: this.player1__lastName,
           });
-          this.players.push({
+          players.push({
             first_name: this.player2__firstName,
             last_name: this.player2__lastName,
           });
-          this.players.push({
+          players.push({
             first_name: this.player3__firstName,
             last_name: this.player3__lastName,
           });
           break;
         case 4:
-          this.players.push({
+          players.push({
             first_name: this.player1__firstName,
             last_name: this.player1__lastName,
           });
-          this.players.push({
+          players.push({
             first_name: this.player2__firstName,
             last_name: this.player2__lastName,
           });
-          this.players.push({
+          players.push({
             first_name: this.player3__firstName,
             last_name: this.player3__lastName,
           });
-          this.players.push({
+          players.push({
             first_name: this.player4__firstName,
             last_name: this.player4__lastName,
           });
-          delete this.needsGrouping;
           break;
         //dont need the grouping flag with 4 players
       }
@@ -223,7 +231,7 @@ export default {
 
       //loop through player names and uppercase first letters
       //if teamName is null, let's make one
-      this.players.forEach((item, i, arr) => {
+      players.forEach((item, i, arr) => {
         let fName =
           item.first_name[0].toUpperCase() + item.first_name.substring(1);
         let lName =
@@ -232,17 +240,35 @@ export default {
         item.last_name = lName;
       });
       if (!this.teamName)
-        this.teamName = `${this.players[0].first_name} ${this.players[0].last_name}'s Team`;
-      //delete the originals we dont need them anymore
-      delete this.player1__firstName;
-      delete this.player1__lastName;
-      delete this.player2__firstName;
-      delete this.player2__lastName;
-      delete this.player3__firstName;
-      delete this.player3__lastName;
-      delete this.player4__firstName;
-      delete this.player4__lastName;
-      console.log(this);
+        this.teamName = `${players[0].first_name} ${players[0].last_name}'s Team`;
+
+      this.teamObj["players"] = players;
+      this.teamObj["numOfPlayers"] = this.numOfPlayers;
+      this.teamObj["needsGrouping"] = this.needsGrouping;
+      this.teamObj["teamName"] = this.teamName;
+      this.teamObj["division"] = this.division;
+      // //delete the originals we dont need them anymore
+      // delete this.player1__firstName;
+      // delete this.player1__lastName;
+      // delete this.player2__firstName;
+      // delete this.player2__lastName;
+      // delete this.player3__firstName;
+      // delete this.player3__lastName;
+      // delete this.player4__firstName;
+      // delete this.player4__lastName;
+      console.log(this.teamObj);
+
+      //need to pass collection ("teams"), document name (currently sorting by divison), and data
+      this.formSubmitHandler();
+    },
+    formSubmitHandler: async function () {
+      addToFirestore(
+        `${this.teamObj.division}-league`,
+        this.teamObj.teamName,
+        this.teamObj
+      );
+
+      this.$router.push("/signup-success");
     },
   },
 };

@@ -52,13 +52,15 @@ async function getLeaderboardData(db) {
 
 //have to pass either mens or coed as docName to enter new data into each document
 async function addToFirestore(coll, docName, data = null) {
-  const docRef = doc(db, "teams", docName);
+  const docRef = doc(db, coll, docName);
   setDoc(docRef, data, { merge: true })
     .then(() => {
       console.log("Document has been added successfully");
+      return true;
     })
     .catch((error) => {
       console.log(error);
+      return false;
     });
 }
 export { firebaseConfig, app, db, getLeaderboardData, addToFirestore };
