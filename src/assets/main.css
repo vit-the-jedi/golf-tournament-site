@@ -1,35 +1,46 @@
-@import './base.css';
+/* @import "./base.css"; */
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
+:root {
+  --dark-color: #14110f;
+  --lighter-color: #34312d;
+  --lightest-color: #34312d;
+  --secondary-color: #d9c5b2;
+  --tertiary-color: #f3f3f4;
+  --pop-color: #28a745;
 }
 
+body {
+  color: var(--base-color);
+}
 a,
 .green {
   text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
+  color: var(--pop-color);
   transition: 0.4s;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+.container {
+  margin-top: 7vh;
+  padding: 0 5vw;
 }
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+.top-content {
+  background-image: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.35) 20%,
+      rgba(0, 0, 0, 0.35) 20%
+    ),
+    url("../assets/hero.jpg");
+}
+.top-copy {
+  text-align: center;
+}
+/*cards*/
+.card {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  border-radius: 8px;
+}
+ul {
+  padding-inline-start: 17px;
 }

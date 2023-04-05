@@ -22,66 +22,67 @@
           <option value="4">4 Players</option>
         </select>
       </div>
-      <div class="form-control" v-if="numOfPlayers >= 1">
-        <label>Player 1</label>
-        <input
-          v-model="player1__firstName"
-          class="input"
-          type="text"
-          placeholder="First Name"
-        />
-        <input
-          v-model="player1__lastName"
-          class="input"
-          type="text"
-          placeholder="Last Name"
-        />
-      </div>
-
-      <div class="form-control" v-if="numOfPlayers >= 2">
-        <label>Player 2</label>
-        <input
-          v-model="player2__firstName"
-          class="input"
-          type="text"
-          placeholder="First Name"
-        />
-        <input
-          v-model="player2__lastName"
-          class="input"
-          type="text"
-          placeholder="Last Name"
-        />
-      </div>
-      <div class="form-control" v-if="numOfPlayers >= 3">
-        <label>Player 3</label>
-        <input
-          v-model="player3__firstName"
-          class="input"
-          type="text"
-          placeholder="First Name"
-        />
-        <input
-          v-model="player3__lastName"
-          class="input"
-          type="text"
-          placeholder="Last Name"
-        />
-      </div>
-      <div class="form-control" v-if="numOfPlayers >= 4">
-        <label>Player 4</label>
-        <input
-          v-model="player4__firstName"
-          class="input"
-          type="text"
-          placeholder="First Name"
-        />
-        <input
-          v-model="player4__lastName"
-          class="input"
-          type="text"
-          placeholder="Last Name"
-        />
+      <div class="form-inset">
+        <div class="form-control" v-if="numOfPlayers >= 1">
+          <label>Player 1</label>
+          <input
+            v-model="player1__firstName"
+            class="input"
+            type="text"
+            placeholder="First Name"
+          />
+          <input
+            v-model="player1__lastName"
+            class="input"
+            type="text"
+            placeholder="Last Name"
+          />
+        </div>
+        <div class="form-control" v-if="numOfPlayers >= 2">
+          <label>Player 2</label>
+          <input
+            v-model="player2__firstName"
+            class="input"
+            type="text"
+            placeholder="First Name"
+          />
+          <input
+            v-model="player2__lastName"
+            class="input"
+            type="text"
+            placeholder="Last Name"
+          />
+        </div>
+        <div class="form-control" v-if="numOfPlayers >= 3">
+          <label>Player 3</label>
+          <input
+            v-model="player3__firstName"
+            class="input"
+            type="text"
+            placeholder="First Name"
+          />
+          <input
+            v-model="player3__lastName"
+            class="input"
+            type="text"
+            placeholder="Last Name"
+          />
+        </div>
+        <div class="form-control" v-if="numOfPlayers >= 4">
+          <label>Player 4</label>
+          <input
+            v-model="player4__firstName"
+            class="input"
+            type="text"
+            placeholder="First Name"
+          />
+          <input
+            v-model="player4__lastName"
+            class="input"
+            type="text"
+            placeholder="Last Name"
+          />
+        </div>
       </div>
       <div class="form-control">
         <label
@@ -117,7 +118,7 @@ export default {
   data() {
     return {
       errors: [],
-      numOfPlayers: null,
+      numOfPlayers: 1,
       player1__firstName: null,
       player1__lastName: null,
       player2__firstName: null,
@@ -127,7 +128,7 @@ export default {
       player4__firstName: null,
       player4__lastName: null,
       teamName: null,
-      division: null,
+      division: "mens",
       needsGrouping: false,
     };
   },
@@ -151,10 +152,10 @@ export default {
         );
       }
       if (!this.player1__firstName) {
-        this.errors.push("At least 1 player's first name required.");
+        this.errors.push("At least 1 player's first name is required.");
       }
       if (!this.player1__lastName) {
-        this.errors.push("At least 1 player's last name required.");
+        this.errors.push("At least 1 player's last name is required.");
       }
       if (!this.division) {
         this.errors.push("Please choose a division to be entered in.");
@@ -284,12 +285,18 @@ form {
   display: flex;
   flex-direction: column;
 }
-
 form label {
   width: 100%;
   flex-basis: 100%;
 }
+.form-inset {
+  max-width: 94%;
+  background: #e6e6e6;
+  margin: auto;
+  padding: 2% 0;
+}
 .form-control {
+  background: none;
   flex-basis: 100%;
   width: 100%;
   display: flex;
