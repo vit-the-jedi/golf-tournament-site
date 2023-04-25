@@ -263,13 +263,31 @@ export default {
       this.formSubmitHandler();
     },
     formSubmitHandler: async function () {
-      addToFirestore(
-        `${this.teamObj.division}-league`,
-        this.teamObj.teamName,
-        this.teamObj
-      );
+      const team = this.teamObj;
+      // addToFirestore(
+      //   `${team.division}-league`,
+      //   team.teamName,
+      //   team
+      // );
 
-      this.$router.push("/signup-success");
+      //loop through players array and create a URL-encoded string we can pass to our success page
+      let playersString = "";
+      team.players.forEach((playerName, index, arr) => {
+        //if this is not the last entry, add a plus to the end
+        index < arr.length - 1
+          ? (playersString += `${playerName.first_name} ${playerName.last_name}|`)
+          : (playersString += `${playerName.first_name} ${playerName.last_name}`);
+      });
+
+      //programmatically route to success page w/ relevant form data we can post back for user review
+      this.$router.push({
+        path: "/signup-success",
+        query: {
+          players: playersString,
+          division: team.division,
+          teamName: team.teamName,
+        },
+      });
     },
   },
 };

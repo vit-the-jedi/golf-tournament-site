@@ -11,6 +11,19 @@ export default {
       time: "8:00am",
       golfCourse: "Timberlin Golf Course",
       golfCourseAddress: "100 Golf Way, Berlin CT, 07678",
+      pricing: {
+        ticketPrice: "$85.00",
+        addOns: ["Golf Cart (per 1-2 players)", "Snacks", "Water"],
+        trophies: [
+          "First Place",
+          "Second Place",
+          "Third Place",
+          "longest drive (front 9)",
+          "longest drive (back 9)",
+          "closest to pin (front 9)",
+          "closest to pin  (back 9)",
+        ],
+      },
     };
   },
   computed: {
@@ -30,6 +43,10 @@ export default {
     outputGolfCourseAddress() {
       // `this` points to the component instance
       return this.golfCourseAddress;
+    },
+    outputPrice() {
+      // `this` points to the component instance
+      return this.pricing.ticketPrice;
     },
   },
 };
@@ -56,14 +73,11 @@ export default {
       <div class="col-md-6 col-12">
         <div class="card info--card">
           <h4>Where?</h4>
-          <p>
-            Snacks, water, and golf carts will be available! Please arrive
-            promptly to sign in and find your cart.
-          </p>
           <ul>
             <li>{{ outputGolfCourse }}</li>
             <li>{{ outputGolfCourseAddress }}</li>
           </ul>
+          <p>Please arrive promptly to sign in and find your cart.</p>
         </div>
       </div>
       <div class="col-md-6 col-12">
@@ -80,36 +94,23 @@ export default {
       </div>
       <div class="col-md-6 col-12">
         <div class="card info--card">
-          <h4>Tournament Administrators</h4>
-          <p>
-            You can always reach out to any of these fine people if you need
-            help or have questions!
-          </p>
+          <h4>Pricing</h4>
+          <h5>Entry fee: $85.00</h5>
+          <p>What's included:</p>
           <ul>
-            <li>John Vitello</li>
-            <li>Janice Vitello</li>
-            <li>Paul Vitello</li>
-            <li>Al Vitello</li>
-            <li>Matt Vitello</li>
-            <li>Nicole Lowell</li>
-            <li>Anthony Lowell</li>
+            <li v-for="item in pricing.addOns">
+              {{ item }}
+            </li>
           </ul>
         </div>
       </div>
-      <pricingTable />
     </div>
   </div>
 </template>
 
 <style scoped>
-.top-copy {
-  padding: 5vh 0;
-}
-.home .info-container > div {
-  margin: 5vh auto;
-}
 .info--row {
-  background-color: var(--lighter-color);
+  background-color: black;
   padding: 10vh;
 }
 .info--row div {
@@ -121,5 +122,11 @@ export default {
   background-color: transparent;
   height: 100%;
   color: #fff;
+}
+.info--card p,
+.info--card h4,
+.info--card h5,
+.info--card ul {
+  margin: 2.5vh 0;
 }
 </style>

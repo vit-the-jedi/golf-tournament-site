@@ -20,16 +20,43 @@ a,
 }
 
 .container {
-  margin-top: 7vh;
-  padding: 0 5vw;
+  margin-top: -5vh;
+  padding: 10vh 5vw;
+  z-index: 3;
+  position: relative;
+  background: white;
+  border-radius: 20px;
 }
 .top-content {
   background-image: linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.35) 20%,
-      rgba(0, 0, 0, 0.35) 20%
+      180deg,
+      rgba(0, 0, 0, 0.15) 00%,
+      rgba(0, 0, 0, 0.75) 100%
     ),
     url("../assets/hero.jpg");
+  background-size: 110%;
+  background-repeat: no-repeat;
+  background-position: 100% center;
+  min-height: 40vh;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-wrap: wrap;
+}
+.top-content h1 {
+  color: #fff;
+  font-size: 2.5rem;
+  margin-top: -3rem;
+  text-align: center;
+}
+h2 {
+  font-size: 1.75rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
+h4 {
+  font-size: 1.25rem;
 }
 .top-copy {
   text-align: center;
