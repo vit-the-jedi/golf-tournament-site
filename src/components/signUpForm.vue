@@ -1,3 +1,8 @@
+<script setup>
+import { ref } from "vue";
+const mainColor = ref("#003566");
+const secondColor = ref("#FFC300");
+</script>
 <template>
   <!-- <loadingSpinner /> -->
   <form @submit="checkForm">
@@ -13,18 +18,10 @@
           <li v-for="error in errors">{{ error }}</li>
         </ul>
       </span>
-      <div class="form-control">
-        <label>How many players are you signing up today?</label>
-        <select v-model="numOfPlayers" class="input full-width">
-          <option value="1">1 Player</option>
-          <option value="2">2 Players</option>
-          <option value="3">3 Players</option>
-          <option value="4">4 Players</option>
-        </select>
-      </div>
+
       <div class="form-inset">
-        <div class="form-control" v-if="numOfPlayers >= 1">
-          <label>Player 1</label>
+        <div class="form-control card" v-if="numOfPlayers >= 1">
+          <h2>Player 1</h2>
           <input
             v-model="player1__firstName"
             class="input"
@@ -37,9 +34,14 @@
             type="text"
             placeholder="Last Name"
           />
+
+          <div v-if="numOfPlayers === 1">
+            <button type="button" @click="numOfPlayers++">Add player</button>
+            <button type="button">Continue</button>
+          </div>
         </div>
-        <div class="form-control" v-if="numOfPlayers >= 2">
-          <label>Player 2</label>
+        <div class="form-control card" v-if="numOfPlayers >= 2">
+          <h2>Player 2</h2>
           <input
             v-model="player2__firstName"
             class="input"
@@ -52,9 +54,14 @@
             type="text"
             placeholder="Last Name"
           />
+          <div v-if="numOfPlayers === 2">
+            <button type="button" @click="numOfPlayers++">Add player</button>
+            <button type="button">Continue</button>
+          </div>
+          <span class="delete" @click="numOfPlayers--"></span>
         </div>
-        <div class="form-control" v-if="numOfPlayers >= 3">
-          <label>Player 3</label>
+        <div class="form-control card" v-if="numOfPlayers >= 3">
+          <h2>Player 3</h2>
           <input
             v-model="player3__firstName"
             class="input"
@@ -67,9 +74,14 @@
             type="text"
             placeholder="Last Name"
           />
+          <div v-if="numOfPlayers === 3">
+            <button type="button" @click="numOfPlayers++">Add player</button>
+            <button type="button">Continue</button>
+          </div>
+          <span class="delete" @click="numOfPlayers--"></span>
         </div>
-        <div class="form-control" v-if="numOfPlayers >= 4">
-          <label>Player 4</label>
+        <div class="form-control card" v-if="numOfPlayers >= 4">
+          <h2>Player 4</h2>
           <input
             v-model="player4__firstName"
             class="input"
@@ -82,31 +94,32 @@
             type="text"
             placeholder="Last Name"
           />
+          <div v-if="numOfPlayers === 4">
+            <button type="button" @click="numOfPlayers++">Add player</button>
+            <button type="button">Continue</button>
+          </div>
+          <span class="delete" @click="numOfPlayers--"></span>
         </div>
       </div>
-      <div class="form-control">
-        <label
-          >Team Name (optional) <br />
-          <small
-            >If you leave this blank, your team name will be Player 1's full
-            name. Ex: Team John Smith</small
-          ></label
-        >
+      <div class="form-control card" v-if="playersAdded">
+        <h2>Choose Your Division</h2>
+        <select v-model="division" class="input full-width">
+          <option value="mens">Men's Division</option>
+          <option value="coed">Co-ed Division</option>
+        </select>
+        <h2>Team Name</h2>
+        <p>
+          If you leave this blank, your team name will be Player 1’s full name.
+          Ex: Team John Smith
+        </p>
         <input
           v-model="teamName"
           class="input full-width"
           type="text"
           placeholder="Team Name (optional)"
         />
+        <button type="submit">Sign Up</button>
       </div>
-      <div class="form-control">
-        <label>Choose a division</label>
-        <select v-model="division" class="input full-width">
-          <option value="mens">Men's Division</option>
-          <option value="coed">Co-ed Division</option>
-        </select>
-      </div>
-      <button type="submit">Sign Up</button>
     </div>
   </form>
 </template>
@@ -127,6 +140,7 @@ export default {
       player3__lastName: null,
       player4__firstName: null,
       player4__lastName: null,
+      playersAdded: false,
       teamName: null,
       division: "mens",
       needsGrouping: false,
@@ -360,5 +374,29 @@ button {
   max-width: 400px;
   width: 100%;
   margin: auto;
+}
+
+.delete {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  padding: 5px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border-width: 4px;
+  border-style: solid;
+  border-radius: 9px;
+  border-color: v-bind(mainColor);
+  background: v-bind(secondColor);
+  text-align: center;
+}
+.delete::after {
+  position: absolute;
+  content: "X";
+  font-weight: 800;
+  font-size: 1.5rem;
+  left: 25%;
+  top: -3%;
 }
 </style>
