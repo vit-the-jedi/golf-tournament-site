@@ -6,6 +6,8 @@ import App from "./App.vue";
 import Home from "@/views/Home.vue";
 import About from "@/views/About.vue";
 import SignUp from "@/views/SignUp.vue";
+import SignUp__success from "@/views/SignUpSuccess.vue";
+import adminSignIn from "@/views/adminSignIn.vue";
 
 //create router
 const router = createRouter({
@@ -25,6 +27,16 @@ const router = createRouter({
       path: "/signup",
       name: "SignUp",
       component: SignUp,
+    },
+    {
+      path: "/signup-success",
+      name: "SignUp__success",
+      component: SignUp__success,
+    },
+    {
+      path: "/admin-sign-in",
+      name: "adminSignIn",
+      component: adminSignIn,
     },
   ],
 });
