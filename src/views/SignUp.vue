@@ -4,9 +4,6 @@ import signUpForm from "../components/signUpForm.vue";
 </script>
 <template>
   <div class="sign-up">
-    <topContent>
-      <template #heading>Sign your team up</template>
-    </topContent>
     <div class="container">
       <signUpForm />
     </div>
