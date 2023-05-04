@@ -1,112 +1,129 @@
+<script setup>
+import { ref } from "vue";
+const mainColor = ref("#003566");
+const secondColor = ref("#FFC300");
+</script>
 <template>
   <!-- <loadingSpinner /> -->
   <form @submit="checkForm">
+    <h1>Sign Up</h1>
+    <p v-if="!playersAdded">Choose your squad</p>
+    <p v-if="playersAdded">Choose your division and team name</p>
     <div class="form-inner">
-      <h2>Enter up to 4 players for your group.</h2>
-      <p>
-        Groups with less than 4 players are subject to grouping with another
-        team to create a foursome.
-      </p>
       <span v-if="errors.length" class="error-list error">
         <span>Please correct the following error(s):</span>
         <ul>
           <li v-for="error in errors">{{ error }}</li>
         </ul>
       </span>
-      <div class="form-control">
-        <label>How many players are you signing up today?</label>
-        <select v-model="numOfPlayers" class="input full-width">
-          <option value="1">1 Player</option>
-          <option value="2">2 Players</option>
-          <option value="3">3 Players</option>
-          <option value="4">4 Players</option>
+
+      <div id="players" class="form-inset" v-if="!playersAdded">
+        <div class="form-control card" v-if="numOfPlayers >= 1">
+          <h2>Player 1</h2>
+          <input
+            v-model="players.player1__firstName"
+            class="input"
+            type="text"
+            placeholder="First Name"
+          />
+          <input
+            v-model="players.player1__lastName"
+            class="input"
+            type="text"
+            placeholder="Last Name"
+          />
+
+          <div class="button-container" v-if="numOfPlayers === 1">
+            <button type="button" @click="numOfPlayers++">Add player</button>
+            <button type="submit" @click="checkPlayerForm">Continue</button>
+          </div>
+        </div>
+        <div class="form-control card" v-if="numOfPlayers >= 2">
+          <h2>Player 2</h2>
+          <input
+            v-model="players.player2__firstName"
+            class="input"
+            type="text"
+            placeholder="First Name"
+          />
+          <input
+            v-model="players.player2__lastName"
+            class="input"
+            type="text"
+            placeholder="Last Name"
+          />
+          <div class="button-container" v-if="numOfPlayers === 2">
+            <button type="button" @click="numOfPlayers++">Add player</button>
+            <button type="submit" @click="checkPlayerForm">Continue</button>
+          </div>
+          <span class="delete" @click="numOfPlayers--"></span>
+        </div>
+        <div class="form-control card" v-if="numOfPlayers >= 3">
+          <h2>Player 3</h2>
+          <input
+            v-model="players.player3__firstName"
+            class="input"
+            type="text"
+            placeholder="First Name"
+          />
+          <input
+            v-model="players.player3__lastName"
+            class="input"
+            type="text"
+            placeholder="Last Name"
+          />
+          <div class="button-container" v-if="numOfPlayers === 3">
+            <button type="button" @click="numOfPlayers++">Add player</button>
+            <button type="submit" @click="checkPlayerForm">Continue</button>
+          </div>
+          <span class="delete" @click="numOfPlayers--"></span>
+        </div>
+        <div class="form-control card" v-if="numOfPlayers >= 4">
+          <h2>Player 4</h2>
+          <input
+            v-model="players.player4__firstName"
+            class="input"
+            type="text"
+            placeholder="First Name"
+          />
+          <input
+            v-model="players.player4__lastName"
+            class="input"
+            type="text"
+            placeholder="Last Name"
+          />
+          <div class="button-container" v-if="numOfPlayers === 4">
+            <button type="submit" @click="checkPlayerForm">Continue</button>
+          </div>
+          <span class="delete" @click="numOfPlayers--"></span>
+        </div>
+      </div>
+      <div class="form-control card card--summary" v-if="playersAdded">
+        <div class="row">
+          <div v-for="player in Object.values(players)">
+            <p>{{ player }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-control card" v-if="playersAdded">
+        <h2>Choose Your Division</h2>
+        <select v-model="division" class="input full-width">
+          <option value="mens">Men's Division</option>
+          <option value="coed">Co-ed Division</option>
         </select>
-      </div>
-      <div class="form-inset">
-        <div class="form-control" v-if="numOfPlayers >= 1">
-          <label>Player 1</label>
-          <input
-            v-model="player1__firstName"
-            class="input"
-            type="text"
-            placeholder="First Name"
-          />
-          <input
-            v-model="player1__lastName"
-            class="input"
-            type="text"
-            placeholder="Last Name"
-          />
-        </div>
-        <div class="form-control" v-if="numOfPlayers >= 2">
-          <label>Player 2</label>
-          <input
-            v-model="player2__firstName"
-            class="input"
-            type="text"
-            placeholder="First Name"
-          />
-          <input
-            v-model="player2__lastName"
-            class="input"
-            type="text"
-            placeholder="Last Name"
-          />
-        </div>
-        <div class="form-control" v-if="numOfPlayers >= 3">
-          <label>Player 3</label>
-          <input
-            v-model="player3__firstName"
-            class="input"
-            type="text"
-            placeholder="First Name"
-          />
-          <input
-            v-model="player3__lastName"
-            class="input"
-            type="text"
-            placeholder="Last Name"
-          />
-        </div>
-        <div class="form-control" v-if="numOfPlayers >= 4">
-          <label>Player 4</label>
-          <input
-            v-model="player4__firstName"
-            class="input"
-            type="text"
-            placeholder="First Name"
-          />
-          <input
-            v-model="player4__lastName"
-            class="input"
-            type="text"
-            placeholder="Last Name"
-          />
-        </div>
-      </div>
-      <div class="form-control">
-        <label
-          >Team Name (optional) <br />
-          <small
-            >If you leave this blank, your team name will be Player 1's full
-            name. Ex: Team John Smith</small
-          ></label
-        >
+        <h2>Team Name</h2>
+        <p>
+          If you leave this blank, your team name will be Player 1’s full name.
+          Ex: Team John Smith
+        </p>
         <input
           v-model="teamName"
           class="input full-width"
           type="text"
           placeholder="Team Name (optional)"
         />
+        <button type="submit">Sign Up</button>
       </div>
-      <div class="form-control">
-        <label>Choose a division</label>
-        <select v-model="division" class="input full-width">
-          <option value="mens">Men's Division</option>
-          <option value="coed">Co-ed Division</option>
-        </select>
-      </div>
-      <button type="submit">Sign Up</button>
     </div>
   </form>
 </template>
@@ -119,20 +136,84 @@ export default {
     return {
       errors: [],
       numOfPlayers: 1,
-      player1__firstName: null,
-      player1__lastName: null,
-      player2__firstName: null,
-      player2__lastName: null,
-      player3__firstName: null,
-      player3__lastName: null,
-      player4__firstName: null,
-      player4__lastName: null,
+      players: {
+        player1__firstName: null,
+        player1__lastName: null,
+        player2__firstName: null,
+        player2__lastName: null,
+        player3__firstName: null,
+        player3__lastName: null,
+        player4__firstName: null,
+        player4__lastName: null,
+      },
+      playersAdded: false,
       teamName: null,
       division: "mens",
       needsGrouping: false,
     };
   },
+  watch: {
+    player1__firstName(value) {
+      this.player1__firstName = value;
+      this.checkPlayerName(value);
+    },
+    player1__lastName(value) {
+      this.player1__lastName = value;
+      this.checkPlayerName(value);
+    },
+    player2__firstName(value) {
+      this.player2__firstName = value;
+      this.checkPlayerName(value);
+    },
+    player2__lastName(value) {
+      this.player2__lastName = value;
+      this.checkPlayerName(value);
+    },
+    player3__firstName(value) {
+      this.player3__firstName = value;
+      this.checkPlayerName(value);
+    },
+    player3__lastName(value) {
+      this.player3__lastName = value;
+      this.checkPlayerName(value);
+    },
+    player4__firstName(value) {
+      this.player4__firstName = value;
+      this.checkPlayerName(value);
+    },
+    player4__lastName(value) {
+      this.player4__lastName = value;
+      this.checkPlayerName(value);
+    },
+  },
   methods: {
+    checkPlayerName: function (v) {
+      if (v === null || v.length == 0 || v.match(/\d+/g)) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    checkPlayerForm: function (e) {
+      e.preventDefault();
+      for (let i = 0; i <= this.numOfPlayers - 1; i++) {
+        const fNameValid = this.checkPlayerName(
+          this.players[`player${i + 1}__firstName`]
+        );
+        const lNameValid = this.checkPlayerName(
+          this.players[`player${i + 1}__lastName`]
+        );
+        if (!fNameValid || !lNameValid) {
+          this.addError("Please enter a first and last name for each player.");
+        } else {
+          this.errors = [];
+        }
+      }
+      if (!this.errors.length) {
+        this.playersAdded = true;
+        return true;
+      }
+    },
     checkForm: function (e) {
       if (
         this.numOfPlayers &&
@@ -145,36 +226,32 @@ export default {
         this.preProcessData();
       }
 
-      this.errors = [];
-      if (!this.numOfPlayers) {
-        this.errors.push(
-          "Please enter the amount of player currently on your team."
-        );
-      }
-      if (!this.player1__firstName) {
-        this.errors.push("At least 1 player's first name is required.");
-      }
-      if (!this.player1__lastName) {
-        this.errors.push("At least 1 player's last name is required.");
-      }
       if (!this.division) {
         this.errors.push("Please choose a division to be entered in.");
       }
       e.preventDefault();
     },
-    removeErrors: function () {
-      const error = document.querySelector(".error");
-      if (error) document.removeChild(error);
+    addError: function (errorString) {
+      if (this.errors.length > 0) {
+        for (const error of this.errors) {
+          if (error && error === errorString) {
+            return;
+          } else this.errors.push(errorString);
+        }
+      } else this.errors.push(errorString);
+    },
+    removeErrors: function (e) {
+      this.errors = [];
     },
     preProcessData: function () {
       let numOfPlayers = Number(this.numOfPlayers);
       this.teamObj = {};
-      const players = [];
+      const playersArr = [];
       switch (numOfPlayers) {
         case 1:
           //set needs grouping flag
           this.needsGrouping = true;
-          players.push({
+          playersArr.push({
             first_name: this.player1__firstName,
             last_name: this.player1__lastName,
           });
@@ -182,11 +259,11 @@ export default {
         case 2:
           //set needs grouping flag
           this.needsGrouping = true;
-          players.push({
+          playersArr.push({
             first_name: this.player1__firstName,
             last_name: this.player1__lastName,
           });
-          players.push({
+          playersArr.push({
             first_name: this.player2__firstName,
             last_name: this.player2__lastName,
           });
@@ -194,33 +271,33 @@ export default {
         case 3:
           //set needs grouping flag
           this.needsGrouping = true;
-          players.push({
+          playersArr.push({
             first_name: this.player1__firstName,
             last_name: this.player1__lastName,
           });
-          players.push({
+          playersArr.push({
             first_name: this.player2__firstName,
             last_name: this.player2__lastName,
           });
-          players.push({
+          playersArr.push({
             first_name: this.player3__firstName,
             last_name: this.player3__lastName,
           });
           break;
         case 4:
-          players.push({
+          playersArr.push({
             first_name: this.player1__firstName,
             last_name: this.player1__lastName,
           });
-          players.push({
+          playersArr.push({
             first_name: this.player2__firstName,
             last_name: this.player2__lastName,
           });
-          players.push({
+          playersArr.push({
             first_name: this.player3__firstName,
             last_name: this.player3__lastName,
           });
-          players.push({
+          playersArr.push({
             first_name: this.player4__firstName,
             last_name: this.player4__lastName,
           });
@@ -232,7 +309,7 @@ export default {
 
       //loop through player names and uppercase first letters
       //if teamName is null, let's make one
-      players.forEach((item, i, arr) => {
+      playersArr.forEach((item, i, arr) => {
         let fName =
           item.first_name[0].toUpperCase() + item.first_name.substring(1);
         let lName =
@@ -294,71 +371,5 @@ export default {
 </script>
 
 <style scoped>
-.form-inner {
-  max-width: 900px;
-  margin: auto;
-  display: block;
-}
-form {
-  display: flex;
-  flex-direction: column;
-}
-form label {
-  width: 100%;
-  flex-basis: 100%;
-}
-.form-inset {
-  max-width: 94%;
-  background: #e6e6e6;
-  margin: auto;
-  padding: 2% 0;
-}
-.form-control {
-  background: none;
-  flex-basis: 100%;
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  border: none;
-  padding: 2%;
-}
-.form-control input,
-.form-control select {
-  padding: 2%;
-  margin: 0 1%;
-}
-.form-control input:not(.full-width),
-.form-control select:not(.full-width) {
-  flex-basis: 48%;
-  width: 48%;
-}
-.form-control .full-width {
-  width: 100%;
-  flex-basis: 100%;
-}
-button {
-  border-radius: 3px;
-  background: green;
-  color: #fff;
-  font-weight: 700;
-  max-width: 300px;
-  margin: auto;
-  width: 100%;
-  display: block;
-  border: 0;
-  padding: 2.5% 0;
-  font-size: 1.25rem;
-  text-transform: uppercase;
-}
-.error {
-  color: red;
-}
-.error-list * {
-  color: inherit;
-}
-.error-list {
-  max-width: 400px;
-  width: 100%;
-  margin: auto;
-}
+
 </style>

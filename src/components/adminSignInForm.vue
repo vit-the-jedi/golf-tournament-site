@@ -5,7 +5,7 @@
       <h2>Enter the secret word to access the admin panel</h2>
 
       <div class="form-inset">
-        <input type="text" id="adminSecret" />
+        <input type="text" id="adminSecret" v-model="adminSecret" />
       </div>
       <button type="submit">Continue</button>
     </div>
@@ -39,7 +39,7 @@ export default {
     formSubmitHandler: async function () {
       //programmatically route to success page w/ relevant form data we can post back for user review
       this.$router.push({
-        path: "/signup-success",
+        path: "/admin",
         query: {
           players: playersString,
           division: team.division,

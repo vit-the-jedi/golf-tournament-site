@@ -1,5 +1,5 @@
 <script setup>
-import adminSignInForm from "../components/adminSignInForm.vue";
+import adminSignInForm from "../../components/adminSignInForm.vue";
 </script>
 
 <script>
