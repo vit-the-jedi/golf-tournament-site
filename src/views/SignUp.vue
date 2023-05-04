@@ -1,8 +1,10 @@
 <script setup>
 import topContent from "../components/topContent.vue";
 import signUpForm from "../components/signUpForm.vue";
+import secondaryNav from "../components/secondaryNav.vue";
 </script>
 <template>
+  <secondaryNav />
   <div class="sign-up">
     <div class="container">
       <signUpForm />

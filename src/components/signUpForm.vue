@@ -33,7 +33,7 @@ const secondColor = ref("#FFC300");
             placeholder="Last Name"
           />
 
-          <div v-if="numOfPlayers === 1">
+          <div class="button-container" v-if="numOfPlayers === 1">
             <button type="button" @click="numOfPlayers++">Add player</button>
             <button type="submit" @click="checkPlayerForm">Continue</button>
           </div>
@@ -52,7 +52,7 @@ const secondColor = ref("#FFC300");
             type="text"
             placeholder="Last Name"
           />
-          <div v-if="numOfPlayers === 2">
+          <div class="button-container" v-if="numOfPlayers === 2">
             <button type="button" @click="numOfPlayers++">Add player</button>
             <button type="submit" @click="checkPlayerForm">Continue</button>
           </div>
@@ -72,7 +72,7 @@ const secondColor = ref("#FFC300");
             type="text"
             placeholder="Last Name"
           />
-          <div v-if="numOfPlayers === 3">
+          <div class="button-container" v-if="numOfPlayers === 3">
             <button type="button" @click="numOfPlayers++">Add player</button>
             <button type="submit" @click="checkPlayerForm">Continue</button>
           </div>
@@ -92,8 +92,7 @@ const secondColor = ref("#FFC300");
             type="text"
             placeholder="Last Name"
           />
-          <div v-if="numOfPlayers === 4">
-            <button type="button" @click="numOfPlayers++">Add player</button>
+          <div class="button-container" v-if="numOfPlayers === 4">
             <button type="submit" @click="checkPlayerForm">Continue</button>
           </div>
           <span class="delete" @click="numOfPlayers--"></span>
@@ -372,34 +371,5 @@ export default {
 </script>
 
 <style scoped>
-.form-inset {
-  max-width: 94%;
-  background: #e6e6e6;
-  margin: auto;
-  padding: 2% 0;
-}
 
-.delete {
-  position: absolute;
-  top: 2%;
-  right: 2%;
-  padding: 5px;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  border-width: 4px;
-  border-style: solid;
-  border-radius: 9px;
-  border-color: v-bind(mainColor);
-  background: v-bind(secondColor);
-  text-align: center;
-}
-.delete::after {
-  position: absolute;
-  content: "X";
-  font-weight: 800;
-  font-size: 1.5rem;
-  left: 25%;
-  top: -3%;
-}
 </style>

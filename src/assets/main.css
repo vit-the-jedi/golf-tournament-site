@@ -1,12 +1,14 @@
 /* @import "./base.css"; */
 
 :root {
-  --dark-color: #14110f;
-  --lighter-color: #34312d;
-  --lightest-color: #34312d;
-  --secondary-color: #d9c5b2;
-  --tertiary-color: #f3f3f4;
-  --pop-color: #28a745;
+  --mainColor: #003566;
+  --secondColor: #ffc300;
+  --tertiary-color: #00bbf9;
+  --card-border-radius: 25px;
+  --input-border-radius: 12px;
+  --player-icon-width: calc(100% / 4.25);
+  --player-icon-height: calc(100% / 2);
+  --ui-dialog-bg: rgba(0, 26, 50, 0.7);
 }
 
 body {
@@ -17,15 +19,6 @@ a,
   text-decoration: none;
   color: var(--pop-color);
   transition: 0.4s;
-}
-
-.container {
-  margin-top: -5vh;
-  padding: 10vh 5vw;
-  z-index: 3;
-  position: relative;
-  background: white;
-  border-radius: 20px;
 }
 .top-content {
   background-image: linear-gradient(
@@ -71,16 +64,25 @@ h4 {
 ul {
   padding-inline-start: 17px;
 }
+
 /*form*/
 .form-inner {
   max-width: 900px;
   width: 100%;
-  margin: auto;
+  margin: 25% auto 0 auto;
   display: block;
+}
+.form-inset {
+  display: flex;
+  flex-direction: column;
 }
 form {
   display: flex;
   flex-direction: column;
+}
+form h1,
+form p {
+  text-align: center;
 }
 form label {
   width: 100%;
@@ -91,36 +93,69 @@ form label {
   flex-basis: 100%;
   width: 100%;
   display: flex;
-  flex-wrap: wrap;
   border: none;
-  padding: 2%;
+  padding-top: calc(var(--player-icon-height) / 4);
+  padding-left: 2%;
+  padding-right: 2%;
+  padding-bottom: 10%;
+  width: 100%;
+  flex-basis: 100%;
+  position: relative;
+  margin-bottom: calc(var(--player-icon-height) / 8);
+}
+.form-control:has(.button-container) {
+  padding-bottom: 2%;
+}
+.form-control h2 {
+  text-align: center;
+}
+.form-control::before {
+  width: var(--player-icon-width);
+  height: var(--player-icon-height);
+  content: "";
+  position: absolute;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin: auto;
+  top: calc(-1 * var(--player-icon-height) / 2);
+  left: calc(100% / 2 - var(--player-icon-width) / 2);
+}
+.form-control:nth-of-type(1)::before {
+  background-image: url("../assets/icons/player1.svg");
+}
+.form-control:nth-of-type(2)::before {
+  background-image: url("../assets/icons/player2.svg");
+}
+.form-control:nth-of-type(3)::before {
+  background-image: url("../assets/icons/player3.svg");
+}
+.form-control:nth-of-type(4)::before {
+  background-image: url("../assets/icons/player4.svg");
 }
 .form-control input,
 .form-control select {
   padding: 2%;
-  margin: 0 1%;
+  margin: 10px 1%;
+  border-radius: var(--input-border-radius);
+  color: var(--mainColor);
+  font-size: 16px;
+  border: 4px solid var(--mainColor);
 }
-.form-control input:not(.full-width),
-.form-control select:not(.full-width) {
-  flex-basis: 48%;
-  width: 48%;
-}
-.form-control .full-width {
-  width: 100%;
-  flex-basis: 100%;
-}
+
 button {
   border-radius: 3px;
-  background: green;
+  background: var(--mainColor);
+  border: 3px solid white;
+  border-radius: var(--input-border-radius);
   color: #fff;
   font-weight: 700;
   max-width: 300px;
-  margin: auto;
+  margin: 10px auto;
   width: 100%;
   display: block;
-  border: 0;
-  padding: 2.5% 0;
-  font-size: 1.25rem;
+  padding: 1.5% 0;
+  font-size: 1rem;
   text-transform: uppercase;
 }
 .error {
@@ -133,4 +168,98 @@ button {
   max-width: 400px;
   width: 100%;
   margin: auto;
+}
+
+/*CARDS*/
+
+.card {
+  border-radius: var(--card-border-radius);
+  background-color: var(--tertiary-color);
+}
+
+.card--summary .row {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card--summary .row > div {
+  flex-basis: 20%;
+  width: 20%;
+  padding: 1%;
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+}
+.card--summary .row div p {
+  margin: 0;
+}
+.card--summary .row > div::before {
+  font-size: 16px;
+  padding-right: 20px;
+}
+.card--summary .row > div:nth-of-type(1)::before {
+  content: "1.";
+}
+.card--summary .row > div:nth-of-type(3)::before {
+  content: "2.";
+}
+.card--summary .row > div:nth-of-type(5)::before {
+  content: "3.";
+}
+.card--summary .row > div:nth-of-type(7)::before {
+  content: "4.";
+}
+
+.card--summary .row > div:nth-of-type(1),
+.card--summary .row > div:nth-of-type(2),
+.card--summary .row > div:nth-of-type(3),
+.card--summary .row > div:nth-of-type(4) {
+  border-bottom: 2px solid black;
+}
+.card--summary .row > div:nth-of-type(2),
+.card--summary .row > div:nth-of-type(6) {
+  border-right: 2px solid black;
+}
+
+/*ui stuff*/
+
+.ui--backdrop {
+  opacity: 0;
+  z-index: -999;
+  background: var(--ui-dialog-bg);
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  transition: opacity ease-in 1s;
+}
+.ui--backdrop.backdrop--open {
+  z-index: 998;
+  opacity: 1;
+}
+
+.delete {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  padding: 5px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  border-width: 4px;
+  border-style: solid;
+  border-radius: 9px;
+  border-color: var(--mainColor);
+  background: var(--secondColor);
+  text-align: center;
+}
+.delete::after {
+  position: absolute;
+  content: "X";
+  font-weight: 800;
+  font-size: 1.5rem;
+  left: 25%;
+  top: -3%;
 }
