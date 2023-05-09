@@ -31,6 +31,13 @@
         </router-link>
       </div>
     </div>
+    <div class="menu--row" v-if="userSignedIn">
+      <div class="menu--item">
+        <button id="menu-sign-out" class="sign-out" @click="signOutHandler">
+          Sign Out
+        </button>
+      </div>
+    </div>
 
     <span class="delete" @click="closeMenuHandler"></span>
   </div>
@@ -39,7 +46,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      userSignedIn: false,
+    };
   },
   methods: {
     openMenuHandler: function () {
@@ -58,6 +67,16 @@ export default {
         .querySelector(".ui--backdrop")
         .classList.remove("backdrop--open");
     },
+    signOutHandler: function () {
+      const auth = getAuth();
+      signOut(auth)
+        .then(() => {
+          this.$router.push("/admin/sign-in");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
@@ -67,7 +86,7 @@ export default {
   height: 0px;
   border-radius: 25px;
   margin: 2px 0;
-  border: 5px solid var(--tertiary-color);
+  border: 5px solid var(--tertiaryColor);
   cursor: pointer;
 }
 .menu--toggle::before {
@@ -76,7 +95,7 @@ export default {
   height: 0px;
   border-radius: 25px;
   margin: 10px 0 5px 0;
-  border: 5px solid var(--tertiary-color);
+  border: 5px solid var(--tertiaryColor);
   display: block;
   position: relative;
   left: -5px;
@@ -87,7 +106,7 @@ export default {
   height: 0px;
   border-radius: 25px;
   margin: 2px 0;
-  border: 5px solid var(--tertiary-color);
+  border: 5px solid var(--tertiaryColor);
   display: block;
   position: relative;
   left: -5px;
@@ -101,7 +120,8 @@ export default {
   z-index: 999;
   left: 0;
   width: 100%;
-  padding: 5% 5% 140% 5%;
+  padding: 5%;
+  height: 100vh;
   transition: margin ease-in 0.75s;
 }
 .menu--row {
@@ -109,7 +129,7 @@ export default {
   flex-wrap: nowrap;
   justify-content: space-between;
   align-content: center;
-  margin: 30% auto;
+  margin: 20vh auto;
 }
 .menu--item {
   color: var(--mainColor);
@@ -136,6 +156,8 @@ export default {
   background-color: rgb(204, 241, 253);
 }
 .menu--open {
-  margin-top: 35%;
+  margin-top: 5%;
+}
+@media screen and(max-width) {
 }
 </style>

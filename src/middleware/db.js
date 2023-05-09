@@ -2,6 +2,8 @@
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+
 import {
   getFirestore,
   collection,
@@ -27,6 +29,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth();
 
 async function getLeaderboardData(db) {
   const scoreCollection = collection(db, "leaderboard");

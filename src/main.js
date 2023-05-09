@@ -1,13 +1,19 @@
-import { createApp } from "vue";
+import { createApp, ref } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 import App from "./App.vue";
+
+// import store
+import { store } from "./store/index.js";
 
 //views
 import Home from "@/views/Home.vue";
 import About from "@/views/About.vue";
 import SignUp from "@/views/SignUp.vue";
 import SignUp__success from "@/views/SignUpSuccess.vue";
-import adminSignIn from "@/views/admin/adminSignIn.vue";
+import Admin from "@/views/Admin.vue";
+import adminSignIn from "@/views/adminSignIn.vue";
+
+const loggedIn = ref(false);
 
 //create router
 const router = createRouter({
@@ -38,8 +44,30 @@ const router = createRouter({
       name: "adminSignIn",
       component: adminSignIn,
     },
+    {
+      path: "/admin",
+      name: "admin",
+      component: Admin,
+    },
   ],
 });
 
+// router.beforeEach(async (to) => {
+//   // routes with `meta: { requiresAuth: true }` will check for the users, others won't
+//   if (to.meta.requiresAuth) {
+//     //get current user if signed in
+//     if (!loggedIn.value) {
+//       // No user is signed in.
+//       return {
+//         path: "/admin/sign-in",
+//       };
+//     } else {
+//       // ok to go to admin
+//       return {
+//         path: "/admin",
+//       };
+//     }
+//   }
+// });
 //create app and init router on it
-createApp(App).use(router).mount("#app");
+createApp(App).use(router).use(store).mount("#app");

@@ -3,7 +3,7 @@
 :root {
   --mainColor: #003566;
   --secondColor: #ffc300;
-  --tertiary-color: #00bbf9;
+  --tertiaryColor: #00bbf9;
   --card-border-radius: 25px;
   --input-border-radius: 12px;
   --player-icon-width: calc(100% / 4.25);
@@ -174,7 +174,7 @@ button {
 
 .card {
   border-radius: var(--card-border-radius);
-  background-color: var(--tertiary-color);
+  background-color: var(--tertiaryColor);
 }
 
 .card--summary .row {
