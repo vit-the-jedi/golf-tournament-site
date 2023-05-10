@@ -1,5 +1,4 @@
 <script setup>
-git;
 import signUpForm from "../components/signUpForm.vue";
 import secondaryNav from "../components/secondaryNav.vue";
 </script>
