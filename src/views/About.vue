@@ -2,5 +2,11 @@
   <p>Hello about page</p>
 </template>
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      user: null,
+    };
+  },
+};
 </script>

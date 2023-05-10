@@ -16,8 +16,7 @@ const getAuthState = () => {
     if (!user) {
       router.push("/admin/sign-in");
     } else {
-      // User is signed in
-      store.commit("setUser", { uid: user.uid });
+      return;
     }
   });
 };
@@ -28,3 +27,12 @@ onBeforeMount(() => {
 <template>
   <secondaryNav />
 </template>
+<script>
+export default {
+  data() {
+    return {
+      user: null,
+    };
+  },
+};
+</script>

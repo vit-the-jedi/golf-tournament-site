@@ -1,5 +1,5 @@
 <script setup>
-import topContent from "../components/topContent.vue";
+git;
 import signUpForm from "../components/signUpForm.vue";
 import secondaryNav from "../components/secondaryNav.vue";
 </script>
@@ -11,6 +11,15 @@ import secondaryNav from "../components/secondaryNav.vue";
     </div>
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      user: null,
+    };
+  },
+};
+</script>
 <style scoped>
 .sign-up .top-content {
   background-image: linear-gradient(

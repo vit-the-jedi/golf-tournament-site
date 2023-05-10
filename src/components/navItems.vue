@@ -31,7 +31,7 @@
         </router-link>
       </div>
     </div>
-    <div class="menu--row" v-if="userSignedIn">
+    <div class="menu--row sign--out" v-if="userSignedIn">
       <div class="menu--item">
         <button id="menu-sign-out" class="sign-out" @click="signOutHandler">
           Sign Out
@@ -44,6 +44,16 @@
   <div id="menu--bg" class="ui--backdrop"></div>
 </template>
 <script>
+//import auth from firebase
+import { app } from "../middleware/db.js";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { store } from "../store/index.js";
+//router
+import { useRoute } from "vue-router";
+import { watch } from "vue";
+//auth instance
+const auth = getAuth(app);
+
 export default {
   data() {
     return {
@@ -71,12 +81,28 @@ export default {
       const auth = getAuth();
       signOut(auth)
         .then(() => {
+          console.log("signed out successfully");
+          store.commit("setUser", null);
           this.$router.push("/admin/sign-in");
         })
         .catch((error) => {
           console.log(error);
         });
     },
+    getAuthState: function () {
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          return;
+        } else {
+          this.userSignedIn = true;
+          this.user = user;
+          store.commit("setUser", { uid: user.uid });
+        }
+      });
+    },
+  },
+  beforeMount() {
+    this.getAuthState();
   },
 };
 </script>
@@ -129,7 +155,11 @@ export default {
   flex-wrap: nowrap;
   justify-content: space-between;
   align-content: center;
-  margin: 20vh auto;
+  margin: 10vh auto;
+}
+.menu--row.sign--out {
+  display: block;
+  margin: auto;
 }
 .menu--item {
   color: var(--mainColor);

@@ -1,6 +1,5 @@
 <script setup>
-import topContent from "../components/topContent.vue";
-import pricingTable from "../components/pricing.vue";
+import mainNav from "../components/mainNav.vue";
 </script>
 
 <script>
@@ -24,6 +23,7 @@ export default {
           "closest to pin  (back 9)",
         ],
       },
+      user: null,
     };
   },
   computed: {
@@ -52,6 +52,7 @@ export default {
 };
 </script>
 <template>
+  <mainNav />
   <div class="home">
     <topContent>
       <template #heading>Welcome to the 2023 PJA tournament!</template>
