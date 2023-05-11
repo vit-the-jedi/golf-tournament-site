@@ -53,57 +53,72 @@ export default {
 </script>
 <template>
   <mainNav />
-  <div class="home">
-    <topContent>
-      <template #heading>Welcome to the 2023 PJA tournament!</template>
-    </topContent>
+  <header class="top-content">
+    <div class="logo py-3"><img src="../assets/logo.svg" alt="PJA logo" /></div>
+    <div class="top-info row py-3">
+      <div class="col-6 info--item">
+        <p>{{ outputDate }}</p>
+      </div>
+      <div class="col-6 info--item"><p>100+ Players</p></div>
+      <div class="col-6 info--item"><p>Trophies Awarded</p></div>
+      <div class="col-6 info--item"><p>Charitable Donations</p></div>
+      <p class="py-3">
+        The PJA Tournament is organized by the Vitello and Lowell families, and
+        growing annually thanks to participation by amazing family and friends.
+      </p>
 
+      <div><router-link to="/about">Learn More</router-link></div>
+    </div>
+  </header>
+  <div class="home">
     <div class="container info-container">
-      <div class="top-copy">
-        <h2>The tournament is on {{ outputDate }}!</h2>
-        <h3><router-link to="/signup">Sign up</router-link> now!</h3>
+      <div class="card">
+        <div class="button-container">
+          <!--TODO create signup btn component
+           <signUpBtn/>-->
+          <small>(max 4 players)</small>
+        </div>
+        <div class="card sub--card">
+          <div class="row">
+            <div class="col-md-6 col-12">
+              <h3>
+                Entry Deadline:
+                <span>
+                  <!--TODO create method to putput deadline (date of tourny minus 1 week)-->{{
+                    outputDeadline
+                  }}</span
+                >
+              </h3>
+            </div>
+            <div class="col-md-6 col-12">
+              <h2>When & where?</h2>
+              <p>{{ outputDate }}</p>
+              <p>{{ outputGolfCourse }}, {{ outputGolfCourseAddress }}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    <div class="card info--card">
+      <h4>Pricing</h4>
+      <h5>Entry fee: $85.00</h5>
+      <p>What's included:</p>
+      <ul>
+        <li v-for="item in pricing.addOns">
+          {{ item }}
+        </li>
+      </ul>
+    </div>
     <div class="row info--row">
-      <div class="col-md-6 col-12">
-        <div class="card info--card">
-          <h4>When?</h4>
-          <p>{{ outputDate }}, {{ outputTime }}</p>
-        </div>
-      </div>
-      <div class="col-md-6 col-12">
-        <div class="card info--card">
-          <h4>Where?</h4>
-          <ul>
-            <li>{{ outputGolfCourse }}</li>
-            <li>{{ outputGolfCourseAddress }}</li>
-          </ul>
-          <p>Please arrive promptly to sign in and find your cart.</p>
-        </div>
-      </div>
-      <div class="col-md-6 col-12">
-        <div class="card info--card">
-          <h4>Rules</h4>
-          <ul>
-            <li>Teams of four.</li>
-            <li>Scramble (best ball) format.</li>
-            <li>Men's and Co-ed Leagues available.</li>
-            <li>Incomplete teams will be joined to make a foursome.</li>
-            <li>Have fun!</li>
-          </ul>
-        </div>
-      </div>
-      <div class="col-md-6 col-12">
-        <div class="card info--card">
-          <h4>Pricing</h4>
-          <h5>Entry fee: $85.00</h5>
-          <p>What's included:</p>
-          <ul>
-            <li v-for="item in pricing.addOns">
-              {{ item }}
-            </li>
-          </ul>
-        </div>
+      <div class="info--card">
+        <h4>Rules</h4>
+        <ul>
+          <li>Teams of four.</li>
+          <li>Scramble (best ball) format.</li>
+          <li>Men's and Co-ed Leagues available.</li>
+          <li>Incomplete teams will be joined to make a foursome.</li>
+          <li>Have fun!</li>
+        </ul>
       </div>
     </div>
   </div>
