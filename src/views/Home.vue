@@ -12,7 +12,13 @@ export default {
       golfCourseAddress: "100 Golf Way, Berlin CT, 07678",
       pricing: {
         ticketPrice: "$85.00",
-        addOns: ["Golf Cart (per 1-2 players)", "Snacks", "Water"],
+        addOns: [
+          "Golf Cart (per 1-2 players)",
+          "Snacks",
+          "Water",
+          "Trophies (1st, 2nd, 3rd place per division, plus longest drive and closest to pin for both front and back 9)",
+          "All proceeds after operational charges will be donated to the ",
+        ],
         trophies: [
           "First Place",
           "Second Place",
@@ -62,12 +68,11 @@ export default {
       <div class="col-6 info--item"><p>100+ Players</p></div>
       <div class="col-6 info--item"><p>Trophies Awarded</p></div>
       <div class="col-6 info--item"><p>Charitable Donations</p></div>
-      <p class="py-3">
+      <p class="pt-3 mb-0">
         The PJA Tournament is organized by the Vitello and Lowell families, and
         growing annually thanks to participation by amazing family and friends.
       </p>
-
-      <div><router-link to="/about">Learn More</router-link></div>
+      <router-link to="/about">Learn More</router-link>
     </div>
   </header>
   <div class="home">
@@ -78,16 +83,14 @@ export default {
            <signUpBtn/>-->
           <small>(max 4 players)</small>
         </div>
-        <div class="card sub--card">
+        <div class="card sub--card entry--info">
           <div class="row">
             <div class="col-md-6 col-12">
+              <h2>Entry Deadline:</h2>
               <h3>
-                Entry Deadline:
-                <span>
-                  <!--TODO create method to putput deadline (date of tourny minus 1 week)-->{{
-                    outputDeadline
-                  }}</span
-                >
+                <!--TODO create method to putput deadline (date of tourny minus 1 week)
+                  {{ outputDeadline }}-->
+                October 1st, 2023
               </h3>
             </div>
             <div class="col-md-6 col-12">
@@ -98,16 +101,24 @@ export default {
           </div>
         </div>
       </div>
-    </div>
-    <div class="card info--card">
-      <h4>Pricing</h4>
-      <h5>Entry fee: $85.00</h5>
-      <p>What's included:</p>
-      <ul>
-        <li v-for="item in pricing.addOns">
-          {{ item }}
-        </li>
-      </ul>
+      <div class="card pricing">
+        <div class="card sub--card">
+          <div class="row">
+            <div class="col-md-6 col-12">
+              <h2>Pricing</h2>
+              <h3>Entry fee: $85.00</h3>
+            </div>
+            <div class="col-md-6 col-12">
+              <h4>What's included:</h4>
+              <ul>
+                <li v-for="item in pricing.addOns">
+                  {{ item }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="row info--row">
       <div class="info--card">
@@ -144,5 +155,31 @@ export default {
 .info--card h5,
 .info--card ul {
   margin: 2.5vh 0;
+}
+.card:has(.entry--info) {
+  margin-top: -5vh;
+}
+.card:has(.entry--info)::before {
+  content: "";
+  background: url("../assets/player-icons.png") no-repeat center center /
+    contain;
+  width: 40%;
+  max-width: 20vw;
+  min-height: 25vh;
+  margin: -15vh auto auto auto;
+}
+.entry--info {
+  border-color: var(--mainColor);
+}
+.pricing {
+  background: var(--mainColor);
+  border-radius: 0;
+}
+.pricing * {
+  color: white;
+}
+.pricing .card {
+  background: none;
+  border-color: white;
 }
 </style>
