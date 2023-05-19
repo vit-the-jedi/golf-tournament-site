@@ -10,7 +10,7 @@
       </div>
 
       <div class="menu--item">
-        <router-link to="/signup">
+        <router-link to="/sign-up">
           <img src="../assets/icons/signUp.svg" alt="Sign up" />
           <slot name="navItemText">Sign Up</slot>
         </router-link>
@@ -31,7 +31,17 @@
         </router-link>
       </div>
     </div>
-    <div class="menu--row sign--out" v-if="userSignedIn">
+    <!--NEED TO FIND A WAY TO GET THE USER FROM VUEX AFTER IT HAS BEEN ADDED, AND CHECK PERMISSIONS AFTER-->
+    <div class="menu--row" v-if="userInfo.isAdmin">
+      <div class="menu--item">
+        <router-link to="/admin">
+          <img src="../assets/icons/admin.svg" alt="admin page" />
+          <slot name="navItemText">Admin</slot>
+        </router-link>
+      </div>
+    </div>
+
+    <div class="menu--row sign--out" v-if="userInfo.userSignedIn">
       <div class="menu--item">
         <button id="menu-sign-out" class="sign-out" @click="signOutHandler">
           Sign Out
@@ -45,7 +55,7 @@
 </template>
 <script>
 //import auth from firebase
-import { app } from "../middleware/db.js";
+import { app, getUserPermissions, db } from "../middleware/db.js";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { store } from "../store/index.js";
 //router
@@ -53,11 +63,15 @@ import { useRoute } from "vue-router";
 import { watch } from "vue";
 //auth instance
 const auth = getAuth(app);
+const firestoreDb = db;
 
 export default {
   data() {
     return {
-      userSignedIn: false,
+      userInfo: {
+        userSignedIn: false,
+        isAdmin: false,
+      },
     };
   },
   methods: {
@@ -94,9 +108,17 @@ export default {
         if (!user) {
           return;
         } else {
-          this.userSignedIn = true;
-          this.user = user;
-          store.commit("setUser", { uid: user.uid });
+          //create async function so we can await the call to check + set user permissions
+          (async function () {
+            user.permissionLevel = await getUserPermissions(
+              firestoreDb,
+              user.phoneNumber
+            );
+            //push to vuex store here
+            store.commit("setUser", { user });
+          })();
+
+          this.userInfo.userSignedIn = true;
         }
       });
     },

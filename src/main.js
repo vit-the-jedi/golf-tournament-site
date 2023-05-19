@@ -30,12 +30,12 @@ const router = createRouter({
       component: About,
     },
     {
-      path: "/signup",
+      path: "/sign-up",
       name: "SignUp",
       component: SignUp,
     },
     {
-      path: "/signup-success",
+      path: "/sign-up-success",
       name: "SignUp__success",
       component: SignUp__success,
     },

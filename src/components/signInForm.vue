@@ -25,7 +25,7 @@
 <script>
 import { addToFirestore } from "../middleware/db.js";
 import loadingSpinner from "../components/loading.vue";
-import { app } from "../middleware/db.js";
+import { app, getUserPermissions, db } from "../middleware/db.js";
 import { store } from "../store/index.js";
 import {
   getAuth,
@@ -38,6 +38,7 @@ import {
 const auth = getAuth(app);
 auth.languageCode = "en";
 const appVerifier = window.recaptchaVerifier;
+const firestoreDb = db;
 
 export default {
   data() {
@@ -112,7 +113,6 @@ export default {
             window.confirmationResult = confirmationResult;
             this.smsCodeSent = true;
           })
-          .then(() => {})
           .catch((error) => {
             console.error(error);
             window.recaptchaVerifier.render().then(function (widgetId) {
@@ -125,11 +125,19 @@ export default {
       confirmationResult
         .confirm(String(this.userSMSCode))
         .then((result) => {
-          //push to vuex store here
-          store.commit("setUser", { user: result.user });
-          this.$router.push({
-            path: "/admin",
-          });
+          //create async function so we can await the call to check + set user permissions
+          (async function () {
+            result.user.permissionLevel = await getUserPermissions(
+              firestoreDb,
+              result.user.phoneNumber
+            );
+            //push to vuex store here
+            store.commit("setUser", { user: result.user });
+            console.log(store);
+            // this.$router.push({
+            //   path: "/admin",
+            // });
+          })();
         })
         .catch((error) => {
           this.errors.push("Sign in failed, please try again.");
