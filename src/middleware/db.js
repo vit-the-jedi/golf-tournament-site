@@ -2,10 +2,13 @@
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+
 import {
   getFirestore,
   collection,
   getDocs,
+  getDoc,
   setDoc,
   doc,
   query,
@@ -27,15 +30,15 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth();
 
-async function getLeaderboardData(db) {
-  const scoreCollection = collection(db, "leaderboard");
-
+async function getData() {
   const orderedDataQuery = query(
     scoreCollection,
     orderBy("score", "desc"),
     limit(25)
   );
+  const checkPermissions = query(adminsCollection);
   const orderedData = await getDocs(orderedDataQuery);
   //order data highest -> lowest
   let dataArr = [];
@@ -48,6 +51,18 @@ async function getLeaderboardData(db) {
   });
   console.log(dataArr);
   return dataArr;
+}
+
+async function getUserPermissions(db, phoneNumber) {
+  //check if user attempting to sign in is admin
+  const adminDocRef = doc(db, "admins", phoneNumber);
+  const docSnap = await getDoc(adminDocRef);
+
+  if (docSnap.exists()) {
+    return "admin";
+  } else {
+    return "user";
+  }
 }
 
 //have to pass either mens or coed as docName to enter new data into each document
@@ -63,4 +78,4 @@ async function addToFirestore(coll, docName, data = null) {
       return false;
     });
 }
-export { firebaseConfig, app, db, getLeaderboardData, addToFirestore };
+export { firebaseConfig, app, db, addToFirestore, getUserPermissions };

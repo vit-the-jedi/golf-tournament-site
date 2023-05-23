@@ -10,7 +10,7 @@
       </div>
 
       <div class="menu--item">
-        <router-link to="/signup">
+        <router-link to="/sign-up">
           <img src="../assets/icons/signUp.svg" alt="Sign up" />
           <slot name="navItemText">Sign Up</slot>
         </router-link>
@@ -31,15 +31,45 @@
         </router-link>
       </div>
     </div>
+    <!--NEED TO FIND A WAY TO GET THE USER FROM VUEX AFTER IT HAS BEEN ADDED, AND CHECK PERMISSIONS AFTER-->
+    <div class="menu--row">
+      <div class="menu--item" v-if="userInfo.isAdmin">
+        <router-link to="/admin">
+          <img src="../assets/icons/admin.svg" alt="admin page" />
+          <slot name="navItemText">Admin</slot>
+        </router-link>
+      </div>
+      <div class="menu--item" v-if="userInfo.userSignedIn">
+        <button id="menu-sign-out" class="sign-out" @click="signOutHandler">
+          Sign Out
+        </button>
+      </div>
+    </div>
 
     <span class="delete" @click="closeMenuHandler"></span>
   </div>
   <div id="menu--bg" class="ui--backdrop"></div>
 </template>
 <script>
+//import auth from firebase
+import { app, getUserPermissions, db } from "../middleware/db.js";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { store } from "../store/index.js";
+//router
+import { useRoute } from "vue-router";
+import { watch } from "vue";
+//auth instance
+const auth = getAuth(app);
+const firestoreDb = db;
+
 export default {
   data() {
-    return {};
+    return {
+      userInfo: {
+        userSignedIn: false,
+        isAdmin: false,
+      },
+    };
   },
   methods: {
     openMenuHandler: function () {
@@ -58,6 +88,53 @@ export default {
         .querySelector(".ui--backdrop")
         .classList.remove("backdrop--open");
     },
+    signOutHandler: function () {
+      const auth = getAuth();
+      signOut(auth)
+        .then(() => {
+          console.log("signed out successfully");
+          store.commit("setUser", null);
+          this.$router.push("/admin/sign-in");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    getAuthState: function () {
+      onAuthStateChanged(auth, (user) => {
+        if (!user) {
+          return;
+        } else {
+          if (!store.state.user) {
+            //create async function so we can await the call to check + set user permissions
+            (async function () {
+              user.permissionLevel = await getUserPermissions(
+                firestoreDb,
+                user.phoneNumber
+              );
+              //push to vuex store here
+              store.commit("setUser", { user });
+            })();
+          }
+          this.userInfo.userSignedIn = true;
+        }
+      });
+    },
+  },
+  beforeMount() {
+    this.getAuthState();
+  },
+  computed: {
+    checkUserUpdate() {
+      if (store.state.user) {
+        this.userInfo.isAdmin = store.getters.checkAdmin;
+      }
+    },
+  },
+  watch: {
+    checkUserUpdate(updated, old) {
+      console.log(updated, old);
+    },
   },
 };
 </script>
@@ -67,7 +144,7 @@ export default {
   height: 0px;
   border-radius: 25px;
   margin: 2px 0;
-  border: 5px solid var(--tertiary-color);
+  border: 5px solid var(--tertiaryColor);
   cursor: pointer;
 }
 .menu--toggle::before {
@@ -76,7 +153,7 @@ export default {
   height: 0px;
   border-radius: 25px;
   margin: 10px 0 5px 0;
-  border: 5px solid var(--tertiary-color);
+  border: 5px solid var(--tertiaryColor);
   display: block;
   position: relative;
   left: -5px;
@@ -87,7 +164,7 @@ export default {
   height: 0px;
   border-radius: 25px;
   margin: 2px 0;
-  border: 5px solid var(--tertiary-color);
+  border: 5px solid var(--tertiaryColor);
   display: block;
   position: relative;
   left: -5px;
@@ -101,7 +178,8 @@ export default {
   z-index: 999;
   left: 0;
   width: 100%;
-  padding: 5% 5% 140% 5%;
+  padding: 5%;
+  height: 100vh;
   transition: margin ease-in 0.75s;
 }
 .menu--row {
@@ -109,7 +187,11 @@ export default {
   flex-wrap: nowrap;
   justify-content: space-between;
   align-content: center;
-  margin: 30% auto;
+  margin: 10vh auto;
+}
+.menu--row.sign--out {
+  display: block;
+  margin: auto;
 }
 .menu--item {
   color: var(--mainColor);
@@ -136,6 +218,8 @@ export default {
   background-color: rgb(204, 241, 253);
 }
 .menu--open {
-  margin-top: 35%;
+  margin-top: 5%;
+}
+@media screen and(max-width) {
 }
 </style>

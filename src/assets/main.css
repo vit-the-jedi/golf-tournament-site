@@ -3,7 +3,7 @@
 :root {
   --mainColor: #003566;
   --secondColor: #ffc300;
-  --tertiary-color: #00bbf9;
+  --tertiaryColor: #00bbf9;
   --card-border-radius: 25px;
   --input-border-radius: 12px;
   --player-icon-width: calc(100% / 4.25);
@@ -11,14 +11,15 @@
   --ui-dialog-bg: rgba(0, 26, 50, 0.7);
 }
 
-body {
-  color: var(--base-color);
+a {
+  text-decoration: underline;
+  color: inherit;
 }
-a,
-.green {
-  text-decoration: none;
-  color: var(--pop-color);
-  transition: 0.4s;
+a:hover {
+  color: var(--secondColor);
+}
+header {
+  padding: 2.5vh 15vw 7vh 5vw;
 }
 .top-content {
   background-image: linear-gradient(
@@ -30,8 +31,6 @@ a,
   background-size: 110%;
   background-repeat: no-repeat;
   background-position: 100% center;
-  min-height: 40vh;
-  display: flex;
   justify-content: center;
   align-content: center;
   flex-wrap: wrap;
@@ -41,6 +40,48 @@ a,
   font-size: 2.5rem;
   margin-top: -3rem;
   text-align: center;
+}
+.top-content img {
+  max-width: 400px;
+  margin: auto;
+  display: block;
+  width: 80%;
+}
+.top-content .top-info {
+  max-width: 450px;
+  margin: auto;
+  width: 100%;
+  color: white;
+}
+.top-content .info--item::before {
+  display: inline-block;
+  width: 3vw;
+  height: 3vh;
+  content: "";
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+.top-content .info--item:nth-of-type(1)::before {
+  background-image: url("icons/calendar-regular.svg");
+}
+.top-content .info--item:nth-of-type(2)::before {
+  background-image: url("icons/people-group-solid.svg");
+}
+.top-content .info--item:nth-of-type(3)::before {
+  background-image: url("icons/trophy-solid.svg");
+}
+.top-content .info--item:nth-of-type(4)::before {
+  background-image: url("icons/golf-charity.svg");
+}
+.top-info p {
+  color: white;
+  display: inline-block;
+}
+.top-info a {
+  text-align: center;
+  width: 100%;
+  display: block;
 }
 h2 {
   font-size: 1.75rem;
@@ -60,6 +101,18 @@ h4 {
   flex-direction: column;
   align-content: center;
   border-radius: 8px;
+}
+.card.sub--card {
+  background: none;
+  border-width: 3px;
+  border-style: solid;
+  padding: 2%;
+  margin-top: 5%;
+}
+.card:has(.card) {
+  padding: 2% 2% 4% 2%;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 ul {
   padding-inline-start: 17px;
@@ -174,7 +227,7 @@ button {
 
 .card {
   border-radius: var(--card-border-radius);
-  background-color: var(--tertiary-color);
+  background-color: var(--tertiaryColor);
 }
 
 .card--summary .row {

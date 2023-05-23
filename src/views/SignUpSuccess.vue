@@ -1,5 +1,4 @@
 <script setup>
-import topContent from "../components/topContent.vue";
 import teamInfo from "../components/teamInfo.vue";
 </script>
 <template>
@@ -19,3 +18,12 @@ import teamInfo from "../components/teamInfo.vue";
     </div>
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      user: null,
+    };
+  },
+};
+</script>
