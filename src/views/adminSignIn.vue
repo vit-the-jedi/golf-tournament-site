@@ -8,7 +8,7 @@ import { onBeforeMount } from "vue";
 //vuex store
 import { store } from "../store/index.js";
 //components
-import adminSignInForm from "../components/adminSignInForm.vue";
+import signInForm from "../components/signInForm.vue";
 import secondaryNav from "../components/secondaryNav.vue";
 
 const router = useRouter();
@@ -38,7 +38,7 @@ onBeforeMount(() => {
     <div class="container">
       <h1>Sign In</h1>
       <p>Enter your phone number</p>
-      <adminSignInForm />
+      <signInForm />
     </div>
   </div>
 </template>

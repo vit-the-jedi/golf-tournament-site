@@ -355,7 +355,7 @@ export default {
 
             //programmatically route to success page w/ relevant form data we can post back for user review
             this.$router.push({
-              path: "/signup-success",
+              path: "/sign-up-success",
               query: {
                 players: playersString,
                 division: team.division,

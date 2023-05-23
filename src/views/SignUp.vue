@@ -1,12 +1,18 @@
 <script setup>
-import signUpForm from "../components/signUpForm.vue";
+import teamSignUpForm from "../components/teamSignUpForm.vue";
 import secondaryNav from "../components/secondaryNav.vue";
+import signInForm from "../components/signInForm.vue";
 </script>
 <template>
   <secondaryNav />
   <div class="sign-up">
     <div class="container">
-      <signUpForm />
+      <div v-if="!user">
+        <signInForm />
+      </div>
+      <div v-if="user">
+        <teamSignUpForm />
+      </div>
     </div>
   </div>
 </template>
