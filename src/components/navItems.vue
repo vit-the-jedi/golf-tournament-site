@@ -32,17 +32,14 @@
       </div>
     </div>
     <!--NEED TO FIND A WAY TO GET THE USER FROM VUEX AFTER IT HAS BEEN ADDED, AND CHECK PERMISSIONS AFTER-->
-    <div class="menu--row" v-if="userInfo.isAdmin">
-      <div class="menu--item">
+    <div class="menu--row">
+      <div class="menu--item" v-if="userInfo.isAdmin">
         <router-link to="/admin">
           <img src="../assets/icons/admin.svg" alt="admin page" />
           <slot name="navItemText">Admin</slot>
         </router-link>
       </div>
-    </div>
-
-    <div class="menu--row sign--out" v-if="userInfo.userSignedIn">
-      <div class="menu--item">
+      <div class="menu--item" v-if="userInfo.userSignedIn">
         <button id="menu-sign-out" class="sign-out" @click="signOutHandler">
           Sign Out
         </button>
@@ -108,16 +105,17 @@ export default {
         if (!user) {
           return;
         } else {
-          //create async function so we can await the call to check + set user permissions
-          (async function () {
-            user.permissionLevel = await getUserPermissions(
-              firestoreDb,
-              user.phoneNumber
-            );
-            //push to vuex store here
-            store.commit("setUser", { user });
-          })();
-
+          if (!store.state.user) {
+            //create async function so we can await the call to check + set user permissions
+            (async function () {
+              user.permissionLevel = await getUserPermissions(
+                firestoreDb,
+                user.phoneNumber
+              );
+              //push to vuex store here
+              store.commit("setUser", { user });
+            })();
+          }
           this.userInfo.userSignedIn = true;
         }
       });
@@ -125,6 +123,18 @@ export default {
   },
   beforeMount() {
     this.getAuthState();
+  },
+  computed: {
+    checkUserUpdate() {
+      if (store.state.user) {
+        this.userInfo.isAdmin = store.getters.checkAdmin;
+      }
+    },
+  },
+  watch: {
+    checkUserUpdate(updated, old) {
+      console.log(updated, old);
+    },
   },
 };
 </script>
