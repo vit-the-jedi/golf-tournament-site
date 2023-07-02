@@ -86,6 +86,8 @@ async function listTeamDocs(collectionName) {
 //have to pass either mens or coed as docName to enter new data into each document
 async function addToFirestore(coll, docName, data = null) {
   const docRef = doc(db, coll, docName);
+  data.id = self.crypto.randomUUID();
+  console.log(data);
   setDoc(docRef, data, { merge: true })
     .then(() => {
       console.log("Document has been added successfully");
