@@ -2,17 +2,33 @@
 import teamSignUpForm from "../components/teamSignUpForm.vue";
 import secondaryNav from "../components/secondaryNav.vue";
 import signInForm from "../components/signInForm.vue";
+import { onBeforeMount } from "vue";
+import { useRouter } from "vue-router";
+
+//import auth from firebase
+import { app } from "../middleware/db.js";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+const router = useRouter();
+const auth = getAuth(app);
+const getAuthState = () => {
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      router.push("/sign-in?redirect=sign-up");
+    } else {
+      return;
+    }
+  });
+};
+onBeforeMount(() => {
+  getAuthState();
+});
 </script>
 <template>
   <secondaryNav />
   <div class="sign-up">
     <div class="container">
-      <div v-if="!userSignedIn">
-        <signInForm />
-      </div>
-      <div v-if="userSignedIn">
-        <teamSignUpForm />
-      </div>
+      <teamSignUpForm />
     </div>
   </div>
 </template>
@@ -23,19 +39,6 @@ export default {
     return {
       userSignedIn: null,
     };
-  },
-  methods: {
-    getUserState: function () {
-      if (!store.state.user) {
-        this.user = null;
-      } else {
-        this.userSignedIn = true;
-      }
-    },
-  },
-  mounted() {
-    console.log(this);
-    this.getUserState();
   },
 };
 </script>

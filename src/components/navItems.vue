@@ -55,8 +55,10 @@ import { app, getUserPermissions, db } from "../middleware/db.js";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { store } from "../store/index.js";
 //router
-import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import { watch } from "vue";
+
+const router = useRouter();
 //auth instance
 const auth = getAuth(app);
 const firestoreDb = db;
@@ -87,13 +89,13 @@ export default {
         .querySelector(".ui--backdrop")
         .classList.remove("backdrop--open");
     },
-    signOutHandler: function () {
+    signOutHandler: () => {
       const auth = getAuth();
       signOut(auth)
         .then(() => {
           console.log("signed out successfully");
           store.commit("setUser", null);
-          this.$router.push("/admin/sign-in");
+          router.push("/sign-in");
         })
         .catch((error) => {
           console.log(error);
@@ -102,6 +104,7 @@ export default {
     getAuthState: function () {
       onAuthStateChanged(auth, (user) => {
         if (!user) {
+          this.userInfo.userSignedIn = false;
           return;
         } else {
           if (!store.state.user) {

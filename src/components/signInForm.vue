@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import { useRouter } from "vue-router";
 import { addToFirestore } from "../middleware/db.js";
 import loadingSpinner from "../components/loading.vue";
 import { app, getUserPermissions, db } from "../middleware/db.js";
@@ -42,6 +43,7 @@ import {
   setPersistence,
   browserSessionPersistence,
 } from "firebase/auth";
+import { resolveDirective } from "vue";
 
 const auth = getAuth(app);
 auth.languageCode = "en";
@@ -97,17 +99,6 @@ export default {
     removeErrors: function () {
       this.errors = [];
     },
-    formSubmitHandler: async function () {
-      //programmatically route to success page w/ relevant form data we can post back for user review
-      this.$router.push({
-        path: "/admin",
-        query: {
-          players: playersString,
-          division: team.division,
-          teamName: team.teamName,
-        },
-      });
-    },
     startSignIn: function () {
       const auth = getAuth();
       const appVerifier = window.recaptchaVerifier;
@@ -129,32 +120,31 @@ export default {
           });
       });
     },
-    validateSMSCode: function () {
-      confirmationResult
-        .confirm(String(this.userSMSCode))
-        .then((result) => {
-          //create async function so we can await the call to check + set user permissions
-          (async function () {
-            result.user.permissionLevel = await getUserPermissions(
-              firestoreDb,
-              result.user.phoneNumber
-            );
-            //push to vuex store here
-            store.commit("setUser", { user: result.user });
-            if (result.user.permissionLevel === "admin") {
-              this.$router.push({
-                path: "/admin",
-              });
-            }
-          })();
-        })
-        .catch((error) => {
-          this.errors.push("Sign in failed, please try again.");
-          console.log(error);
-          window.recaptchaVerifier.render().then(function (widgetId) {
-            grecaptcha.reset(widgetId);
-          });
+    validateSMSCode: async function () {
+      console.log(this);
+      const result = await confirmationResult.confirm(String(this.userSMSCode));
+
+      if (result.user) {
+        console.log(this);
+        const path = new URLSearchParams(window.location.search);
+        const redirect = path.get("redirect") || "";
+        //create async function so we can await the call to check + set user permissions
+        (async function () {
+          result.user.permissionLevel = await getUserPermissions(
+            firestoreDb,
+            result.user.phoneNumber
+          );
+          //push to vuex store here
+          store.commit("setUser", { user: result.user });
+        })();
+        this.$router.push(`/${redirect}`);
+      } else {
+        this.errors.push("Sign in failed, please try again.");
+        console.log(error);
+        window.recaptchaVerifier.render().then(function (widgetId) {
+          grecaptcha.reset(widgetId);
         });
+      }
     },
   },
 };
