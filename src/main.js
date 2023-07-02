@@ -12,6 +12,7 @@ import SignUp from "@/views/SignUp.vue";
 import SignUp__success from "@/views/SignUpSuccess.vue";
 import Admin from "@/views/Admin.vue";
 import adminSignIn from "@/views/adminSignIn.vue";
+import winnersCircle from "@/views/winnersCircle.vue";
 
 const loggedIn = ref(false);
 
@@ -48,6 +49,11 @@ const router = createRouter({
       path: "/admin",
       name: "admin",
       component: Admin,
+    },
+    {
+      path: "/winners-circle",
+      name: "winnersCircle",
+      component: winnersCircle,
     },
   ],
 });

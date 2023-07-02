@@ -8,6 +8,7 @@ import { store } from "../store/index.js";
 
 //components
 import secondaryNav from "../components/secondaryNav.vue";
+import listTeams from "../components/listTeams.vue";
 
 const router = useRouter();
 const auth = getAuth(app);
@@ -26,13 +27,36 @@ onBeforeMount(() => {
 </script>
 <template>
   <secondaryNav />
+  <div class="container">
+    <listTeams />
+  </div>
 </template>
-<script>
-export default {
-  data() {
-    return {
-      user: null,
-    };
-  },
-};
-</script>
+
+<style>
+.admin--column,
+.admin--tools button {
+  flex-basis: 25%;
+}
+.admin--tools {
+  width: 100%;
+}
+.admin--tools button {
+  background: grey;
+  padding: unset;
+  font-size: unset;
+}
+.admin--item {
+  display: flex;
+  justify-content: space-between;
+  padding: 5vh 2vh;
+}
+.admin--item:nth-child(odd) {
+  background: #acacac;
+}
+.admin--item:nth-child(even) {
+  background: #e6e6e6;
+}
+.admin--item span {
+  display: block;
+}
+</style>

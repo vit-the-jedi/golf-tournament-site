@@ -372,4 +372,36 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.form-control {
+  padding-top: calc(var(--player-icon-height) / 4);
+  margin-bottom: calc(var(--player-icon-height) / 8);
+  padding-left: 2%;
+  padding-right: 2%;
+  padding-bottom: 10%;
+}
+.form-control::before {
+  width: var(--player-icon-width);
+  height: var(--player-icon-height);
+  content: "";
+  position: absolute;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin: auto;
+  top: calc(-1 * var(--player-icon-height) / 2);
+  left: calc(100% / 2 - var(--player-icon-width) / 2);
+}
+.form-control:nth-of-type(1)::before {
+  background-image: url("../assets/icons/player1.svg");
+}
+.form-control:nth-of-type(2)::before {
+  background-image: url("../assets/icons/player2.svg");
+}
+.form-control:nth-of-type(3)::before {
+  background-image: url("../assets/icons/player3.svg");
+}
+.form-control:nth-of-type(4)::before {
+  background-image: url("../assets/icons/player4.svg");
+}
+</style>

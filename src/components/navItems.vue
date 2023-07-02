@@ -25,13 +25,12 @@
       </div>
 
       <div class="menu--item">
-        <router-link to="/winners">
+        <router-link to="/winners-circle">
           <img src="../assets/icons/trophy.svg" alt="Winner's Circle" />
           <slot name="navItemText">Winner's Circle</slot>
         </router-link>
       </div>
     </div>
-    <!--NEED TO FIND A WAY TO GET THE USER FROM VUEX AFTER IT HAS BEEN ADDED, AND CHECK PERMISSIONS AFTER-->
     <div class="menu--row">
       <div class="menu--item" v-if="userInfo.isAdmin">
         <router-link to="/admin">

@@ -78,14 +78,13 @@ export default {
   <div class="home">
     <div class="container info-container">
       <div class="card">
-        <div class="button-container">
-          <!--TODO create signup btn component
-           <signUpBtn/>-->
-          <small>(max 4 players)</small>
+        <div class="button-container mb-4">
+          <button><router-link to="/sign-up">SIGN UP</router-link></button>
+          <small class="text-center d-block w-100">(max 4 players)</small>
         </div>
         <div class="card sub--card entry--info">
           <div class="row">
-            <div class="col-md-6 col-12">
+            <div class="col-12">
               <h2>Entry Deadline:</h2>
               <h3>
                 <!--TODO create method to putput deadline (date of tourny minus 1 week)
@@ -93,10 +92,11 @@ export default {
                 October 1st, 2023
               </h3>
             </div>
-            <div class="col-md-6 col-12">
+            <div class="col-12">
               <h2>When & where?</h2>
               <p>{{ outputDate }}</p>
-              <p>{{ outputGolfCourse }}, {{ outputGolfCourseAddress }}</p>
+              <p>{{ outputGolfCourse }},</p>
+              <p>{{ outputGolfCourseAddress }}</p>
             </div>
           </div>
         </div>
@@ -104,11 +104,11 @@ export default {
       <div class="card pricing">
         <div class="card sub--card">
           <div class="row">
-            <div class="col-md-6 col-12">
+            <div class="col-12">
               <h2>Pricing</h2>
               <h3>Entry fee: $85.00</h3>
             </div>
-            <div class="col-md-6 col-12">
+            <div class="col-12">
               <h4>What's included:</h4>
               <ul>
                 <li v-for="item in pricing.addOns">
@@ -117,25 +117,88 @@ export default {
               </ul>
             </div>
           </div>
+          <div class="row pricing--payment">
+            <div class="col-12">
+              <h2>Payment Methods</h2>
+              <p>Check payable to:</p>
+              <ul>
+                <li>John Vitello</li>
+                <li>P.O Box 7009</li>
+                <li>Meriden, CT, 06450</li>
+                <li><a href="mailto:jayvee1@att.net">jayvee1@att.net</a></li>
+              </ul>
+            </div>
+            <div class="col-12">
+              <img src="../assets/Venmo_Logo_White.png" alt="Venmo Logo" />
+              <p>@PJA-tournament</p>
+              <!---VENMO QR HERE-->
+              <div id="venmo"></div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="row info--row">
-      <div class="info--card">
-        <h4>Rules</h4>
-        <ul>
-          <li>Teams of four.</li>
-          <li>Scramble (best ball) format.</li>
-          <li>Men's and Co-ed Leagues available.</li>
-          <li>Incomplete teams will be joined to make a foursome.</li>
-          <li>Have fun!</li>
-        </ul>
+      <div class="card rules">
+        <div class="card sub--card">
+          <h2>Rules</h2>
+          <div class="col-12">
+            <ul>
+              <li>Teams of four.</li>
+              <li>Scramble (best ball) format.</li>
+              <li>Men's and Co-ed Leagues available.</li>
+              <li>Incomplete teams will be joined to make a foursome.</li>
+              <li>Have fun!</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="wrap-up">
+        <div class="wrap-up--text">
+          <h3>Ready to have some fun?</h3>
+          <p>Sign up and get started</p>
+          <div class="button-container mb-4">
+            <button><router-link to="/sign-up">SIGN UP</router-link></button>
+            <small class="text-center d-block w-100">(max 4 players)</small>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.top-content .info--item::before {
+  display: inline-block;
+  width: 3vw;
+  height: 3vh;
+  top: 4px;
+  position: relative;
+  content: "";
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin-right: 5px;
+}
+.top-content .info--item:nth-of-type(1)::before {
+  background-image: url("../assets/icons/calendar-regular.svg");
+}
+.top-content .info--item:nth-of-type(2)::before {
+  background-image: url("../assets/icons/people-group-solid.svg");
+}
+.top-content .info--item:nth-of-type(3)::before {
+  background-image: url("../assets/icons/trophy-solid.svg");
+}
+.top-content .info--item:nth-of-type(4)::before {
+  background-image: url("../assets/icons/golf-charity.svg");
+}
+.top-info p {
+  color: white;
+  display: inline-block;
+}
+.top-info a {
+  text-align: center;
+  width: 100%;
+  display: block;
+}
 .info--row {
   background-color: black;
   padding: 10vh;
@@ -164,9 +227,12 @@ export default {
   background: url("../assets/player-icons.png") no-repeat center center /
     contain;
   width: 40%;
-  max-width: 20vw;
-  min-height: 25vh;
-  margin: -15vh auto auto auto;
+  max-width: 50vw;
+  min-height: 13vh;
+  margin: -10vh auto auto auto;
+}
+.card.sub--card .col-12 {
+  margin: 2vh auto;
 }
 .entry--info {
   border-color: var(--mainColor);
@@ -181,5 +247,33 @@ export default {
 .pricing .card {
   background: none;
   border-color: white;
+}
+.pricing .pricing--payment ul {
+  list-style-type: none;
+  padding: 0;
+  max-width: 30%;
+}
+.rules {
+  background: white;
+  border: none;
+}
+.rules .sub--card {
+  border-color: var(--mainColor);
+}
+.wrap-up {
+  padding: 8% 4%;
+  background: var(--secondColor);
+}
+.wrap-up .wrap-up--text {
+  padding: 2.5vw;
+  max-width: 500px;
+  width: 100%;
+  margin: auto;
+}
+
+@media screen and (min-width: 768px) {
+  .card:has(.entry--info)::before {
+    max-width: 20vw;
+  }
 }
 </style>

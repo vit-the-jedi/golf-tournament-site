@@ -30,6 +30,9 @@ const store = createStore({
     checkAdmin(state) {
       return state.user.permissionLevel === "admin" ? true : false;
     },
+    getUser(state) {
+      return state.user;
+    },
   },
 });
 // export the store

@@ -10,6 +10,7 @@ import {
   getDocs,
   getDoc,
   setDoc,
+  deleteDoc,
   doc,
   query,
   where,
@@ -65,6 +66,23 @@ async function getUserPermissions(db, phoneNumber) {
   }
 }
 
+async function listTeamDocs(collectionName) {
+  const teamsRef = collection(db, collectionName);
+  const orderedDataQuery = query(teamsRef, orderBy("teamName", "asc"));
+
+  const orderedData = await getDocs(orderedDataQuery);
+  //order data highest -> lowest
+  let dataArr = [];
+  orderedData.forEach((doc) => {
+    //create empty obj to store values
+    const nestedDataObj = {};
+    nestedDataObj[doc.id] = doc.data();
+    //push to array so we can preserve the correct order we got from firebase query
+    dataArr.push(nestedDataObj);
+  });
+  return dataArr;
+}
+
 //have to pass either mens or coed as docName to enter new data into each document
 async function addToFirestore(coll, docName, data = null) {
   const docRef = doc(db, coll, docName);
@@ -78,4 +96,23 @@ async function addToFirestore(coll, docName, data = null) {
       return false;
     });
 }
-export { firebaseConfig, app, db, addToFirestore, getUserPermissions };
+
+async function deleteFromFirestore(coll, docName) {
+  try {
+    const teamDeleted = await deleteDoc(doc(db, coll, docName));
+    if (teamDeleted) {
+      return true;
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+export {
+  firebaseConfig,
+  app,
+  db,
+  addToFirestore,
+  getUserPermissions,
+  listTeamDocs,
+  deleteFromFirestore,
+};

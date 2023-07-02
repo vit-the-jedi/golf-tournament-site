@@ -7,25 +7,44 @@ import signInForm from "../components/signInForm.vue";
   <secondaryNav />
   <div class="sign-up">
     <div class="container">
-      <div v-if="!user">
+      <div v-if="!userSignedIn">
         <signInForm />
       </div>
-      <div v-if="user">
+      <div v-if="userSignedIn">
         <teamSignUpForm />
       </div>
     </div>
   </div>
 </template>
 <script>
+import { store } from "../store/index.js";
 export default {
   data() {
     return {
-      user: null,
+      userSignedIn: null,
     };
+  },
+  methods: {
+    getUserState: function () {
+      if (!store.state.user) {
+        this.user = null;
+      } else {
+        this.userSignedIn = true;
+      }
+    },
+  },
+  mounted() {
+    console.log(this);
+    this.getUserState();
   },
 };
 </script>
 <style scoped>
+.sign-up {
+  height: 100vh;
+  padding: 10vh 0;
+  background: var(--tertiaryColor);
+}
 .sign-up .top-content {
   background-image: linear-gradient(
       90deg,

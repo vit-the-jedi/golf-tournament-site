@@ -1,10 +1,18 @@
 <template>
   <!-- <loadingSpinner /> -->
   <form id="phone-form">
+    <span v-if="errors.length" class="error-list error">
+      <span>Please correct the following error(s):</span>
+      <ul>
+        <li v-for="error in errors">{{ error }}</li>
+      </ul>
+    </span>
     <div class="form-inner" v-if="!smsCodeSent">
       <h2>Enter your phone number to sign in</h2>
       <div class="form-inset">
-        <input type="phone" id="phoneNumber" v-model="userPhoneNumber" />
+        <div class="form-control">
+          <input type="phone" id="phoneNumber" v-model="userPhoneNumber" />
+        </div>
       </div>
       <button id="sign-in-button" type="button" @click="checkPhone">
         Continue
@@ -81,13 +89,13 @@ export default {
       if (!this.userPhoneNumber) {
         this.errors.push("Please enter a phone number");
       } else {
+        this.removeErrors();
         this.startSignIn();
       }
       e.preventDefault();
     },
     removeErrors: function () {
-      const error = document.querySelector(".error");
-      if (error) document.removeChild(error);
+      this.errors = [];
     },
     formSubmitHandler: async function () {
       //programmatically route to success page w/ relevant form data we can post back for user review
@@ -133,10 +141,11 @@ export default {
             );
             //push to vuex store here
             store.commit("setUser", { user: result.user });
-            console.log(store);
-            // this.$router.push({
-            //   path: "/admin",
-            // });
+            if (result.user.permissionLevel === "admin") {
+              this.$router.push({
+                path: "/admin",
+              });
+            }
           })();
         })
         .catch((error) => {
@@ -152,6 +161,25 @@ export default {
 </script>
 
 <style scoped>
+form {
+  max-width: 90%;
+  margin: auto;
+}
+.form-inner {
+  margin: auto;
+}
+.form-inner input {
+  max-width: 300px;
+  width: 80%;
+  margin: auto;
+}
+h2 {
+  max-width: 70%;
+  margin: auto auto 4% auto;
+}
+button {
+  margin: 4% auto auto auto;
+}
 .menu--list {
   position: fixed;
   margin-top: calc(100% * 2);

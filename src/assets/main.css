@@ -10,7 +10,10 @@
   --player-icon-height: calc(100% / 2);
   --ui-dialog-bg: rgba(0, 26, 50, 0.7);
 }
-
+img {
+  margin: auto;
+  display: block;
+}
 a {
   text-decoration: underline;
   color: inherit;
@@ -18,8 +21,15 @@ a {
 a:hover {
   color: var(--secondColor);
 }
+body {
+  color: var(--mainColor);
+}
+h1,
+h2 {
+  text-transform: uppercase;
+}
 header {
-  padding: 2.5vh 15vw 7vh 5vw;
+  padding: 2.5vh 5vw 12vh 5vw;
 }
 .top-content {
   background-image: linear-gradient(
@@ -28,7 +38,7 @@ header {
       rgba(0, 0, 0, 0.75) 100%
     ),
     url("../assets/hero.jpg");
-  background-size: 110%;
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: 100% center;
   justify-content: center;
@@ -42,7 +52,7 @@ header {
   text-align: center;
 }
 .top-content img {
-  max-width: 400px;
+  max-width: 300px;
   margin: auto;
   display: block;
   width: 80%;
@@ -52,36 +62,6 @@ header {
   margin: auto;
   width: 100%;
   color: white;
-}
-.top-content .info--item::before {
-  display: inline-block;
-  width: 3vw;
-  height: 3vh;
-  content: "";
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center center;
-}
-.top-content .info--item:nth-of-type(1)::before {
-  background-image: url("icons/calendar-regular.svg");
-}
-.top-content .info--item:nth-of-type(2)::before {
-  background-image: url("icons/people-group-solid.svg");
-}
-.top-content .info--item:nth-of-type(3)::before {
-  background-image: url("icons/trophy-solid.svg");
-}
-.top-content .info--item:nth-of-type(4)::before {
-  background-image: url("icons/golf-charity.svg");
-}
-.top-info p {
-  color: white;
-  display: inline-block;
-}
-.top-info a {
-  text-align: center;
-  width: 100%;
-  display: block;
 }
 h2 {
   font-size: 1.75rem;
@@ -106,13 +86,15 @@ h4 {
   background: none;
   border-width: 3px;
   border-style: solid;
-  padding: 2%;
-  margin-top: 5%;
+  padding: 4%;
 }
 .card:has(.card) {
-  padding: 2% 2% 4% 2%;
+  padding: 8% 4%;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
+}
+.card.sub--card .row {
+  padding: 4% 0;
 }
 ul {
   padding-inline-start: 17px;
@@ -147,14 +129,9 @@ form label {
   width: 100%;
   display: flex;
   border: none;
-  padding-top: calc(var(--player-icon-height) / 4);
-  padding-left: 2%;
-  padding-right: 2%;
-  padding-bottom: 10%;
   width: 100%;
   flex-basis: 100%;
   position: relative;
-  margin-bottom: calc(var(--player-icon-height) / 8);
 }
 .form-control:has(.button-container) {
   padding-bottom: 2%;
@@ -162,30 +139,7 @@ form label {
 .form-control h2 {
   text-align: center;
 }
-.form-control::before {
-  width: var(--player-icon-width);
-  height: var(--player-icon-height);
-  content: "";
-  position: absolute;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  background-position: center center;
-  margin: auto;
-  top: calc(-1 * var(--player-icon-height) / 2);
-  left: calc(100% / 2 - var(--player-icon-width) / 2);
-}
-.form-control:nth-of-type(1)::before {
-  background-image: url("../assets/icons/player1.svg");
-}
-.form-control:nth-of-type(2)::before {
-  background-image: url("../assets/icons/player2.svg");
-}
-.form-control:nth-of-type(3)::before {
-  background-image: url("../assets/icons/player3.svg");
-}
-.form-control:nth-of-type(4)::before {
-  background-image: url("../assets/icons/player4.svg");
-}
+
 .form-control input,
 .form-control select {
   padding: 2%;
@@ -315,4 +269,43 @@ button {
   font-size: 1.5rem;
   left: 25%;
   top: -3%;
+}
+
+@media screen and (min-width: 768px) {
+  .top-content img {
+    max-width: 400px;
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .container {
+    max-width: 100%;
+    width: 100%;
+    padding: 0;
+  }
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    text-align: center;
+  }
+  ul {
+    max-width: 300px;
+    width: 90%;
+    margin: auto;
+  }
+  .error-list ul {
+    max-width: 100%;
+    list-style-position: inside;
+  }
+  .error-list {
+    text-align: center;
+    margin: 2% auto;
+    border-radius: var(--input-border-radius);
+    background-color: white;
+  }
 }

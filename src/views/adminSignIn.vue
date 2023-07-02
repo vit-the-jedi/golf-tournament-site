@@ -14,30 +14,28 @@ import secondaryNav from "../components/secondaryNav.vue";
 const router = useRouter();
 const auth = getAuth(app);
 
-const getAuthState = () => {
-  console.log(auth);
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      return;
-    } else {
-      // User is signed in
-      store.commit("setUser", { uid: user.uid });
-      router.push("/admin");
-    }
-  });
-};
+// const getAuthState = () => {
+//   console.log(auth);
+//   onAuthStateChanged(auth, (user) => {
+//     if (!user) {
+//       return;
+//     } else {
+//       // User is signed in
+//       store.commit("setUser", { user });
+//       router.push("/admin");
+//     }
+//   });
+// };
 
-onBeforeMount(() => {
-  getAuthState();
-});
+// onBeforeMount(() => {
+//   getAuthState();
+// });
 </script>
 
 <template>
   <secondaryNav />
   <div class="admin admin--sign-in">
     <div class="container">
-      <h1>Sign In</h1>
-      <p>Enter your phone number</p>
       <signInForm />
     </div>
   </div>
