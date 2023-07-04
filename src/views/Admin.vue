@@ -15,7 +15,7 @@ const auth = getAuth(app);
 const getAuthState = () => {
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      router.push("/admin/sign-in");
+      router.push("/sign-in?redirect=admin");
     } else {
       return;
     }
