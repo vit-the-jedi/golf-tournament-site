@@ -121,23 +121,16 @@ export default {
       });
     },
     validateSMSCode: async function () {
-      console.log(this);
       const result = await confirmationResult.confirm(String(this.userSMSCode));
 
       if (result.user) {
-        console.log(this);
         const path = new URLSearchParams(window.location.search);
         const redirect = path.get("redirect") || "";
         //create async function so we can await the call to check + set user permissions
-        (async function () {
-          result.user.permissionLevel = await getUserPermissions(
-            firestoreDb,
-            result.user.phoneNumber
-          );
-          //push to vuex store here
-          store.commit("setUser", { user: result.user });
-        })();
-        this.$router.push(`/${redirect}`);
+        store.commit(
+          "setPermissionLevel",
+          await this.userPermissionsHandler(result.user.phoneNumber)
+        );
       } else {
         this.errors.push("Sign in failed, please try again.");
         console.log(error);
@@ -145,6 +138,13 @@ export default {
           grecaptcha.reset(widgetId);
         });
       }
+    },
+    userPermissionsHandler: async function (phoneNumber) {
+      const permissionResponse = await getUserPermissions(
+        firestoreDb,
+        phoneNumber
+      );
+      return permissionResponse;
     },
   },
 };

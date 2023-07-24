@@ -32,13 +32,13 @@
       </div>
     </div>
     <div class="menu--row">
-      <div class="menu--item" v-if="userInfo.isAdmin">
+      <div class="menu--item" v-if="this.$store.getters.checkAdmin">
         <router-link to="/admin">
           <img src="../assets/icons/admin.svg" alt="admin page" />
           <slot name="navItemText">Admin</slot>
         </router-link>
       </div>
-      <div class="menu--item" v-if="userInfo.userSignedIn">
+      <div class="menu--item" v-if="this.$store.getters.getLoginState">
         <button id="menu-sign-out" class="sign-out" @click="signOutHandler">
           Sign Out
         </button>
@@ -50,27 +50,23 @@
   <div id="menu--bg" class="ui--backdrop"></div>
 </template>
 <script>
-//import auth from firebase
-import { app, getUserPermissions, db } from "../middleware/db.js";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { store } from "../store/index.js";
-//router
-import { useRouter } from "vue-router";
-import { watch } from "vue";
-
-const router = useRouter();
-//auth instance
-const auth = getAuth(app);
-const firestoreDb = db;
+import { authStateListener } from "../auth/auth";
+// import { getUserPermissions } from "../middleware/db";
 
 export default {
   data() {
     return {
       userInfo: {
-        userSignedIn: false,
-        isAdmin: false,
+        userSignedIn: store.getters.getLoginState,
+        //use store getter to check for admin privaleges
+        isAdmin: store.getters.checkAdmin,
       },
     };
+  },
+  async beforeMount() {
+    //await our store to be done setting user details
+    await authStateListener();
   },
   methods: {
     openMenuHandler: function () {
@@ -89,53 +85,9 @@ export default {
         .querySelector(".ui--backdrop")
         .classList.remove("backdrop--open");
     },
-    signOutHandler: () => {
-      const auth = getAuth();
-      signOut(auth)
-        .then(() => {
-          console.log("signed out successfully");
-          store.commit("setUser", null);
-          router.push("/sign-in");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-    getAuthState: function () {
-      onAuthStateChanged(auth, (user) => {
-        if (!user) {
-          this.userInfo.userSignedIn = false;
-          return;
-        } else {
-          if (!store.state.user) {
-            //create async function so we can await the call to check + set user permissions
-            (async function () {
-              user.permissionLevel = await getUserPermissions(
-                firestoreDb,
-                user.phoneNumber
-              );
-              //push to vuex store here
-              store.commit("setUser", { user });
-            })();
-          }
-          this.userInfo.userSignedIn = true;
-        }
-      });
-    },
-  },
-  beforeMount() {
-    this.getAuthState();
-  },
-  computed: {
-    checkUserUpdate() {
-      if (store.state.user) {
-        this.userInfo.isAdmin = store.getters.checkAdmin;
-      }
-    },
-  },
-  watch: {
-    checkUserUpdate(updated, old) {
-      console.log(updated, old);
+    signOutHandler: async function () {
+      await store.dispatch("logOut");
+      this.closeMenuHandler();
     },
   },
 };

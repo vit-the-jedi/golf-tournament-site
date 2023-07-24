@@ -15,8 +15,6 @@ import adminSignIn from "@/views/adminSignIn.vue";
 import winnersCircle from "@/views/winnersCircle.vue";
 import signIn from "@/views/signIn.vue";
 
-const loggedIn = ref(false);
-
 //create router
 const router = createRouter({
   history: createWebHistory(),
@@ -63,23 +61,5 @@ const router = createRouter({
     },
   ],
 });
-
-// router.beforeEach(async (to) => {
-//   // routes with `meta: { requiresAuth: true }` will check for the users, others won't
-//   // if (to.meta.requiresAuth) {
-//   //   //get current user if signed in
-//   //   if (!loggedIn.value) {
-//   //     // No user is signed in.
-//   //     return {
-//   //       path: "/admin/sign-in",
-//   //     };
-//   //   } else {
-//   //     // ok to go to admin
-//   //     return {
-//   //       path: "/admin",
-//   //     };
-//   //   }
-//   // }
-// });
 //create app and init router on it
 createApp(App).use(router).use(store).mount("#app");
