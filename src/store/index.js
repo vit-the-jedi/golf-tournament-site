@@ -2,14 +2,14 @@
 import { createStore } from "vuex";
 import { app } from "../middleware/db.js";
 import { signOut, getAuth } from "firebase/auth";
-
+import { useRouter } from "vue-router";
 //firebase auth
 const auth = getAuth(app);
 const store = createStore({
   state: {
     //The user state data will initially be empty. After login, this state will be updated
     user: {
-      data: {},
+      userData: {},
       userLoggedIn: false,
     },
   },
@@ -20,20 +20,19 @@ const store = createStore({
     setUser(state, payload) {
       if (payload) {
         for (const [key, value] of Object.entries(payload)) {
-          state.user.data[key] = value;
+          state.user.userData[key] = value;
         }
       } else {
         //null means either no one has signed in yet, or user has signed out
-        state.user.data = {};
+        state.user.userData = {};
         state.user.userLoggedIn = false;
       }
-      console.log(store.state.user);
     },
     setUserLoggedIn(state, value) {
       state.user.userLoggedIn = value;
     },
     setPermissionLevel(state, value) {
-      state.user.data.permissionLevel = value;
+      state.user.userData.permissionLevel = value;
     },
   },
   actions: {
@@ -52,10 +51,10 @@ const store = createStore({
   },
   getters: {
     checkAdmin(state) {
-      return state.user.data.permissionLevel === "admin" ? true : false;
+      return state.user.userData.permissionLevel === "admin" ? true : false;
     },
     getUser(state) {
-      return state.user;
+      return state.user.userData;
     },
     getLoginState(state) {
       return state.user.userLoggedIn;

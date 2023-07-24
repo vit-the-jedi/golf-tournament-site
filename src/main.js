@@ -2,6 +2,12 @@ import { createApp, ref } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 import App from "./App.vue";
 
+//auth
+import { auth } from "./middleware/db";
+
+//middleware
+import { getUserPermissions, db } from "./middleware/db.js";
+
 // import store
 import { store } from "./store/index.js";
 
@@ -14,6 +20,7 @@ import Admin from "@/views/Admin.vue";
 import adminSignIn from "@/views/adminSignIn.vue";
 import winnersCircle from "@/views/winnersCircle.vue";
 import signIn from "@/views/signIn.vue";
+import { authStateListener } from "./auth/auth";
 
 //create router
 const router = createRouter({
@@ -60,6 +67,10 @@ const router = createRouter({
       component: winnersCircle,
     },
   ],
+});
+router.beforeResolve(async (to, from, next) => {
+  await authStateListener();
+  next();
 });
 //create app and init router on it
 createApp(App).use(router).use(store).mount("#app");

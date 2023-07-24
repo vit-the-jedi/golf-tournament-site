@@ -1,29 +1,11 @@
 <script setup>
-//import auth from firebase
-import { app } from "../middleware/db.js";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useRouter } from "vue-router";
-import { onBeforeMount } from "vue";
-import { store } from "../store/index.js";
-
 //components
 import secondaryNav from "../components/secondaryNav.vue";
 import listTeams from "../components/listTeams.vue";
-
-const router = useRouter();
-const auth = getAuth(app);
-const getAuthState = () => {
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      router.push("/sign-in?redirect=admin");
-    } else {
-      return;
-    }
-  });
-};
-onBeforeMount(() => {
-  getAuthState();
-});
+import { store } from "../store";
+import { onBeforeMount } from "vue";
+import { useRouter } from "vue-router";
+import { authStateListener } from "../auth/auth";
 </script>
 <template>
   <secondaryNav />
@@ -31,7 +13,26 @@ onBeforeMount(() => {
     <listTeams />
   </div>
 </template>
-
+<script>
+import { mapState } from "vuex";
+export default {
+  data() {},
+  name: "vuex1",
+  computed: mapState(["user"]),
+  created() {
+    this.unsubscribe = this.$store.subscribe((mutation, state) => {
+      if (mutation.type === "setUser" || mutation.type === "fetchUser") {
+        if (!state.user.userLoggedIn) {
+          this.$router.push("/sign-in");
+        }
+      }
+    });
+  },
+  beforeDestroy() {
+    this.unsubscribe();
+  },
+};
+</script>
 <style>
 .admin--column,
 .admin--tools button {

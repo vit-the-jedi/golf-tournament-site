@@ -8,16 +8,33 @@ import { getUserPermissions, db } from "../middleware/db.js";
 
 const authStateListener = async () => {
   auth.onAuthStateChanged(async (user) => {
-    if (user) {
-      store.dispatch("fetchUser", user);
-      const permissionLevel = await getUserPermissions(
-        db,
-        store.state.user.data.phoneNumber
+    const userObj = store.getters.getUser;
+    if (userObj.hasOwnProperty("uid")) {
+      console.log(
+        `user
+    exists in store:`,
+        store.state.user
       );
-      store.commit("setPermissionLevel", permissionLevel);
+    } else {
+      store.dispatch("fetchUser", user);
+
+      if (user) {
+        const permissionLevel = await getUserPermissions(
+          db,
+          store.state.user.userData.phoneNumber
+        );
+        store.commit("setPermissionLevel", permissionLevel);
+      }
+      console.log(`user set in store:`, store.state.user);
     }
   });
-  return true;
+};
+
+const authStatus = async () => {
+  auth.onAuthStateChanged(async (user) => {
+    if (user) {
+    }
+  });
 };
 
 export { authStateListener };

@@ -51,8 +51,7 @@
 </template>
 <script>
 import { store } from "../store/index.js";
-import { authStateListener } from "../auth/auth";
-// import { getUserPermissions } from "../middleware/db";
+import { useRouter } from "vue-router";
 
 export default {
   data() {
@@ -63,10 +62,6 @@ export default {
         isAdmin: store.getters.checkAdmin,
       },
     };
-  },
-  async beforeMount() {
-    //await our store to be done setting user details
-    await authStateListener();
   },
   methods: {
     openMenuHandler: function () {
@@ -88,6 +83,7 @@ export default {
     signOutHandler: async function () {
       await store.dispatch("logOut");
       this.closeMenuHandler();
+      this.$router.push(this.$route.query.redirect || "/");
     },
   },
 };

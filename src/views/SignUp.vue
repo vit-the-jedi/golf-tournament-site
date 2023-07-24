@@ -4,25 +4,6 @@ import secondaryNav from "../components/secondaryNav.vue";
 import signInForm from "../components/signInForm.vue";
 import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
-
-//import auth from firebase
-import { app } from "../middleware/db.js";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-
-const router = useRouter();
-const auth = getAuth(app);
-const getAuthState = () => {
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      router.push("/sign-in?redirect=sign-up");
-    } else {
-      return;
-    }
-  });
-};
-onBeforeMount(() => {
-  getAuthState();
-});
 </script>
 <template>
   <secondaryNav />
@@ -32,16 +13,7 @@ onBeforeMount(() => {
     </div>
   </div>
 </template>
-<script>
-import { store } from "../store/index.js";
-export default {
-  data() {
-    return {
-      userSignedIn: null,
-    };
-  },
-};
-</script>
+<script></script>
 <style scoped>
 .sign-up {
   height: 100vh;

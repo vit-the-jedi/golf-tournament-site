@@ -43,7 +43,6 @@ import {
   setPersistence,
   browserSessionPersistence,
 } from "firebase/auth";
-import { resolveDirective } from "vue";
 
 const auth = getAuth(app);
 auth.languageCode = "en";
@@ -125,12 +124,12 @@ export default {
 
       if (result.user) {
         const path = new URLSearchParams(window.location.search);
-        const redirect = path.get("redirect") || "";
         //create async function so we can await the call to check + set user permissions
         store.commit(
           "setPermissionLevel",
           await this.userPermissionsHandler(result.user.phoneNumber)
         );
+        this.$router.push(this.$route.query.redirect || "/");
       } else {
         this.errors.push("Sign in failed, please try again.");
         console.log(error);
