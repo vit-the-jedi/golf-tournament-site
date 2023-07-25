@@ -13,7 +13,7 @@ import { authStateListener } from "../auth/auth";
     <listTeams />
   </div>
 </template>
-<script>
+<!-- <script>
 import { mapState } from "vuex";
 export default {
   data() {},
@@ -32,7 +32,8 @@ export default {
     this.unsubscribe();
   },
 };
-</script>
+</script> -->
+
 <style>
 .admin--column,
 .admin--tools button {

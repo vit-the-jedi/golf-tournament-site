@@ -15,7 +15,6 @@ import { store } from "../store";
   </div>
 </template>
 <script>
-import { mapState } from "vuex";
 export default {
   data() {},
 };

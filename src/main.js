@@ -68,7 +68,8 @@ const router = createRouter({
     },
   ],
 });
-router.beforeResolve(async (to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+  console.log(to.fullPath);
   await authStateListener();
   next();
 });
