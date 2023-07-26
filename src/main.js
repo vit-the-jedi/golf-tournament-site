@@ -34,7 +34,8 @@ async function loginRequired(to, from, next) {
     }
   } else {
     if (userAuthenticated) {
-      next("/");
+      if (to.fullPath === "/sign-in") next("/");
+      else next();
     } else {
       next("/sign-in");
     }
