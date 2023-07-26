@@ -2,6 +2,8 @@
 //components
 import signInForm from "../components/signInForm.vue";
 import secondaryNav from "../components/secondaryNav.vue";
+import { onBeforeMount } from "vue";
+import { store } from "../store";
 </script>
 
 <template>
@@ -12,7 +14,11 @@ import secondaryNav from "../components/secondaryNav.vue";
     </div>
   </div>
 </template>
-
+<script>
+export default {
+  data() {},
+};
+</script>
 <style scoped>
 .admin {
   height: 100vh;

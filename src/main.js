@@ -2,6 +2,8 @@ import { createApp, ref } from "vue";
 import { createRouter, createWebHistory } from "vue-router";
 import App from "./App.vue";
 
+//auth
+import { checkAuthStatus } from "./auth/auth";
 // import store
 import { store } from "./store/index.js";
 
@@ -15,7 +17,29 @@ import adminSignIn from "@/views/adminSignIn.vue";
 import winnersCircle from "@/views/winnersCircle.vue";
 import signIn from "@/views/signIn.vue";
 
-const loggedIn = ref(false);
+const authenticated = () => {
+  return checkAuthStatus.then((user) => {
+    if (user) return true;
+    else return false;
+  });
+};
+
+async function loginRequired(to, from, next) {
+  const userAuthenticated = await authenticated();
+  if (to.fullPath === "/sign-in") {
+    if (userAuthenticated) {
+      next("/");
+    } else {
+      next();
+    }
+  } else {
+    if (userAuthenticated) {
+      next("/");
+    } else {
+      next("/sign-in");
+    }
+  }
+}
 
 //create router
 const router = createRouter({
@@ -35,11 +59,13 @@ const router = createRouter({
       path: "/sign-up",
       name: "SignUp",
       component: SignUp,
+      beforeEnter: loginRequired,
     },
     {
       path: "/sign-in",
       name: "SignIn",
       component: signIn,
+      beforeEnter: loginRequired,
     },
     {
       path: "/sign-up-success",
@@ -55,6 +81,7 @@ const router = createRouter({
       path: "/admin",
       name: "admin",
       component: Admin,
+      beforeEnter: loginRequired,
     },
     {
       path: "/winners-circle",
@@ -64,22 +91,5 @@ const router = createRouter({
   ],
 });
 
-// router.beforeEach(async (to) => {
-//   // routes with `meta: { requiresAuth: true }` will check for the users, others won't
-//   // if (to.meta.requiresAuth) {
-//   //   //get current user if signed in
-//   //   if (!loggedIn.value) {
-//   //     // No user is signed in.
-//   //     return {
-//   //       path: "/admin/sign-in",
-//   //     };
-//   //   } else {
-//   //     // ok to go to admin
-//   //     return {
-//   //       path: "/admin",
-//   //     };
-//   //   }
-//   // }
-// });
 //create app and init router on it
 createApp(App).use(router).use(store).mount("#app");

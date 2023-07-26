@@ -117,4 +117,5 @@ export {
   getUserPermissions,
   listTeamDocs,
   deleteFromFirestore,
+  auth,
 };

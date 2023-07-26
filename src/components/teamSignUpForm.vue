@@ -217,8 +217,8 @@ export default {
     checkForm: function (e) {
       if (
         this.numOfPlayers &&
-        this.player1__firstName &&
-        this.player1__lastName &&
+        this.players.player1__firstName &&
+        this.players.player1__lastName &&
         this.division
       ) {
         e.preventDefault();
@@ -252,54 +252,54 @@ export default {
           //set needs grouping flag
           this.needsGrouping = true;
           playersArr.push({
-            first_name: this.player1__firstName,
-            last_name: this.player1__lastName,
+            first_name: this.players.player1__firstName,
+            last_name: this.players.player1__lastName,
           });
           break;
         case 2:
           //set needs grouping flag
           this.needsGrouping = true;
           playersArr.push({
-            first_name: this.player1__firstName,
-            last_name: this.player1__lastName,
+            first_name: this.players.player1__firstName,
+            last_name: this.players.player1__lastName,
           });
           playersArr.push({
-            first_name: this.player2__firstName,
-            last_name: this.player2__lastName,
+            first_name: this.players.player2__firstName,
+            last_name: this.players.player2__lastName,
           });
           break;
         case 3:
           //set needs grouping flag
           this.needsGrouping = true;
           playersArr.push({
-            first_name: this.player1__firstName,
-            last_name: this.player1__lastName,
+            first_name: this.players.player1__firstName,
+            last_name: this.players.player1__lastName,
           });
           playersArr.push({
-            first_name: this.player2__firstName,
-            last_name: this.player2__lastName,
+            first_name: this.players.player2__firstName,
+            last_name: this.players.player2__lastName,
           });
           playersArr.push({
-            first_name: this.player3__firstName,
-            last_name: this.player3__lastName,
+            first_name: this.players.player3__firstName,
+            last_name: this.players.player3__lastName,
           });
           break;
         case 4:
           playersArr.push({
-            first_name: this.player1__firstName,
-            last_name: this.player1__lastName,
+            first_name: this.players.player1__firstName,
+            last_name: this.players.player1__lastName,
           });
           playersArr.push({
-            first_name: this.player2__firstName,
-            last_name: this.player2__lastName,
+            first_name: this.players.player2__firstName,
+            last_name: this.players.player2__lastName,
           });
           playersArr.push({
-            first_name: this.player3__firstName,
-            last_name: this.player3__lastName,
+            first_name: this.players.player3__firstName,
+            last_name: this.players.player3__lastName,
           });
           playersArr.push({
-            first_name: this.player4__firstName,
-            last_name: this.player4__lastName,
+            first_name: this.players.player4__firstName,
+            last_name: this.players.player4__lastName,
           });
           break;
         //dont need the grouping flag with 4 players
@@ -318,9 +318,9 @@ export default {
         item.last_name = lName;
       });
       if (!this.teamName)
-        this.teamName = `${players[0].first_name} ${players[0].last_name}'s Team`;
+        this.teamName = `${playersArr[0].first_name} ${playersArr[0].last_name}'s Team`;
 
-      this.teamObj["players"] = players;
+      this.teamObj["players"] = playersArr;
       this.teamObj["numOfPlayers"] = this.numOfPlayers;
       this.teamObj["needsGrouping"] = this.needsGrouping;
       this.teamObj["teamName"] = this.teamName;
