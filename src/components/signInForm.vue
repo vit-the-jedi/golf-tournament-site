@@ -1,10 +1,18 @@
 <template>
   <!-- <loadingSpinner /> -->
   <form id="phone-form">
+    <span v-if="errors.length" class="error-list error">
+      <span>Please correct the following error(s):</span>
+      <ul>
+        <li v-for="error in errors">{{ error }}</li>
+      </ul>
+    </span>
     <div class="form-inner" v-if="!smsCodeSent">
       <h2>Enter your phone number to sign in</h2>
       <div class="form-inset">
-        <input type="phone" id="phoneNumber" v-model="userPhoneNumber" />
+        <div class="form-control">
+          <input type="phone" id="phoneNumber" v-model="userPhoneNumber" />
+        </div>
       </div>
       <button id="sign-in-button" type="button" @click="checkPhone">
         Continue
@@ -23,6 +31,7 @@
 </template>
 
 <script>
+import { useRouter } from "vue-router";
 import { addToFirestore } from "../middleware/db.js";
 import loadingSpinner from "../components/loading.vue";
 import { app, getUserPermissions, db } from "../middleware/db.js";
@@ -81,24 +90,13 @@ export default {
       if (!this.userPhoneNumber) {
         this.errors.push("Please enter a phone number");
       } else {
+        this.removeErrors();
         this.startSignIn();
       }
       e.preventDefault();
     },
     removeErrors: function () {
-      const error = document.querySelector(".error");
-      if (error) document.removeChild(error);
-    },
-    formSubmitHandler: async function () {
-      //programmatically route to success page w/ relevant form data we can post back for user review
-      this.$router.push({
-        path: "/admin",
-        query: {
-          players: playersString,
-          division: team.division,
-          teamName: team.teamName,
-        },
-      });
+      this.errors = [];
     },
     startSignIn: function () {
       const auth = getAuth();
@@ -121,37 +119,56 @@ export default {
           });
       });
     },
-    validateSMSCode: function () {
-      confirmationResult
-        .confirm(String(this.userSMSCode))
-        .then((result) => {
-          //create async function so we can await the call to check + set user permissions
-          (async function () {
-            result.user.permissionLevel = await getUserPermissions(
-              firestoreDb,
-              result.user.phoneNumber
-            );
-            //push to vuex store here
-            store.commit("setUser", { user: result.user });
-            console.log(store);
-            // this.$router.push({
-            //   path: "/admin",
-            // });
-          })();
-        })
-        .catch((error) => {
-          this.errors.push("Sign in failed, please try again.");
-          console.log(error);
-          window.recaptchaVerifier.render().then(function (widgetId) {
-            grecaptcha.reset(widgetId);
-          });
+    validateSMSCode: async function () {
+      const result = await confirmationResult.confirm(String(this.userSMSCode));
+
+      if (result.user) {
+        const path = new URLSearchParams(window.location.search);
+        //create async function so we can await the call to check + set user permissions
+        store.commit(
+          "setPermissionLevel",
+          await this.userPermissionsHandler(result.user.phoneNumber)
+        );
+        this.$router.push(this.$route.query.redirect || "/");
+      } else {
+        this.errors.push("Sign in failed, please try again.");
+        console.log(error);
+        window.recaptchaVerifier.render().then(function (widgetId) {
+          grecaptcha.reset(widgetId);
         });
+      }
+    },
+    userPermissionsHandler: async function (phoneNumber) {
+      const permissionResponse = await getUserPermissions(
+        firestoreDb,
+        phoneNumber
+      );
+      return permissionResponse;
     },
   },
 };
 </script>
 
 <style scoped>
+form {
+  max-width: 90%;
+  margin: auto;
+}
+.form-inner {
+  margin: auto;
+}
+.form-inner input {
+  max-width: 300px;
+  width: 80%;
+  margin: auto;
+}
+h2 {
+  max-width: 70%;
+  margin: auto auto 4% auto;
+}
+button {
+  margin: 4% auto auto auto;
+}
 .menu--list {
   position: fixed;
   margin-top: calc(100% * 2);

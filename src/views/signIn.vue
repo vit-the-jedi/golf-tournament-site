@@ -1,23 +1,24 @@
 <script setup>
-import { useRouter } from "vue-router";
-import { onBeforeMount } from "vue";
-
-//vuex store
-import { store } from "../store/index.js";
 //components
 import signInForm from "../components/signInForm.vue";
 import secondaryNav from "../components/secondaryNav.vue";
+import { onBeforeMount } from "vue";
+import { store } from "../store";
 </script>
 
 <template>
   <secondaryNav />
-  <div class="admin admin--sign-in">
+  <div class="sign-in">
     <div class="container">
       <signInForm />
     </div>
   </div>
 </template>
-
+<script>
+export default {
+  data() {},
+};
+</script>
 <style scoped>
 .admin {
   height: 100vh;

@@ -2,30 +2,24 @@
 import teamSignUpForm from "../components/teamSignUpForm.vue";
 import secondaryNav from "../components/secondaryNav.vue";
 import signInForm from "../components/signInForm.vue";
+import { onBeforeMount } from "vue";
+import { useRouter } from "vue-router";
 </script>
 <template>
   <secondaryNav />
   <div class="sign-up">
     <div class="container">
-      <div v-if="!user">
-        <signInForm />
-      </div>
-      <div v-if="user">
-        <teamSignUpForm />
-      </div>
+      <teamSignUpForm />
     </div>
   </div>
 </template>
-<script>
-export default {
-  data() {
-    return {
-      user: null,
-    };
-  },
-};
-</script>
+<script></script>
 <style scoped>
+.sign-up {
+  height: 100vh;
+  padding: 10vh 0;
+  background: var(--tertiaryColor);
+}
 .sign-up .top-content {
   background-image: linear-gradient(
       90deg,

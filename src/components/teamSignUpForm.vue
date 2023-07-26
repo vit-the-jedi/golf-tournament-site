@@ -217,8 +217,8 @@ export default {
     checkForm: function (e) {
       if (
         this.numOfPlayers &&
-        this.player1__firstName &&
-        this.player1__lastName &&
+        this.players.player1__firstName &&
+        this.players.player1__lastName &&
         this.division
       ) {
         e.preventDefault();
@@ -252,54 +252,54 @@ export default {
           //set needs grouping flag
           this.needsGrouping = true;
           playersArr.push({
-            first_name: this.player1__firstName,
-            last_name: this.player1__lastName,
+            first_name: this.players.player1__firstName,
+            last_name: this.players.player1__lastName,
           });
           break;
         case 2:
           //set needs grouping flag
           this.needsGrouping = true;
           playersArr.push({
-            first_name: this.player1__firstName,
-            last_name: this.player1__lastName,
+            first_name: this.players.player1__firstName,
+            last_name: this.players.player1__lastName,
           });
           playersArr.push({
-            first_name: this.player2__firstName,
-            last_name: this.player2__lastName,
+            first_name: this.players.player2__firstName,
+            last_name: this.players.player2__lastName,
           });
           break;
         case 3:
           //set needs grouping flag
           this.needsGrouping = true;
           playersArr.push({
-            first_name: this.player1__firstName,
-            last_name: this.player1__lastName,
+            first_name: this.players.player1__firstName,
+            last_name: this.players.player1__lastName,
           });
           playersArr.push({
-            first_name: this.player2__firstName,
-            last_name: this.player2__lastName,
+            first_name: this.players.player2__firstName,
+            last_name: this.players.player2__lastName,
           });
           playersArr.push({
-            first_name: this.player3__firstName,
-            last_name: this.player3__lastName,
+            first_name: this.players.player3__firstName,
+            last_name: this.players.player3__lastName,
           });
           break;
         case 4:
           playersArr.push({
-            first_name: this.player1__firstName,
-            last_name: this.player1__lastName,
+            first_name: this.players.player1__firstName,
+            last_name: this.players.player1__lastName,
           });
           playersArr.push({
-            first_name: this.player2__firstName,
-            last_name: this.player2__lastName,
+            first_name: this.players.player2__firstName,
+            last_name: this.players.player2__lastName,
           });
           playersArr.push({
-            first_name: this.player3__firstName,
-            last_name: this.player3__lastName,
+            first_name: this.players.player3__firstName,
+            last_name: this.players.player3__lastName,
           });
           playersArr.push({
-            first_name: this.player4__firstName,
-            last_name: this.player4__lastName,
+            first_name: this.players.player4__firstName,
+            last_name: this.players.player4__lastName,
           });
           break;
         //dont need the grouping flag with 4 players
@@ -318,9 +318,9 @@ export default {
         item.last_name = lName;
       });
       if (!this.teamName)
-        this.teamName = `${players[0].first_name} ${players[0].last_name}'s Team`;
+        this.teamName = `${playersArr[0].first_name} ${playersArr[0].last_name}'s Team`;
 
-      this.teamObj["players"] = players;
+      this.teamObj["players"] = playersArr;
       this.teamObj["numOfPlayers"] = this.numOfPlayers;
       this.teamObj["needsGrouping"] = this.needsGrouping;
       this.teamObj["teamName"] = this.teamName;
@@ -372,4 +372,36 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.form-control {
+  padding-top: calc(var(--player-icon-height) / 4);
+  margin-bottom: calc(var(--player-icon-height) / 8);
+  padding-left: 2%;
+  padding-right: 2%;
+  padding-bottom: 10%;
+}
+.form-control::before {
+  width: var(--player-icon-width);
+  height: var(--player-icon-height);
+  content: "";
+  position: absolute;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  margin: auto;
+  top: calc(-1 * var(--player-icon-height) / 2);
+  left: calc(100% / 2 - var(--player-icon-width) / 2);
+}
+.form-control:nth-of-type(1)::before {
+  background-image: url("../assets/icons/player1.svg");
+}
+.form-control:nth-of-type(2)::before {
+  background-image: url("../assets/icons/player2.svg");
+}
+.form-control:nth-of-type(3)::before {
+  background-image: url("../assets/icons/player3.svg");
+}
+.form-control:nth-of-type(4)::before {
+  background-image: url("../assets/icons/player4.svg");
+}
+</style>

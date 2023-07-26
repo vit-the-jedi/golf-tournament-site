@@ -18,5 +18,7 @@ nav {
 nav img {
   max-width: 100px;
   height: auto;
+  position: relative;
+  left: 20px;
 }
 </style>
