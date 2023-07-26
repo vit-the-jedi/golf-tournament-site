@@ -2,10 +2,6 @@
 //components
 import secondaryNav from "../components/secondaryNav.vue";
 import listTeams from "../components/listTeams.vue";
-import { store } from "../store";
-import { onBeforeMount } from "vue";
-import { useRouter } from "vue-router";
-import { authStateListener } from "../auth/auth";
 </script>
 <template>
   <secondaryNav />

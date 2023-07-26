@@ -26,26 +26,26 @@ export default {
     };
   },
   computed: mapState(["user"]),
-  beforeMount() {
-    const unsubscribe = store.subscribeAction({
-      after: (action, state) => {
-        console.log(`after action payload ${action.payload}`);
-        if (action.payload === null) {
-          const path = this.$router.currentRoute.value.fullPath;
-          if (path === "/admin" || path === "/sign-up") {
-            this.alert.showAlert = true;
-            this.alert.alertOptions.type = "warn";
-            this.alert.alertOptions.title = "Sign In Required";
-            this.alert.alertOptions.body =
-              "You must sign in before you can access this page.";
-            this.alert.alertOptions.removable = false;
-            this.alert.alertOptions.action.type = "linkout";
-            this.alert.alertOptions.action.target = "/sign-in";
-            this.alert.alertOptions.action.buttonText = "Sign In";
-          }
-        }
-      },
-    });
+  mounted() {
+    // const unsubscribe = store.subscribeAction({
+    //   after: (action, state) => {
+    //     console.log(`after action payload ${action.payload}`);
+    //     if (action.payload === null) {
+    //       const path = this.$router.currentRoute.value.fullPath;
+    //       if (path === "/admin" || path === "/sign-up") {
+    //         this.alert.showAlert = true;
+    //         this.alert.alertOptions.type = "warn";
+    //         this.alert.alertOptions.title = "Sign In Required";
+    //         this.alert.alertOptions.body =
+    //           "You must sign in before you can access this page.";
+    //         this.alert.alertOptions.removable = false;
+    //         this.alert.alertOptions.action.type = "linkout";
+    //         this.alert.alertOptions.action.target = "/sign-in";
+    //         this.alert.alertOptions.action.buttonText = "Sign In";
+    //       }
+    //     }
+    //   },
+    // });
   },
   unmounted() {
     this.unsubscribe();

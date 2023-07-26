@@ -6,7 +6,8 @@ import { store } from "../store/index.js";
 //middleware
 import { getUserPermissions, db } from "../middleware/db.js";
 
-const authStateListener = async () => {
+//return a promise so we can await the call to firebase
+const initializeAuth = new Promise((resolve) => {
   auth.onAuthStateChanged(async (user) => {
     const userObj = store.getters.getUser;
     if (userObj.hasOwnProperty("uid")) {
@@ -24,17 +25,14 @@ const authStateListener = async () => {
           store.state.user.userData.phoneNumber
         );
         store.commit("setPermissionLevel", permissionLevel);
+      } else {
       }
       console.log(`user set in store:`, store.state.user);
     }
+    //resolve the user object once we've gotten it
+    //and also set everything in vuex store
+    resolve(user);
   });
-};
+});
 
-const authStatus = async () => {
-  auth.onAuthStateChanged(async (user) => {
-    if (user) {
-    }
-  });
-};
-
-export { authStateListener };
+export { initializeAuth };
