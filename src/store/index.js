@@ -27,6 +27,8 @@ const store = createStore({
         state.user.userData = {};
         state.user.userLoggedIn = false;
       }
+      console.log("store user commit");
+      console.log(state.user);
     },
     setUserLoggedIn(state, value) {
       state.user.userLoggedIn = value;
