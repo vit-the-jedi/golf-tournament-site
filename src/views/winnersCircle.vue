@@ -69,6 +69,21 @@ export default {
           division: "Co-Ed",
           team: ["John Doe", "John Doe", "Ricky Jones", "Jim Kramer"],
         },
+        {
+          year: 2018,
+          division: "Men's",
+          team: [
+            "Mike Cappetta",
+            "Ryan Cappetta",
+            "Kevin Mathews",
+            "Zach Bjornberg",
+          ],
+        },
+        {
+          year: 2018,
+          division: "Co-Ed",
+          team: ["John Doe", "John Doe", "Ricky Jones", "Jim Kramer"],
+        },
       ],
     };
   },
@@ -113,6 +128,10 @@ export default {
 <style scope>
 .container {
   padding: 1em;
+}
+.top--content h1 {
+  width: 100%;
+  text-align: center;
 }
 .top--content h1 span {
   color: var(--secondColor);
