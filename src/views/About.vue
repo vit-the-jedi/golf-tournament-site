@@ -10,15 +10,40 @@ import secondaryNav from "../components/secondaryNav.vue";
     </div>
     <div class="container">
       <h2>34 Years and counting</h2>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-        occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-        mollit anim id est laborum.
-      </p>
+
+      <div class="mt-4">
+        <h5>We are fun</h5>
+        <p>
+          The PJA Tournament is fun, family golf contest with a cause. Any
+          dollars not spent on the faciliation of the tournament go straight to
+          the Valley League Fund, an organization that provides sports gear for
+          underprivaleged young&nbsp;athletes.
+        </p>
+
+        <h5>We are inclusive</h5>
+        <p>
+          We encourage men and women of all ages to join the tournament. We
+          offer both a Men's League and a Co-Ed league to partcipate in. We
+          accept all skill levels to come and play. We value family fun over
+          everything&nbsp;else!
+        </p>
+
+        <h5>We are family</h5>
+        <p>
+          For 30+ years this tournament has grown to be a can't-miss for our
+          family and friends. In 2022, we had a record number of golfers attend,
+          with over 100 players joining and playing for both fun and
+          philanthropy. We plan to continue to keep the tradition alive and well
+          for years to come. If you are a long time participant, or are just
+          seeing what we're about, we encourage you to
+          <router-link to="/sign-up">sign up</router-link> and join us on the
+          day of the&nbsp;tournament.
+        </p>
+      </div>
+
+      <div class="gallery">
+        <img src="" />
+      </div>
     </div>
   </div>
 </template>

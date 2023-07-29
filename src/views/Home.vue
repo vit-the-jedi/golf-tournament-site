@@ -6,10 +6,10 @@ import mainNav from "../components/mainNav.vue";
 export default {
   data() {
     return {
-      date: "October 21st, 2023",
+      date: "October 7th, 2023",
       time: "8:00am",
-      golfCourse: "Timberlin Golf Course",
-      golfCourseAddress: "100 Golf Way, Berlin CT, 07678",
+      golfCourse: "Hawk's Landing Golf Course",
+      golfCourseAddress: "201 Pattonwood Dr Southington, CT 06489",
       pricing: {
         ticketPrice: "$85.00",
         addOns: [
@@ -29,7 +29,6 @@ export default {
           "closest to pin  (back 9)",
         ],
       },
-      user: null,
     };
   },
   computed: {
@@ -69,8 +68,8 @@ export default {
       <div class="col-6 info--item"><p>Trophies Awarded</p></div>
       <div class="col-6 info--item"><p>Charitable Donations</p></div>
       <p class="pt-3 mb-0">
-        The PJA Tournament is organized by the Vitello and Lowell families, and
-        growing annually thanks to participation by amazing family and friends.
+        The PJA Tournament is organized by the Vitello family, and growing
+        annually thanks to participation of amazing family and friends.
       </p>
       <router-link to="/about">Learn More</router-link>
     </div>
@@ -89,12 +88,13 @@ export default {
               <h3>
                 <!--TODO create method to putput deadline (date of tourny minus 1 week)
                   {{ outputDeadline }}-->
-                October 1st, 2023
+                September 31st, 2023
               </h3>
             </div>
             <div class="col-12">
               <h2>When & where?</h2>
               <p>{{ outputDate }}</p>
+              <p><strong>SHOTGUN START @ 10AM</strong></p>
               <p>{{ outputGolfCourse }},</p>
               <p>{{ outputGolfCourseAddress }}</p>
             </div>
