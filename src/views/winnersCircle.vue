@@ -8,7 +8,7 @@ import secondaryNav from "../components/secondaryNav.vue";
   <secondaryNav />
   <div class="winnders-circle">
     <div class="top--content">
-      <h1>The <span>winners</span> circle</h1>
+      <h1>The <span>winners</span> <span class="large">circle</span></h1>
     </div>
     <div class="container">
       <div class="top-copy">
@@ -132,6 +132,11 @@ export default {
 .top--content h1 {
   width: 100%;
   text-align: center;
+}
+.top--content h1 .large {
+  display: block;
+  font-size: 2em;
+  color: var(--mainColor);
 }
 .top--content h1 span {
   color: var(--secondColor);

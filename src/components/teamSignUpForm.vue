@@ -404,4 +404,9 @@ export default {
 .form-control:nth-of-type(4)::before {
   background-image: url("../assets/icons/player4.svg");
 }
+@media screen and (min-width: 768px) {
+  .form-inner {
+    margin-top: 15%;
+  }
+}
 </style>

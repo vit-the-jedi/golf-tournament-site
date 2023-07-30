@@ -18,7 +18,6 @@ import { useRouter } from "vue-router";
 .sign-up {
   height: 100vh;
   padding: 10vh 0;
-  background: var(--tertiaryColor);
 }
 .sign-up .top-content {
   background-image: linear-gradient(
