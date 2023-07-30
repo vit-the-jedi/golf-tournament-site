@@ -42,6 +42,21 @@ async function loginRequired(to, from, next) {
   }
 }
 
+const checkTeam = (to, from, next) => {
+  const teamInStore = store.getters.getTeam;
+  const savedTeam = JSON.parse(sessionStorage.getItem("team"));
+  if (teamInStore) {
+    next();
+  } else {
+    if (savedTeam) {
+      store.commit("setTeam", savedTeam);
+      next();
+    } else {
+      next("/sign-up");
+    }
+  }
+};
+
 //create router
 const router = createRouter({
   history: createWebHistory(),
@@ -72,6 +87,7 @@ const router = createRouter({
       path: "/sign-up-success",
       name: "SignUp__success",
       component: SignUp__success,
+      beforeEnter: checkTeam,
     },
     {
       path: "/admin/sign-in",
