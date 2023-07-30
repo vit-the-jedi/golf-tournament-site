@@ -61,12 +61,12 @@ export default {
   <header class="top-content">
     <div class="logo py-3"><img src="../assets/logo.svg" alt="PJA logo" /></div>
     <div class="top-info row py-3">
-      <div class="col-6 info--item">
+      <div class="col-md-6 col-12 info--item">
         <p>{{ outputDate }}</p>
       </div>
-      <div class="col-6 info--item"><p>100+ Players</p></div>
-      <div class="col-6 info--item"><p>Trophies Awarded</p></div>
-      <div class="col-6 info--item"><p>Charitable Donations</p></div>
+      <div class="col-md-6 col-12 info--item"><p>100+ Players</p></div>
+      <div class="col-md-6 col-12 info--item"><p>Trophies Awarded</p></div>
+      <div class="col-md-6 col-12 info--item"><p>Charitable Donations</p></div>
       <p class="pt-3 mb-0">
         The PJA Tournament is organized by the Vitello family, and growing
         annually thanks to participation of amazing family and friends.
@@ -83,18 +83,18 @@ export default {
         </div>
         <div class="card sub--card entry--info">
           <div class="row">
-            <div class="col-12">
-              <h2>Entry Deadline:</h2>
-              <h3>
+            <div class="col-md-6 col-12">
+              <h1>Entry Deadline:</h1>
+              <h2>
                 <!--TODO create method to putput deadline (date of tourny minus 1 week)
                   {{ outputDeadline }}-->
                 September 31st, 2023
-              </h3>
+              </h2>
             </div>
-            <div class="col-12">
-              <h2>When & where?</h2>
+            <div class="col-md-6 col-12">
+              <h2>When &amp; where?</h2>
               <p>{{ outputDate }}</p>
-              <p><strong>SHOTGUN START @ 10AM</strong></p>
+              <p>SHOTGUN START @ 10AM</p>
               <p>{{ outputGolfCourse }},</p>
               <p>{{ outputGolfCourseAddress }}</p>
             </div>
@@ -104,12 +104,12 @@ export default {
       <div class="card pricing">
         <div class="card sub--card">
           <div class="row">
-            <div class="col-12">
-              <h2>Pricing</h2>
-              <h3>Entry fee: $85.00</h3>
+            <div class="col-md-6 col-12">
+              <h1>Pricing</h1>
+              <h2>Entry fee: $85.00</h2>
             </div>
-            <div class="col-12">
-              <h4>What's included:</h4>
+            <div class="col-md-6 col-12">
+              <h2>What's included:</h2>
               <ul>
                 <li v-for="item in pricing.addOns">
                   {{ item }}
@@ -118,9 +118,9 @@ export default {
             </div>
           </div>
           <div class="row pricing--payment">
-            <div class="col-12">
+            <div class="col-md-6 col-12">
               <h2>Payment Methods</h2>
-              <p>Check payable to:</p>
+              <h5>Check payable to:</h5>
               <ul>
                 <li>John Vitello</li>
                 <li>P.O Box 7009</li>
@@ -128,7 +128,7 @@ export default {
                 <li><a href="mailto:jayvee1@att.net">jayvee1@att.net</a></li>
               </ul>
             </div>
-            <div class="col-12">
+            <div class="col-md-6 col-12">
               <img src="../assets/Venmo_Logo_White.png" alt="Venmo Logo" />
               <p>@PJA-tournament</p>
               <!---VENMO QR HERE-->
@@ -139,25 +139,39 @@ export default {
       </div>
       <div class="card rules">
         <div class="card sub--card">
-          <h2>Rules</h2>
-          <div class="col-12">
-            <ul>
-              <li>Teams of four.</li>
-              <li>Scramble (best ball) format.</li>
-              <li>Men's and Co-ed Leagues available.</li>
-              <li>Incomplete teams will be joined to make a foursome.</li>
-              <li>Have fun!</li>
-            </ul>
+          <div class="row">
+            <div class="col-md-6 col-12">
+              <h2>Rules</h2>
+              <ul>
+                <li>Teams of four.</li>
+                <li>Scramble (best ball) format.</li>
+                <li>Men's and Co-ed Leagues available.</li>
+                <li>Incomplete teams will be joined to make a foursome.</li>
+                <li>Have fun!</li>
+              </ul>
+            </div>
+            <div class="col-md-6 col-12">
+              <h2>Questions?</h2>
+              <p>Reach out to any of the tournament admins!</p>
+              <ul>
+                <li>John Vitello</li>
+                <li>Al Vitello</li>
+                <li>Paul Vitello</li>
+                <li>Janice Vitello</li>
+                <li>Matt Vitello</li>
+                <li>Anthony Lowell</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
       <div class="wrap-up">
-        <div class="wrap-up--text">
-          <h3>Ready to have some fun?</h3>
-          <p>Sign up and get started</p>
-          <div class="button-container mb-4">
+        <div class="wrap-up--text text-center">
+          <h2>Ready to have some fun?</h2>
+          <h5 class="my-4">Sign up and get started</h5>
+          <div class="button-container my-4">
             <button><router-link to="/sign-up">SIGN UP</router-link></button>
-            <small class="text-center d-block w-100">(max 4 players)</small>
+            <p class="text-center d-block w-100">(max 4 players)</p>
           </div>
         </div>
       </div>
@@ -213,12 +227,6 @@ export default {
   height: 100%;
   color: #fff;
 }
-.info--card p,
-.info--card h4,
-.info--card h5,
-.info--card ul {
-  margin: 2.5vh 0;
-}
 .card:has(.entry--info) {
   margin-top: -5vh;
 }
@@ -229,7 +237,7 @@ export default {
   width: 40%;
   max-width: 50vw;
   min-height: 13vh;
-  margin: -10vh auto auto auto;
+  margin: -15% auto auto auto;
 }
 .card.sub--card .col-12 {
   margin: 2vh auto;
@@ -274,6 +282,20 @@ export default {
 @media screen and (min-width: 768px) {
   .card:has(.entry--info)::before {
     max-width: 20vw;
+  }
+}
+@media screen and (max-width: 767px) {
+  .container {
+    padding: 0;
+  }
+  .top-content img {
+    max-width: 200px;
+  }
+  .top-info div {
+    text-align: center;
+  }
+  .top-info div p {
+    margin-bottom: 0;
   }
 }
 </style>

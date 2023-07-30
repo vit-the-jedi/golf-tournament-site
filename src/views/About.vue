@@ -40,14 +40,56 @@ import secondaryNav from "../components/secondaryNav.vue";
           day of the&nbsp;tournament.
         </p>
       </div>
+    </div>
 
-      <div class="gallery">
-        <img src="" />
+    <div class="gallery">
+      <div class="grid">
+        <div class="grid-sizer"></div>
+        <div class="grid-item grid-item--width2 grid-item--height3"></div>
+        <div class="grid-item grid-item--width2 grid-item--height3"></div>
+        <div class="grid-item grid-item--height3"></div>
+        <div class="grid-item grid-item--height3"></div>
+        <div class="grid-item grid-item--width3"></div>
       </div>
     </div>
   </div>
 </template>
+<script>
+export default {
+  data() {},
+  methods: {
+    initMasonry() {
+      const elem = document.querySelector(".grid");
+      const msnry = new Masonry(elem, {
+        // options
+        itemSelector: ".grid-item",
+        columnWidth: 200,
+      });
+    },
+  },
+  mounted() {
+    let masonryScript = document.createElement("script");
+    masonryScript.setAttribute(
+      "src",
+      "https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"
+    );
+    document.head.appendChild(masonryScript);
+    this.initMasonry();
+  },
+};
+</script>
 <style scoped>
+img {
+  max-width: 100%;
+}
+
+h1 {
+  text-align: center;
+  width: 100%;
+}
+h1 span {
+  display: block;
+}
 .about .top-content {
   background-image: linear-gradient(
       180deg,
@@ -57,6 +99,8 @@ import secondaryNav from "../components/secondaryNav.vue";
     url("../assets/about.jpg");
   min-height: 75vh;
   position: relative;
+  background-size: 100%;
+  background-position: center 30%;
 }
 
 h1 {
@@ -66,9 +110,72 @@ h1 {
 }
 h1 span {
   color: var(--secondColor);
-  font-size: calc(2.5rem * 2);
+  font-size: 4rem;
 }
 .container {
   padding: 8%;
+}
+.gallery {
+  background-color: var(--secondColor);
+  padding: 2em 1em 1em 1em;
+}
+.grid {
+  max-width: 1200px;
+  position: relative;
+}
+
+/* clearfix */
+.grid:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* ---- grid-item ---- */
+
+.grid-sizer,
+.grid-item {
+  width: 20%;
+  position: relative;
+  overflow: hidden;
+}
+.grid-item {
+  height: 120px;
+  float: left;
+  border: 5px solid var(--secondColor);
+  border-radius: 5px;
+  background-size: cover;
+  border-radius: var(--card-border-radius);
+}
+.grid-item:nth-child(2) {
+  background-image: url("../assets/gallery/IMG_0119.JPG");
+  background-position: center 72%;
+}
+.grid-item:nth-child(3) {
+  background-image: url("../assets/gallery/IMG_4850.JPG");
+}
+.grid-item:nth-child(4) {
+  background-image: url("../assets/gallery/IMG_1328.JPG");
+}
+.grid-item--width2 {
+  width: 40%;
+}
+.grid-item--width3 {
+  width: 60%;
+}
+
+.grid-item--height2 {
+  height: 200px;
+}
+.grid-item--height3 {
+  height: 260px;
+}
+.grid-item--height4 {
+  height: 360px;
+}
+@media screen and (max-width: 767px) {
+  .about .top-content {
+    min-height: 40vh;
+  }
 }
 </style>

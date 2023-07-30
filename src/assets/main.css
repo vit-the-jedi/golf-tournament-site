@@ -10,6 +10,19 @@
   --player-icon-height: calc(100% / 2);
   --ui-dialog-bg: rgba(0, 26, 50, 0.7);
 }
+body {
+  font-family: "Nunito Sans", sans-serif;
+}
+
+h1,
+h2,
+h3,
+button {
+  font-family: "balboa-plus-fill", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 img {
   margin: auto;
   display: block;
@@ -64,13 +77,13 @@ header {
   color: white;
 }
 h2 {
-  font-size: 1.75rem;
+  font-size: 2rem;
 }
 h3 {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
 }
 h4 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
 }
 .top-copy {
   text-align: center;
@@ -102,7 +115,7 @@ ul {
 
 /*form*/
 .form-inner {
-  max-width: 900px;
+  max-width: 1200px;
   width: 100%;
   margin: 25% auto 0 auto;
   display: block;
@@ -161,9 +174,16 @@ button {
   margin: 10px auto;
   width: 100%;
   display: block;
-  padding: 1.5% 0;
-  font-size: 1rem;
+  padding: 0.25em 0;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
   text-transform: uppercase;
+}
+button a {
+  text-decoration: none;
+  text-align: center;
+  width: 100%;
+  display: block;
 }
 .error {
   color: red;
@@ -272,9 +292,8 @@ button {
 }
 
 @media screen and (min-width: 768px) {
-  .top-content img {
-    max-width: 400px;
-    width: 80%;
+  .container {
+    max-width: 1200px;
   }
 }
 

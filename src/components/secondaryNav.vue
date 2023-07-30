@@ -21,4 +21,14 @@ nav img {
   position: relative;
   left: 20px;
 }
+
+@media screen and (max-width: 767px) {
+  .nav-container {
+    padding-bottom: 1em;
+  }
+  .nav-container img {
+    margin: unset;
+    max-width: 65px;
+  }
+}
 </style>

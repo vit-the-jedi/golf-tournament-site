@@ -1,31 +1,40 @@
 <template>
   <!-- <loadingSpinner /> -->
   <form id="phone-form">
-    <span v-if="errors.length" class="error-list error">
-      <span>Please correct the following error(s):</span>
-      <ul>
-        <li v-for="error in errors">{{ error }}</li>
-      </ul>
-    </span>
     <div class="form-inner" v-if="!smsCodeSent">
-      <h2>Enter your phone number to sign in</h2>
+      <h1 class="text-center">Enter your phone number to sign in</h1>
+      <p>
+        We'll send a code to your phone, you enter the code on the next screen,
+        and you're ready to sign up!
+      </p>
       <div class="form-inset">
+        <span v-if="errors.length" class="error-list error">
+          <span>Please correct the following error(s):</span>
+          <ul>
+            <li v-for="error in errors">{{ error }}</li>
+          </ul>
+        </span>
         <div class="form-control">
           <input type="phone" id="phoneNumber" v-model="userPhoneNumber" />
         </div>
+        <div id="recaptcha-container"></div>
       </div>
       <button id="sign-in-button" type="button" @click="checkPhone">
         Continue
       </button>
     </div>
     <div class="form-inner" v-if="smsCodeSent">
-      <h2>Enter the code</h2>
-
+      <h1>Enter the 6-digit code</h1>
+      <p>
+        Your code should arrive within a few minutes. Didn't get a code?<br />
+        <router-link to="/sign-up">try again</router-link>
+      </p>
       <div class="form-inset">
-        <input type="text" id="smsCode" v-model="userSMSCode" />
+        <div class="form-control">
+          <input type="text" id="smsCode" v-model="userSMSCode" />
+        </div>
       </div>
     </div>
-    <div id="recaptcha-container"></div>
   </form>
   <div id="form--bg" class="ui--backdrop"></div>
 </template>
@@ -152,35 +161,30 @@ export default {
 <style scoped>
 form {
   max-width: 90%;
+  width: 100%;
   margin: auto;
 }
 .form-inner {
   margin: auto;
+}
+.form-inner p {
+  max-width: 500px;
+  margin: 0 auto 1em auto;
 }
 .form-inner input {
   max-width: 300px;
   width: 80%;
   margin: auto;
 }
-h2 {
+h1 {
   max-width: 70%;
-  margin: auto auto 4% auto;
+  margin: auto auto 2% auto;
 }
 button {
-  margin: 4% auto auto auto;
+  margin: 2% auto auto auto;
 }
-.menu--list {
-  position: fixed;
-  margin-top: calc(100% * 2);
-  background: white;
-  border-radius: var(--card-border-radius);
-  z-index: 999;
-  left: 0;
-  width: 100%;
-  padding: 5% 5% 140% 5%;
-  transition: margin ease-in 0.75s;
-}
-.menu--open {
-  margin-top: 35%;
+#recaptcha-container {
+  margin: 1em auto auto auto;
+  max-width: 304px;
 }
 </style>

@@ -131,6 +131,7 @@ export default {
   padding: 5%;
   height: 100vh;
   transition: margin ease-in 0.75s;
+  visibility: hidden;
 }
 .menu--row {
   display: flex;
@@ -169,7 +170,25 @@ export default {
 }
 .menu--open {
   margin-top: 5%;
+  visibility: visible;
 }
-@media screen and(max-width) {
+@media screen and (max-width: 767px) {
+  .menu--toggle {
+    width: 30px;
+    border: 3px solid var(--tertiaryColor);
+    margin-top: 0.75em;
+  }
+  .menu--toggle::before {
+    width: 30px;
+    border: 3px solid var(--tertiaryColor);
+    top: -2px;
+    left: -3px;
+  }
+  .menu--toggle::after {
+    width: 30px;
+    border: 3px solid var(--tertiaryColor);
+    top: -2px;
+    left: -3px;
+  }
 }
 </style>
