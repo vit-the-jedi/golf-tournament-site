@@ -57,25 +57,7 @@ import secondaryNav from "../components/secondaryNav.vue";
 <script>
 export default {
   data() {},
-  methods: {
-    initMasonry() {
-      const elem = document.querySelector(".grid");
-      const msnry = new Masonry(elem, {
-        // options
-        itemSelector: ".grid-item",
-        columnWidth: 200,
-      });
-    },
-  },
-  mounted() {
-    let masonryScript = document.createElement("script");
-    masonryScript.setAttribute(
-      "src",
-      "https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"
-    );
-    document.head.appendChild(masonryScript);
-    this.initMasonry();
-  },
+  methods: {},
 };
 </script>
 <style scoped>
@@ -176,6 +158,13 @@ h1 span {
 @media screen and (max-width: 767px) {
   .about .top-content {
     min-height: 40vh;
+  }
+  .grid-item {
+    width: 50%;
+    background-position: center center;
+  }
+  .grid-item:nth-child(4n + 4) {
+    width: 100%;
   }
 }
 </style>
