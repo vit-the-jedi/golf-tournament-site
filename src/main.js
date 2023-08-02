@@ -34,10 +34,9 @@ async function loginRequired(to, from, next) {
     }
   } else {
     if (userAuthenticated) {
-      if (to.fullPath === "/sign-in") next("/");
-      else next();
+      next();
     } else {
-      next("/sign-in");
+      next(`/sign-in`);
     }
   }
 }
