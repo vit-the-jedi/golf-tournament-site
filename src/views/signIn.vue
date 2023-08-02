@@ -14,11 +14,6 @@ import { store } from "../store";
     </div>
   </div>
 </template>
-<script>
-export default {
-  data() {},
-};
-</script>
 <style scoped>
 .card {
   padding-top: 3em;
