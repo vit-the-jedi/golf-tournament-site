@@ -7,9 +7,9 @@ export default {
   data() {
     return {
       date: "October 7th, 2023",
-      time: "8:00am",
-      golfCourse: "Hawk's Landing Golf Course",
-      golfCourseAddress: "201 Pattonwood Dr Southington, CT 06489",
+      time: "10:00am",
+      golfCourse: "East Mountain Golf Course",
+      golfCourseAddress: "171 E Mountain Rd, Waterbury, CT 06706",
       pricing: {
         ticketPrice: "$85.00",
         addOns: [
@@ -17,7 +17,7 @@ export default {
           "Snacks",
           "Water",
           "Trophies (1st, 2nd, 3rd place per division, plus longest drive and closest to pin for both front and back 9)",
-          "All proceeds after operational charges will be donated to the ",
+          "All proceeds after operational charges will be donated to the Valley Community Fund",
         ],
         trophies: [
           "First Place",
@@ -159,6 +159,7 @@ export default {
                 <li>Paul Vitello</li>
                 <li>Janice Vitello</li>
                 <li>Matt Vitello</li>
+                <li>Nicole Vitello</li>
                 <li>Anthony Lowell</li>
               </ul>
             </div>
