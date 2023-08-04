@@ -13,7 +13,8 @@ import secondaryNav from "../components/secondaryNav.vue";
     <div class="container">
       <div class="top-copy">
         <p>
-          Check out the past winners of our tournament! Sign up to get your name
+          Check out the past winners of our tournament!
+          <router-link to="/sign-up">Sign up</router-link> to get your name
           featured…if you can!
         </p>
       </div>
@@ -29,6 +30,16 @@ export default {
   data() {
     return {
       winners: [
+        // {
+        //   year: 2023,
+        //   division: "Men's",
+        //   team: [],
+        // },
+        // {
+        //   year: 2023,
+        //   division: "Co-Ed",
+        //   team: [],
+        // },
         {
           year: 2022,
           division: "Men's",
@@ -42,32 +53,52 @@ export default {
         {
           year: 2021,
           division: "Men's",
-          team: ["John Doe", "John Doe", "Ricky Jones", "Jim Kramer"],
+          team: ["Joe Lowell", "Ryan Carey", "Ethan Cheffer", "Jim Carey"],
         },
         {
           year: 2021,
           division: "Co-Ed",
-          team: ["John Doe", "John Doe", "Ricky Jones", "Jim Kramer"],
+          team: [
+            "Nicole Vitello",
+            "Hannah Dill",
+            "Kiarra Bonilla",
+            "Brian Dill",
+          ],
         },
         {
           year: 2020,
           division: "Men's",
-          team: ["John Doe", "John Doe", "Ricky Jones", "Jim Kramer"],
+          team: [
+            "Kyle Phelan",
+            "Dennis Phelan",
+            "Steven Julius",
+            "Mark Julius",
+          ],
         },
         {
           year: 2020,
           division: "Co-Ed",
-          team: ["John Doe", "John Doe", "Ricky Jones", "Jim Kramer"],
+          team: [
+            "Caitlyn Longwell",
+            "Lisa Longwell",
+            "Glenn Longwell",
+            "Matt Paolini",
+          ],
         },
         {
           year: 2019,
           division: "Men's",
-          team: ["John Doe", "John Doe", "Ricky Jones", "Jim Kramer"],
+          team: ["Richard Moore", "Andy Vojt", "Brian Glatzel", "Donn Malner"],
         },
         {
           year: 2019,
           division: "Co-Ed",
-          team: ["John Doe", "John Doe", "Ricky Jones", "Jim Kramer"],
+          team: [
+            "Marianne Elliott",
+            "Lisa Longwell",
+            "Donna Monks",
+            "Mary Okolo",
+          ],
         },
         {
           year: 2018,
@@ -82,7 +113,187 @@ export default {
         {
           year: 2018,
           division: "Co-Ed",
-          team: ["John Doe", "John Doe", "Ricky Jones", "Jim Kramer"],
+          team: [
+            "Lisa Longwell",
+            "Rhea Adler",
+            "Nicole Vitello",
+            "Cindy Moser",
+          ],
+        },
+        {
+          year: 2017,
+          division: "Men's",
+          team: ["Del Koupf", "Mike Seaver", "Troy Sundwall", "Mike Sundwall"],
+        },
+        {
+          year: 2017,
+          division: "Co-Ed - *First year of inception",
+          team: [
+            "Rhea Adler",
+            "Marianne Elliott",
+            "Janice Vitello",
+            "Nicole Vitello",
+          ],
+        },
+        {
+          year: 2016,
+          division: "Men's",
+          team: [
+            "Bill Cirscuolo",
+            "Mark Sytra",
+            "Troy Sundwall",
+            "Mike Sundwall",
+          ],
+        },
+        {
+          year: 2015,
+          division: "Men's",
+          team: [
+            "John Casertano",
+            "Mike Casertano",
+            "Kyle Dahn",
+            "Keith Crumb",
+          ],
+        },
+        {
+          year: 2014,
+          division: "Men's",
+          team: ["John Casertano", "Mike Casertano", "Rick Dondero"],
+        },
+        {
+          year: 2013,
+          division: "Men's",
+          team: ["John Casertano", "Mike Casertano", "Rick Dondero"],
+        },
+        {
+          year: 2012,
+          division: "Men's",
+          team: [
+            "Johnny Vitello",
+            "Tom Maher",
+            "Billy Mageski",
+            "Mike Sundwall",
+          ],
+        },
+        {
+          year: 2011,
+          division: "Men's",
+          team: ["Rick Moore", "Mike Hinckley", "Pete Giannini"],
+        },
+        {
+          year: 2010,
+          division: "Men's",
+          team: ["Johnny Vitello", "Tom Maher", "Billy Mageski", "Tom Howard"],
+        },
+        {
+          year: 2009,
+          division: "Men's",
+          team: ["Phil Curry", "Dave LaClair", "Kevin Langan", "Joe Jarvie"],
+        },
+        {
+          year: 2008,
+          division: "Men's",
+          team: ["Phil Curry", "Joe Jarvie", "Dave LaClair"],
+        },
+        {
+          year: 2007,
+          division: "Men's",
+          team: [
+            "Jonny Molchan",
+            "Jay Valentine",
+            "Jim Schmidt",
+            "Richard Schmidt",
+          ],
+        },
+        {
+          year: 2006,
+          division: "Men's",
+          team: [
+            "Jonny Molchan",
+            "Jay Valentine",
+            "Jim Schmidt",
+            "Richard Schmidt",
+          ],
+        },
+        {
+          year: 2005,
+          division: "Men's",
+          team: [
+            "John Casertano",
+            "Mike Casertano",
+            "Jeff Dahn",
+            "Bob Neibling",
+          ],
+        },
+        {
+          year: 2004,
+          division: "Men's",
+          team: ["Del Koupf", "Mike Seaver", "Don Waldron", "Mike Sundwall"],
+        },
+        {
+          year: 2003,
+          division: "Men's",
+          team: ["Dennis Perrino", "Steve Worley", "Ed Yocher"],
+        },
+        {
+          year: 2002,
+          division: "Men's",
+          team: [
+            "Rick Schaefer",
+            "Ron Mitchell",
+            "Pete Andersen",
+            "Pete Czuchra",
+          ],
+        },
+        {
+          year: 2001,
+          division: "Men's",
+          team: [
+            "Del Koupf",
+            "Bill Criscuolo",
+            "Frank Wallaby",
+            "Mike Sundwall",
+          ],
+        },
+        {
+          year: 2000,
+          division: "Men's",
+          team: [
+            "Del Koupf",
+            "Chris Dellavalle",
+            "Mike Silengo",
+            "Mike Sundwall",
+          ],
+        },
+        {
+          year: 1999,
+          division: "Men's",
+          team: ["Del Koupf", "Mike Seaver", "Don Waldron", "Mike Sundwall"],
+        },
+        {
+          year: 1998,
+          division: "Men's",
+          team: [
+            "Rick Diotalevi",
+            "Randy Diotalevi",
+            "Rod Diotalevi",
+            "Tino Diotalevi",
+          ],
+        },
+        {
+          year: 1997,
+          division: "Men's",
+          team: ["Ed Yocher", "Vin Malerba", "Charley Mahoney"],
+        },
+        {
+          year: 1993,
+          division: "Men's",
+          team: [
+            "Paul Vitello",
+            "Tom Howard",
+            "Joe Mastrangelo",
+            "Adam Mastrangelo",
+          ],
         },
       ],
     };
@@ -170,7 +381,7 @@ export default {
   color: var(--mainColor);
 }
 .winner--output {
-  color: rgb(148, 147, 147);
+  color: rgb(118, 118, 118);
 }
 .winner--output::after {
   content: "";
