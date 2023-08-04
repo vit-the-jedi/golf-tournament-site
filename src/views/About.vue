@@ -41,24 +41,69 @@ import secondaryNav from "../components/secondaryNav.vue";
         </p>
       </div>
     </div>
-
     <div class="gallery">
+      <h2 class="my-4 text-center">A Look Through the Years</h2>
       <div class="grid">
         <div class="grid-sizer"></div>
-        <div class="grid-item grid-item--width2 grid-item--height3"></div>
-        <div class="grid-item grid-item--width2 grid-item--height3"></div>
-        <div class="grid-item grid-item--height3"></div>
-        <div class="grid-item grid-item--height3"></div>
-        <div class="grid-item grid-item--width3"></div>
+        <div
+          class="grid-item lazy-background grid-item--width2 grid-item--height3"
+        ></div>
+        <div
+          class="grid-item lazy-background grid-item--width2 grid-item--height3"
+        ></div>
+        <div class="grid-item lazy-background grid-item--height3"></div>
+        <div
+          class="grid-item lazy-background grid-item--width1 grid-item--height3"
+        ></div>
+        <div
+          class="grid-item lazy-background grid-item--width2 grid-item--height3"
+        ></div>
+        <div
+          class="grid-item lazy-background grid-item--width2 grid-item--height3"
+        ></div>
+        <div
+          class="grid-item lazy-background grid-item--width2 grid-item--height3"
+        ></div>
+        <div
+          class="grid-item lazy-background grid-item--width3 grid-item--height3"
+        ></div>
+        <div
+          class="grid-item lazy-background grid-item--width2 grid-item--height3"
+        ></div>
+        <div
+          class="grid-item lazy-background grid-item--width2 grid-item--height3"
+        ></div>
+        <div
+          class="grid-item lazy-background grid-item--width1 grid-item--height3"
+        ></div>
       </div>
     </div>
   </div>
 </template>
 <script>
-export default {
-  data() {},
-  methods: {},
-};
+document.addEventListener("DOMContentLoaded", function () {
+  const lazyBackgrounds = [].slice.call(
+    document.querySelectorAll(".lazy-background")
+  );
+
+  if ("IntersectionObserver" in window) {
+    let lazyBackgroundObserver = new IntersectionObserver(function (
+      entries,
+      observer
+    ) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          lazyBackgroundObserver.unobserve(entry.target);
+        }
+      });
+    });
+
+    lazyBackgrounds.forEach(function (lazyBackground) {
+      lazyBackgroundObserver.observe(lazyBackground);
+    });
+  }
+});
 </script>
 <style scoped>
 img {
@@ -93,6 +138,12 @@ h1 {
 h1 span {
   color: var(--secondColor);
   font-size: 4rem;
+}
+h5 {
+  font-weight: bold;
+}
+p {
+  margin-bottom: 2em;
 }
 .container {
   padding: 8%;
@@ -129,15 +180,51 @@ h1 span {
   background-size: cover;
   border-radius: var(--card-border-radius);
 }
-.grid-item:nth-child(2) {
+.visible:nth-child(2) {
   background-image: url("../assets/gallery/IMG_0119.JPG");
-  background-position: center 72%;
+  background-position: center 50%;
 }
-.grid-item:nth-child(3) {
+.visible:nth-child(3) {
   background-image: url("../assets/gallery/IMG_4850.JPG");
 }
-.grid-item:nth-child(4) {
+.visible:nth-child(4) {
   background-image: url("../assets/gallery/IMG_1328.JPG");
+}
+.visible:nth-child(5) {
+  background-image: url("src/assets/gallery/e44a7ab4-eed6-4128-bee3-e5e91c9eb7a4.jpg");
+}
+.visible:nth-child(6) {
+  background-image: url("src/assets/gallery/9b364b36-eccd-4904-a045-c55a526e2327.jpg");
+}
+.visible:nth-child(7) {
+  background-image: url("src/assets/gallery/1b223711-afa1-4f33-b2a2-31c139543a99.jpg");
+  background-position: 25% center;
+  background-size: 125%;
+}
+.visible:nth-child(8) {
+  background-image: url("src/assets/gallery/5f3a57ee-83ea-47fd-9912-30bd5f6dd347.jpg");
+  background-position: 25% center;
+  background-size: 125%;
+}
+.visible:nth-child(9) {
+  background-image: url("src/assets/gallery/9512c9e7-779d-48bc-84be-f97742e08d58.jpg");
+  background-position: center 34%;
+  background-size: 125%;
+}
+.visible:nth-child(10) {
+  background-image: url("src/assets/gallery/f687f79e-420a-4aa0-ad7a-875c391bc285.jpg");
+  background-position: center 34%;
+  background-size: 125%;
+}
+.visible:nth-child(11) {
+  background-image: url("src/assets/gallery/90bd71d5-d4d7-4ac1-920e-ef750ebe4cda.jpg");
+  background-position: center 34%;
+  background-size: 125%;
+}
+.visible:nth-child(12) {
+  background-image: url("src/assets/gallery/2acbd12e-1690-4ba7-adbd-b3b28b70aef6.jpg");
+  background-position: center 34%;
+  background-size: 170%;
 }
 .grid-item--width2 {
   width: 40%;
@@ -162,9 +249,7 @@ h1 span {
   .grid-item {
     width: 50%;
     background-position: center center;
-  }
-  .grid-item:nth-child(4n + 4) {
-    width: 100%;
+    background-size: cover !important;
   }
 }
 </style>
