@@ -81,29 +81,34 @@ import secondaryNav from "../components/secondaryNav.vue";
   </div>
 </template>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const lazyBackgrounds = [].slice.call(
-    document.querySelectorAll(".lazy-background")
-  );
+export default {
+  mounted() {
+    const lazyBackgrounds = [].slice.call(
+      document.querySelectorAll(".lazy-background")
+    );
 
-  if ("IntersectionObserver" in window) {
-    let lazyBackgroundObserver = new IntersectionObserver(function (
-      entries,
-      observer
-    ) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          lazyBackgroundObserver.unobserve(entry.target);
-        }
+    if ("IntersectionObserver" in window) {
+      let lazyBackgroundObserver = new IntersectionObserver(function (
+        entries,
+        observer
+      ) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add("visible");
+            }, 500);
+
+            lazyBackgroundObserver.unobserve(entry.target);
+          }
+        });
       });
-    });
 
-    lazyBackgrounds.forEach(function (lazyBackground) {
-      lazyBackgroundObserver.observe(lazyBackground);
-    });
-  }
-});
+      lazyBackgrounds.forEach(function (lazyBackground) {
+        lazyBackgroundObserver.observe(lazyBackground);
+      });
+    }
+  },
+};
 </script>
 <style scoped>
 img {
@@ -179,6 +184,11 @@ p {
   border-radius: 5px;
   background-size: cover;
   border-radius: var(--card-border-radius);
+  transition: opacity 1s ease-in;
+  opacity: 0;
+}
+.visible {
+  opacity: 1;
 }
 .visible:nth-child(2) {
   background-image: url("../assets/gallery/IMG_0119.JPG");
