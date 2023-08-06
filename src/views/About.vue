@@ -191,48 +191,48 @@ p {
   opacity: 1;
 }
 .visible:nth-child(2) {
-  background-image: url("../assets/gallery/IMG_0119.JPG");
+  background-image: url("../assets/IMG_0119.JPG");
   background-position: center 50%;
 }
 .visible:nth-child(3) {
-  background-image: url("../assets/gallery/IMG_4850.JPG");
+  background-image: url("../assets/IMG_4850.JPG");
 }
 .visible:nth-child(4) {
-  background-image: url("../assets/gallery/IMG_1328.JPG");
+  background-image: url("../assets/IMG_1328.JPG");
 }
 .visible:nth-child(5) {
-  background-image: url("src/assets/gallery/e44a7ab4-eed6-4128-bee3-e5e91c9eb7a4.jpg");
+  background-image: url("../assets/e44a7ab4-eed6-4128-bee3-e5e91c9eb7a4.jpg");
 }
 .visible:nth-child(6) {
-  background-image: url("src/assets/gallery/9b364b36-eccd-4904-a045-c55a526e2327.jpg");
+  background-image: url("../assets/9b364b36-eccd-4904-a045-c55a526e2327.jpg");
 }
 .visible:nth-child(7) {
-  background-image: url("src/assets/gallery/1b223711-afa1-4f33-b2a2-31c139543a99.jpg");
+  background-image: url("../assets/1b223711-afa1-4f33-b2a2-31c139543a99.jpg");
   background-position: 25% center;
   background-size: 125%;
 }
 .visible:nth-child(8) {
-  background-image: url("src/assets/gallery/5f3a57ee-83ea-47fd-9912-30bd5f6dd347.jpg");
+  background-image: url("../assets/5f3a57ee-83ea-47fd-9912-30bd5f6dd347.jpg");
   background-position: 25% center;
   background-size: 125%;
 }
 .visible:nth-child(9) {
-  background-image: url("src/assets/gallery/9512c9e7-779d-48bc-84be-f97742e08d58.jpg");
+  background-image: url("../assets/9512c9e7-779d-48bc-84be-f97742e08d58.jpg");
   background-position: center 34%;
   background-size: 125%;
 }
 .visible:nth-child(10) {
-  background-image: url("src/assets/gallery/f687f79e-420a-4aa0-ad7a-875c391bc285.jpg");
+  background-image: url("../assets/f687f79e-420a-4aa0-ad7a-875c391bc285.jpg");
   background-position: center 34%;
   background-size: 125%;
 }
 .visible:nth-child(11) {
-  background-image: url("src/assets/gallery/90bd71d5-d4d7-4ac1-920e-ef750ebe4cda.jpg");
+  background-image: url("../assets/90bd71d5-d4d7-4ac1-920e-ef750ebe4cda.jpg");
   background-position: center 34%;
   background-size: 125%;
 }
 .visible:nth-child(12) {
-  background-image: url("src/assets/gallery/2acbd12e-1690-4ba7-adbd-b3b28b70aef6.jpg");
+  background-image: url("../assets/2acbd12e-1690-4ba7-adbd-b3b28b70aef6.jpg");
   background-position: center 34%;
   background-size: 170%;
 }
