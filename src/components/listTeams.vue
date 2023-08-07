@@ -1,21 +1,27 @@
 <template>
   <div class="row admin--row">
-    <div class="admin--column"><h5>Team Name</h5></div>
-    <div class="admin--column"><h5>Players</h5></div>
+    <div class="admin--column"><h5>Team</h5></div>
     <div class="admin--column"><h5>Division</h5></div>
     <div class="admin--column"><h5>Needs Grouping</h5></div>
   </div>
   <div class="row admin--row" v-for="team in teamsSignedUp">
     <div class="admin--column">
       <div class="admin--item">
-        <span>{{ team.teamName }}</span>
+        <div>
+          <h6>{{ team.teamName }}</h6>
+          <span class="paid" v-if="team.paid">PAID</span>
+          <span class="paid unpaid" v-if="!team.paid">UNPAID</span>
+        </div>
+        <div class="team">
+          <span>{{ team.players }}</span>
+        </div>
       </div>
     </div>
-    <div class="admin--column">
+    <!-- <div class="admin--column">
       <div class="admin--item">
         <span>{{ team.players }}</span>
       </div>
-    </div>
+    </div> -->
     <div class="admin--column">
       <div class="admin--item">
         <span>{{ team.division }}</span>
@@ -27,13 +33,18 @@
       </div>
     </div>
     <div class="admin--tools">
-      <div class="row admin--row">
-        <button :data-tool-target="team.id" @click="deleteTeamHandler">
-          DELETE TEAM
-        </button>
-        <button :data-tool-target="team.id" @click="editTeamHandler">
-          EDIT TEAM
-        </button>
+      <ul class="dropbtn icons btn-right showLeft" @click="showAdminTools">
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+      <div class="dropdown-content">
+        <ul>
+          <li>Edit Team</li>
+          <li>Delete Team</li>
+          <li>Mark as paid</li>
+          <li>Mark as un-paid</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -55,6 +66,11 @@ export default {
     };
   },
   methods: {
+    showAdminTools(ev) {
+      const parent = ev.target.parentNode;
+      const menu = parent.querySelector(".dropdown-content");
+      menu.classList.add("show");
+    },
     getTeamsListHandler: async function () {
       const teamsList = await listTeamDocs(
         this.adminChoices.division ?? "mens-league"
@@ -117,3 +133,32 @@ export default {
   },
 };
 </script>
+<style scoped>
+h6 {
+  font-weight: bold;
+  display: inline;
+}
+.admin--column:first-child {
+  flex-basis: 50%;
+}
+.admin--column {
+  flex-basis: 25%;
+}
+.team {
+  font-size: 0.95rem;
+}
+.paid {
+  display: inline;
+  max-width: 100px;
+  border-radius: 5px;
+  background-color: #51cc8a;
+  font-weight: bold;
+  color: white;
+  margin-left: 20px;
+  font-size: 0.8rem;
+  padding: 0.25rem;
+}
+.paid.unpaid {
+  background-color: #ef376e;
+}
+</style>

@@ -6,37 +6,27 @@ import listTeams from "../components/listTeams.vue";
 <template>
   <secondaryNav />
   <div class="container">
-    <listTeams />
+    <div class="col-md-7 col-12 admin--card"><listTeams /></div>
   </div>
 </template>
-<!-- <script>
-import { mapState } from "vuex";
-export default {
-  data() {},
-  name: "vuex1",
-  computed: mapState(["user"]),
-  created() {
-    this.unsubscribe = this.$store.subscribe((mutation, state) => {
-      if (mutation.type === "setUser" || mutation.type === "fetchUser") {
-        if (!state.user.userLoggedIn) {
-          this.$router.push("/sign-in");
-        }
-      }
-    });
-  },
-  beforeDestroy() {
-    this.unsubscribe();
-  },
-};
-</script> -->
 
 <style>
-.admin--column,
-.admin--tools button {
-  flex-basis: 25%;
+.container {
+  background-color: #f0f4f7;
+}
+.admin--card {
+  background-color: white;
+  border-radius: var(--card-border-radius);
+  padding: 2em;
+}
+.admin--row:hover {
+  background-color: #e6e6e6;
 }
 .admin--tools {
-  width: 100%;
+  width: 30px;
+  position: absolute;
+  height: 100%;
+  right: 0;
 }
 .admin--tools button {
   background: grey;
@@ -44,17 +34,84 @@ export default {
   font-size: unset;
 }
 .admin--item {
-  display: flex;
   justify-content: space-between;
   padding: 5vh 2vh;
 }
-.admin--item:nth-child(odd) {
-  background: #acacac;
-}
-.admin--item:nth-child(even) {
-  background: #e6e6e6;
+.admin--row {
+  border-bottom: 1px solid var(--mainColor);
+  margin: auto;
 }
 .admin--item span {
+  display: block;
+}
+.showLeft {
+  text-shadow: none !important;
+  color: #fff !important;
+  padding: 10px;
+}
+.icons {
+  position: relative;
+  z-index: 997;
+  margin-left: -15px;
+}
+.icons li {
+  background: none repeat scroll 0 0 var(--mainColor);
+  height: 5px;
+  width: 5px;
+  line-height: 0;
+  list-style: none outside none;
+  margin-right: 15px;
+  margin-top: 3px;
+  vertical-align: top;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.btn-left {
+  left: 0.4em;
+}
+
+.btn-right {
+  right: 0.4em;
+}
+
+.dropbtn {
+  color: var(--mainColor);
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  height: 100%;
+}
+
+.dropdown {
+  position: absolute;
+  display: inline-block;
+  right: 0.4em;
+}
+
+.dropdown-content {
+  display: none;
+  position: relative;
+  margin-top: 60px;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {
+  background-color: #f1f1f1;
+}
+
+.show {
   display: block;
 }
 </style>
