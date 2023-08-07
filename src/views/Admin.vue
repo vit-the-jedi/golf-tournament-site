@@ -2,13 +2,56 @@
 //components
 import secondaryNav from "../components/secondaryNav.vue";
 import listTeams from "../components/listTeams.vue";
+import editTeamModal from "../components/editTeamModal.vue";
 </script>
 <template>
   <secondaryNav />
   <div class="container">
-    <div class="col-md-7 col-12 admin--card"><listTeams /></div>
+    <div class="col-md-7 col-12 admin--card">
+      <listTeams @edit-team="editTeam" />
+    </div>
   </div>
+  <button @click="this.test"></button>
+  <editTeamModal v-if="this.isEditing" :teamInfo="this.teamInfo" />
 </template>
+<script>
+export default {
+  components: { editTeamModal },
+  data() {
+    return {
+      isEditing: false,
+      hello: true,
+      teamInfo: {
+        teamName: null,
+        id: null,
+        player1_name: null,
+        player2_name: null,
+        player3_name: null,
+        player4_name: null,
+      },
+    };
+  },
+
+  methods: {
+    editTeam(team) {
+      this.concatPlayerNames(team.players);
+      this.teamInfo.teamName = team.teamName;
+      this.teamInfo.id = team.id;
+      this.isEditing = true;
+    },
+    concatPlayerNames(playersArr) {
+      playersArr.forEach((player, i, arr) => {
+        let name = "";
+        let playerNum = i + 1;
+        name += player.first_name;
+        name += " ";
+        name += player.last_name;
+        this.teamInfo[`player${playerNum}_name`] = name;
+      });
+    },
+  },
+};
+</script>
 
 <style>
 .container {

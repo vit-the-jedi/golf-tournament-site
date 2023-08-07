@@ -13,7 +13,12 @@
           <span class="paid unpaid" v-if="!team.paid">UNPAID</span>
         </div>
         <div class="team">
-          <span>{{ team.players }}</span>
+          <form action="">
+            <input type="hidden" name="player-names" />
+            <span v-for="player in team.players"
+              >{{ player.first_name }} {{ player.last_name }}</span
+            >
+          </form>
         </div>
       </div>
     </div>
@@ -42,7 +47,7 @@
         <button class="close-tools" @click="closeAdminTools">&times;</button>
         <ul>
           <li>
-            <button :data-tool-target="team.id" @click="editTeamHandler">
+            <button :data-tool-target="team.id" @click="this.editTeamHandler">
               Edit Team
             </button>
           </li>
@@ -126,11 +131,13 @@ export default {
         return;
       }
     },
-    editTeamHandler() {
+    editTeamHandler(ev) {
+      const id = ev.target.getAttribute("data-tool-target");
+      const targetTeam = this.teamsSignedUp.filter((team) => team.id === id);
+      this.$emit("edit-team", targetTeam[0]);
       //edit the teamsSignedUp data
       //send the edits to firebase on save
       //re-hydrate ui w/ new data
-      console.log(event);
     },
   },
   //await the call to firebase for teams list
@@ -142,7 +149,11 @@ export default {
       const teamObj = {};
       teamObj.teamName = value.teamName;
       teamObj.division = value.division;
-      teamObj.players = `${value.players[0].first_name} ${value.players[0].last_name}`;
+      teamObj.players = [];
+      value.players.forEach((player) => {
+        teamObj.players.push(player);
+      });
+      //teamObj.players = `${value.players[0].first_name} ${value.players[0].last_name}`;
       teamObj.needsGrouping = value.needsGrouping === true ? "yes" : "no";
       teamObj.id = value.id;
       this.teamsSignedUp.push(teamObj);
