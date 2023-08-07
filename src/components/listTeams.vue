@@ -7,7 +7,7 @@
   <div class="row admin--row" v-for="team in teamsSignedUp">
     <div class="admin--column">
       <div class="admin--item">
-        <div>
+        <div class="d-flex justify-content-between">
           <h6>{{ team.teamName }}</h6>
           <span class="paid" v-if="team.paid">PAID</span>
           <span class="paid unpaid" v-if="!team.paid">UNPAID</span>
@@ -39,11 +39,28 @@
         <li></li>
       </ul>
       <div class="dropdown-content">
+        <button class="close-tools" @click="closeAdminTools">&times;</button>
         <ul>
-          <li>Edit Team</li>
-          <li>Delete Team</li>
-          <li>Mark as paid</li>
-          <li>Mark as un-paid</li>
+          <li>
+            <button :data-tool-target="team.id" @click="editTeamHandler">
+              Edit Team
+            </button>
+          </li>
+          <li>
+            <button :data-tool-target="team.id" @click="deleteTeamHandler">
+              Delete Team
+            </button>
+          </li>
+          <li>
+            <button :data-tool-target="team.id" @click="markTeamPaidHandler">
+              Mark as paid
+            </button>
+          </li>
+          <li>
+            <button :data-tool-target="team.id" @click="markTeamUnPaidHandler">
+              Mark as un-paid
+            </button>
+          </li>
         </ul>
       </div>
     </div>
@@ -66,6 +83,10 @@ export default {
     };
   },
   methods: {
+    closeAdminTools(ev) {
+      const parent = ev.target.parentNode;
+      parent.classList.remove("show");
+    },
     showAdminTools(ev) {
       const parent = ev.target.parentNode;
       const menu = parent.querySelector(".dropdown-content");
@@ -79,32 +100,28 @@ export default {
     },
     async deleteTeamHandler(ev) {
       const teamId = ev.target.getAttribute("data-tool-target");
-      let targetTeam;
-      for (const o of this.teamsSignedUp) {
-        if (o.id === teamId) {
-          targetTeam = o;
-        }
-      }
+      const targetTeam = Object.values(this.teamsSignedUp).filter(
+        (team) => team.id === teamId
+      )[0];
       const answer = prompt(
-        `Are you sure you want to delete this team?
+        `Are you sure you want to delete ${targetTeam.teamName}?
         Type YES (all caps) below to delete.`
       );
       if (answer === "YES") {
         //delete team from db collection
         //re-hydrate ui w/ new list of teams
-        await deleteFromFirestore(
+        const deleteComplete = await deleteFromFirestore(
           `${targetTeam.division}-league`,
           targetTeam.teamName
-        ).then((deleteComplete) => {
-          if (deleteComplete) {
-            //trigger UI update
-            this.$router.go();
-          } else {
-            this.errors.push(
-              "There was a problem deleting this team, please try again"
-            );
-          }
-        });
+        );
+        if (deleteComplete) {
+          //trigger UI update
+          this.$router.go();
+        } else {
+          this.errors.push(
+            "There was a problem deleting this team, please try again"
+          );
+        }
       } else {
         return;
       }

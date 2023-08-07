@@ -25,7 +25,6 @@ import listTeams from "../components/listTeams.vue";
 .admin--tools {
   width: 30px;
   position: absolute;
-  height: 100%;
   right: 0;
 }
 .admin--tools button {
@@ -80,7 +79,6 @@ import listTeams from "../components/listTeams.vue";
   font-size: 12px;
   border: none;
   cursor: pointer;
-  height: 100%;
 }
 
 .dropdown {
@@ -88,30 +86,40 @@ import listTeams from "../components/listTeams.vue";
   display: inline-block;
   right: 0.4em;
 }
-
 .dropdown-content {
   display: none;
-  position: relative;
-  margin-top: 60px;
+  position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
   overflow: auto;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
+  z-index: 997;
+  left: 20px;
+  top: 0;
 }
-
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
+.dropdown-content ul {
+  list-style: none;
+  padding: 1em;
+  margin-bottom: 0;
 }
-
-.dropdown a:hover {
-  background-color: #f1f1f1;
+.dropdown-content button {
+  background: none;
+  font-family: "Nunito Sans", sans-serif;
+  text-transform: none;
+  font-weight: normal;
+  letter-spacing: unset;
+  color: var(--mainColor);
+  border: none;
 }
-
 .show {
   display: block;
+}
+.close-tools {
+  position: absolute;
+  top: 0px;
+  right: 20px;
+  font-weight: normal;
+  font-size: 1.25em;
+  text-align: right;
 }
 </style>

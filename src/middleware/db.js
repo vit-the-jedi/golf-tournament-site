@@ -100,14 +100,18 @@ async function addToFirestore(coll, docName, data = null) {
 }
 
 async function deleteFromFirestore(coll, docName) {
-  try {
-    const teamDeleted = await deleteDoc(doc(db, coll, docName));
-    if (teamDeleted) {
+  return new Promise((resolve) => {
+    const docRefToDelete = doc(db, coll, docName);
+    const completed = deleteDoc(docRefToDelete).then(() => {
+      console.log("Document deleted successfully");
       return true;
-    }
-  } catch (e) {
-    throw e;
-  }
+    })
+      .catch((error) => {
+        console.log(error);
+        return false
+      })
+    resolve(completed);
+  })
 }
 export {
   firebaseConfig,
