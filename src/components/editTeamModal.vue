@@ -1,5 +1,6 @@
 <template>
   <dialog open class="admin--card">
+    <button class="close-tools" @click="closeEditModal">&times;</button>
     <form id="editTeam-form">
       <fieldset>
         <legend>Team Name</legend>
@@ -84,6 +85,9 @@ export default {
           }
         }
       );
+    },
+    closeEditModal(ev) {
+      this.$emit("close-modal");
     },
   },
 };

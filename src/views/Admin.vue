@@ -11,7 +11,11 @@ import editTeamModal from "../components/editTeamModal.vue";
       <listTeams @edit-team="editTeam" />
     </div>
   </div>
-  <editTeamModal v-if="this.isEditing" :teamInfo="this.teamInfo" />
+  <editTeamModal
+    v-if="this.isEditing"
+    :teamInfo="this.teamInfo"
+    @close-modal="closeEditModal"
+  />
 </template>
 <script>
 export default {
@@ -32,6 +36,9 @@ export default {
     };
   },
   methods: {
+    closeEditModal() {
+      this.isEditing = false;
+    },
     editTeam(team) {
       this.concatPlayerNames(team.players);
       this.teamInfo.teamName = team.teamName;
@@ -145,7 +152,8 @@ export default {
   padding: 1em;
   margin-bottom: 0;
 }
-.dropdown-content button {
+.dropdown-content button,
+.close-tools {
   background: none;
   font-family: "Nunito Sans", sans-serif;
   text-transform: none;
@@ -164,5 +172,8 @@ export default {
   font-weight: normal;
   font-size: 1.25em;
   text-align: right;
+  max-width: 15px;
+  background: none;
+  color: var(--mainColor);
 }
 </style>
