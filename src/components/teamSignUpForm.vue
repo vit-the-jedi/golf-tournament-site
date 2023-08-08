@@ -4,7 +4,6 @@ const mainColor = ref("#003566");
 const secondColor = ref("#FFC300");
 </script>
 <template>
-  <!-- <loadingSpinner /> -->
   <form @submit="checkForm">
     <h1>Sign Up</h1>
     <p v-if="!playersAdded">Choose your squad</p>
@@ -130,7 +129,8 @@ const secondColor = ref("#FFC300");
 
 <script>
 import { addToFirestore } from "../middleware/db.js";
-import loadingSpinner from "../components/loading.vue";
+import { store } from "../store/index.js";
+
 export default {
   data() {
     return {
@@ -187,6 +187,9 @@ export default {
     },
   },
   methods: {
+    loadingScreenHandler(action) {
+      this.$emit("loading-screen");
+    },
     checkPlayerName: function (v) {
       if (v === null || v.length == 0 || v.match(/\d+/g)) {
         return false;
@@ -230,6 +233,7 @@ export default {
         this.errors.push("Please choose a division to be entered in.");
       }
       e.preventDefault();
+      //this.loadingScreen("show");
     },
     addError: function (errorString) {
       if (this.errors.length > 0) {
@@ -325,16 +329,6 @@ export default {
       this.teamObj["needsGrouping"] = this.needsGrouping;
       this.teamObj["teamName"] = this.teamName;
       this.teamObj["division"] = this.division;
-      // //delete the originals we dont need them anymore
-      // delete this.player1__firstName;
-      // delete this.player1__lastName;
-      // delete this.player2__firstName;
-      // delete this.player2__lastName;
-      // delete this.player3__firstName;
-      // delete this.player3__lastName;
-      // delete this.player4__firstName;
-      // delete this.player4__lastName;
-      console.log(this.teamObj);
 
       //need to pass collection ("teams"), document name (currently sorting by divison), and data
       this.formSubmitHandler();
