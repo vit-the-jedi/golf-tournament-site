@@ -11,7 +11,6 @@ import editTeamModal from "../components/editTeamModal.vue";
       <listTeams @edit-team="editTeam" />
     </div>
   </div>
-  <button @click="this.test"></button>
   <editTeamModal v-if="this.isEditing" :teamInfo="this.teamInfo" />
 </template>
 <script>
@@ -35,9 +34,6 @@ export default {
   methods: {
     editTeam(team) {
       this.concatPlayerNames(team.players);
-      //currently the only way to ref the doc in firebase after we've changed the data
-      //prob bad design
-      this.logOldInfo(team);
       this.teamInfo.teamName = team.teamName;
       this.teamInfo.id = team.id;
       this.teamInfo.division = team.division;
@@ -52,9 +48,6 @@ export default {
         name += player.last_name;
         this.teamInfo[`player${playerNum}_name`] = name;
       });
-    },
-    logOldInfo(team) {
-      this.teamInfo.oldTeamName = team.teamName;
     },
   },
 };

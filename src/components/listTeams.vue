@@ -108,27 +108,39 @@ export default {
       const targetTeam = Object.values(this.teamsSignedUp).filter(
         (team) => team.id === teamId
       )[0];
-      const answer = prompt(
-        `Are you sure you want to delete ${targetTeam.teamName}?
-        Type YES (all caps) below to delete.`
+      // const answer = prompt(
+      //   `Are you sure you want to delete ${targetTeam.teamName}?
+      //   Type YES (all caps) below to delete.`
+      // );
+      // if (answer === "YES") {
+      //   //delete team from db collection
+      //   //re-hydrate ui w/ new list of teams
+      //   const deleteComplete = await deleteFromFirestore(
+      //     `${targetTeam.division}-league`,
+      //     targetTeam.teamName
+      //   );
+      //   if (deleteComplete) {
+      //     //trigger UI update
+      //     this.$router.go();
+      //   } else {
+      //     this.errors.push(
+      //       "There was a problem deleting this team, please try again"
+      //     );
+      //   }
+      // } else {
+      //   return;
+      // }
+      const deleteComplete = await deleteFromFirestore(
+        `${targetTeam.division}-league`,
+        targetTeam.teamName
       );
-      if (answer === "YES") {
-        //delete team from db collection
-        //re-hydrate ui w/ new list of teams
-        const deleteComplete = await deleteFromFirestore(
-          `${targetTeam.division}-league`,
-          targetTeam.teamName
-        );
-        if (deleteComplete) {
-          //trigger UI update
-          this.$router.go();
-        } else {
-          this.errors.push(
-            "There was a problem deleting this team, please try again"
-          );
-        }
+      if (deleteComplete) {
+        //trigger UI update
+        this.$router.go();
       } else {
-        return;
+        this.errors.push(
+          "There was a problem deleting this team, please try again"
+        );
       }
     },
     editTeamHandler(ev) {

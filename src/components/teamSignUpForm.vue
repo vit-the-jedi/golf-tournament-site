@@ -341,7 +341,7 @@ export default {
     },
     formSubmitHandler: async function () {
       const team = this.teamObj;
-      addToFirestore(`${team.division}-league`, team.teamName, team)
+      addToFirestore(`${team.division}-league`, team)
         .then((resp) => {
           if (resp) {
             //loop through players array and create a URL-encoded string we can pass to our success page

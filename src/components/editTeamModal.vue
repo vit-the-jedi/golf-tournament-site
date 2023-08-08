@@ -77,16 +77,13 @@ export default {
   methods: {
     submitTeamChangesHandler(e) {
       e.preventDefault();
-      console.log(this.teamInfo);
-      // addToFirestore(
-      //   `${this.teamInfo.division}-league`,
-      //   this.teamInfo.oldTeamName,
-      //   this.teamInfo
-      // ).then((resp) => {
-      //   if (resp) {
-      //     console.log(resp);
-      //   }
-      // });
+      addToFirestore(`${this.teamInfo.division}-league`, this.teamInfo).then(
+        (resp) => {
+          if (resp) {
+            console.log(resp);
+          }
+        }
+      );
     },
   },
 };
