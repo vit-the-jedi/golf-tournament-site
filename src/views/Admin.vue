@@ -2,41 +2,73 @@
 //components
 import secondaryNav from "../components/secondaryNav.vue";
 import listTeams from "../components/listTeams.vue";
+import editTeamModal from "../components/editTeamModal.vue";
 </script>
 <template>
   <secondaryNav />
   <div class="container">
-    <listTeams />
+    <div class="col-md-7 col-12 admin--card">
+      <listTeams @edit-team="editTeam" />
+    </div>
   </div>
+  <editTeamModal v-if="this.isEditing" :teamInfo="this.teamInfo" />
 </template>
-<!-- <script>
-import { mapState } from "vuex";
+<script>
 export default {
-  data() {},
-  name: "vuex1",
-  computed: mapState(["user"]),
-  created() {
-    this.unsubscribe = this.$store.subscribe((mutation, state) => {
-      if (mutation.type === "setUser" || mutation.type === "fetchUser") {
-        if (!state.user.userLoggedIn) {
-          this.$router.push("/sign-in");
-        }
-      }
-    });
+  components: { editTeamModal },
+  data() {
+    return {
+      isEditing: false,
+      hello: true,
+      teamInfo: {
+        teamName: null,
+        id: null,
+        player1_name: null,
+        player2_name: null,
+        player3_name: null,
+        player4_name: null,
+        division: null,
+      },
+    };
   },
-  beforeDestroy() {
-    this.unsubscribe();
+  methods: {
+    editTeam(team) {
+      this.concatPlayerNames(team.players);
+      this.teamInfo.teamName = team.teamName;
+      this.teamInfo.id = team.id;
+      this.teamInfo.division = team.division;
+      this.isEditing = true;
+    },
+    concatPlayerNames(playersArr) {
+      playersArr.forEach((player, i, arr) => {
+        let name = "";
+        let playerNum = i + 1;
+        name += player.first_name;
+        name += " ";
+        name += player.last_name;
+        this.teamInfo[`player${playerNum}_name`] = name;
+      });
+    },
   },
 };
-</script> -->
+</script>
 
 <style>
-.admin--column,
-.admin--tools button {
-  flex-basis: 25%;
+.container {
+  background-color: #f0f4f7;
+}
+.admin--card {
+  background-color: white;
+  border-radius: var(--card-border-radius);
+  padding: 2em;
+}
+.admin--row:hover {
+  background-color: #e6e6e6;
 }
 .admin--tools {
-  width: 100%;
+  width: 30px;
+  position: absolute;
+  right: 0;
 }
 .admin--tools button {
   background: grey;
@@ -44,17 +76,93 @@ export default {
   font-size: unset;
 }
 .admin--item {
-  display: flex;
   justify-content: space-between;
   padding: 5vh 2vh;
 }
-.admin--item:nth-child(odd) {
-  background: #acacac;
-}
-.admin--item:nth-child(even) {
-  background: #e6e6e6;
+.admin--row {
+  border-bottom: 1px solid var(--mainColor);
+  margin: auto;
 }
 .admin--item span {
   display: block;
+}
+.showLeft {
+  text-shadow: none !important;
+  color: #fff !important;
+  padding: 10px;
+}
+.icons {
+  position: relative;
+  z-index: 997;
+  margin-left: -15px;
+}
+.icons li {
+  background: none repeat scroll 0 0 var(--mainColor);
+  height: 5px;
+  width: 5px;
+  line-height: 0;
+  list-style: none outside none;
+  margin-right: 15px;
+  margin-top: 3px;
+  vertical-align: top;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.btn-left {
+  left: 0.4em;
+}
+
+.btn-right {
+  right: 0.4em;
+}
+
+.dropbtn {
+  color: var(--mainColor);
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  display: inline-block;
+  right: 0.4em;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  overflow: auto;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 997;
+  left: 20px;
+  top: 0;
+}
+.dropdown-content ul {
+  list-style: none;
+  padding: 1em;
+  margin-bottom: 0;
+}
+.dropdown-content button {
+  background: none;
+  font-family: "Nunito Sans", sans-serif;
+  text-transform: none;
+  font-weight: normal;
+  letter-spacing: unset;
+  color: var(--mainColor);
+  border: none;
+}
+.show {
+  display: block;
+}
+.close-tools {
+  position: absolute;
+  top: 0px;
+  right: 20px;
+  font-weight: normal;
+  font-size: 1.25em;
+  text-align: right;
 }
 </style>

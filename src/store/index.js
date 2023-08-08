@@ -12,6 +12,8 @@ const store = createStore({
       userData: {},
       userLoggedIn: false,
     },
+    loading: false,
+    team: null,
   },
   mutations: {
     //Mutation to update the user state
@@ -35,6 +37,13 @@ const store = createStore({
     },
     setPermissionLevel(state, value) {
       state.user.userData.permissionLevel = value;
+    },
+    setLoadingState(state, value) {
+      state.loading = value;
+    },
+    setTeam(state, value) {
+      state.team = value;
+      console.log(state.team);
     },
   },
   actions: {
@@ -60,6 +69,12 @@ const store = createStore({
     },
     getLoginState(state) {
       return state.user.userLoggedIn;
+    },
+    getLoadingState(state) {
+      return state.loading;
+    },
+    getTeam(state) {
+      return state.team;
     },
   },
 });

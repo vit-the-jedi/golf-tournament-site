@@ -84,10 +84,12 @@ async function listTeamDocs(collectionName) {
 }
 
 //have to pass either mens or coed as docName to enter new data into each document
-async function addToFirestore(coll, docName, data = null) {
-  const docRef = doc(db, coll, docName);
-  data.id = self.crypto.randomUUID();
-  console.log(data);
+async function addToFirestore(coll, data = null) {
+  if (!data.hasOwnProperty("id")) {
+    data.id = self.crypto.randomUUID();
+  }
+  const docRef = doc(db, coll, data.id);
+
   setDoc(docRef, data, { merge: true })
     .then(() => {
       console.log("Document has been added successfully");
@@ -98,15 +100,29 @@ async function addToFirestore(coll, docName, data = null) {
       return false;
     });
 }
-
 async function deleteFromFirestore(coll, docName) {
-  try {
-    const teamDeleted = await deleteDoc(doc(db, coll, docName));
-    if (teamDeleted) {
+  return new Promise((resolve) => {
+    const docRefToDelete = doc(db, coll, docName);
+    const completed = deleteDoc(docRefToDelete).then(() => {
+      console.log("Document deleted successfully");
       return true;
-    }
-  } catch (e) {
-    throw e;
+    })
+      .catch((error) => {
+        console.log(error);
+        return false
+      })
+    resolve(completed);
+  })
+}
+async function updateFirestoreDoc(db, coll, id) {
+  //check if user attempting to sign in is admin
+  const docToUpdateRef = doc(db, coll, phoneNumber);
+  const docSnap = await getDoc(adminDocRef);
+
+  if (docSnap.exists()) {
+    return "admin";
+  } else {
+    return "user";
   }
 }
 export {

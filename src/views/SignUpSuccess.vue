@@ -1,18 +1,14 @@
 <script setup>
 import teamInfo from "../components/teamInfo.vue";
+import secondaryNav from "../components/secondaryNav.vue";
 </script>
 <template>
+  <secondaryNav />
   <div class="sign-up__success">
-    <topContent>
-      <template #heading>You're all set!</template>
-    </topContent>
-    <div class="container info-container">
-      <div class="top-copy">
-        <h2>Thanks for signing up</h2>
-        <p>
-          Please take a screenshot, we'll use your team name to identify you
-          moving forward.
-        </p>
+    <div class="container info-container mt-4">
+      <div class="text-center">
+        <h1>All Set!</h1>
+        <h4>Review your details below</h4>
       </div>
       <teamInfo />
     </div>
@@ -27,3 +23,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+@media screen and (max-width: 767px) {
+  .container {
+    padding: 0;
+  }
+}
+</style>

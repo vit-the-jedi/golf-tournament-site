@@ -78,6 +78,9 @@ export default {
   <div class="home">
     <div class="container info-container">
       <div class="card">
+        <div class="ball-icons">
+          <img src="/src/assets/player-icons.png" />
+        </div>
         <div class="button-container mb-4">
           <button><router-link to="/sign-up">SIGN UP</router-link></button>
           <small class="text-center d-block w-100">(max 4 players)</small>
@@ -231,15 +234,6 @@ export default {
 }
 .card:has(.entry--info) {
   margin-top: -5vh;
-}
-.card:has(.entry--info)::before {
-  content: "";
-  background: url("../assets/player-icons.png") no-repeat center center /
-    contain;
-  width: 40%;
-  max-width: 50vw;
-  min-height: 13vh;
-  margin: -15% auto auto auto;
 }
 .card.sub--card .col-12 {
   margin: 2vh auto;
