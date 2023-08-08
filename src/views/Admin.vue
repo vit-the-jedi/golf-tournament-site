@@ -28,15 +28,19 @@ export default {
         player2_name: null,
         player3_name: null,
         player4_name: null,
+        division: null,
       },
     };
   },
-
   methods: {
     editTeam(team) {
       this.concatPlayerNames(team.players);
+      //currently the only way to ref the doc in firebase after we've changed the data
+      //prob bad design
+      this.logOldInfo(team);
       this.teamInfo.teamName = team.teamName;
       this.teamInfo.id = team.id;
+      this.teamInfo.division = team.division;
       this.isEditing = true;
     },
     concatPlayerNames(playersArr) {
@@ -48,6 +52,9 @@ export default {
         name += player.last_name;
         this.teamInfo[`player${playerNum}_name`] = name;
       });
+    },
+    logOldInfo(team) {
+      this.teamInfo.oldTeamName = team.teamName;
     },
   },
 };
