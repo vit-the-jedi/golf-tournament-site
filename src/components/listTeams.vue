@@ -132,7 +132,7 @@ export default {
       // }
       const deleteComplete = await deleteFromFirestore(
         `${targetTeam.division}-league`,
-        targetTeam.teamName
+        targetTeam.id
       );
       if (deleteComplete) {
         //trigger UI update
