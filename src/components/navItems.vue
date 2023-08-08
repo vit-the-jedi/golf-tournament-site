@@ -83,7 +83,9 @@ export default {
     signOutHandler: async function () {
       await store.dispatch("logOut");
       this.closeMenuHandler();
-      this.$router.push(this.$route.query.redirect || "/");
+      this.$router.push("/");
+      //hotfix for issue with vue state not updating until refresh
+      location.reload();
     },
   },
 };

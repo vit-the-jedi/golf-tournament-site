@@ -7,17 +7,18 @@ export default {
   data() {
     return {
       date: "October 7th, 2023",
-      time: "8:00am",
-      golfCourse: "Hawk's Landing Golf Course",
-      golfCourseAddress: "201 Pattonwood Dr Southington, CT 06489",
+      time: "10:00am",
+      golfCourse: "East Mountain Golf Course",
+      golfCourseAddress: "171 E Mountain Rd, Waterbury, CT 06706",
       pricing: {
         ticketPrice: "$85.00",
         addOns: [
+          "$10 Pro Shop credit",
+          "Coffee & at check-in",
           "Golf Cart (per 1-2 players)",
-          "Snacks",
-          "Water",
+          "Snacks and drinks at the tee boxes",
           "Trophies (1st, 2nd, 3rd place per division, plus longest drive and closest to pin for both front and back 9)",
-          "All proceeds after operational charges will be donated to the ",
+          "All proceeds after operational expenses will be donated to the Valley Community Fund",
         ],
         trophies: [
           "First Place",
@@ -97,7 +98,7 @@ export default {
             <div class="col-md-6 col-12">
               <h2>When &amp; where?</h2>
               <p>{{ outputDate }}</p>
-              <p>SHOTGUN START @ 10AM</p>
+              <p>SHOTGUN START @ 8AM</p>
               <p>{{ outputGolfCourse }},</p>
               <p>{{ outputGolfCourseAddress }}</p>
             </div>
@@ -148,7 +149,7 @@ export default {
               <ul>
                 <li>Teams of four.</li>
                 <li>Scramble (best ball) format.</li>
-                <li>Men's and Co-ed Leagues available.</li>
+                <li>Men's and Co-ed Divisions available.</li>
                 <li>Incomplete teams will be joined to make a foursome.</li>
                 <li>Have fun!</li>
               </ul>
@@ -162,6 +163,7 @@ export default {
                 <li>Paul Vitello</li>
                 <li>Janice Vitello</li>
                 <li>Matt Vitello</li>
+                <li>Nicole Vitello</li>
                 <li>Anthony Lowell</li>
               </ul>
             </div>
