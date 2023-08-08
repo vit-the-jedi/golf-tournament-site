@@ -335,10 +335,32 @@ export default {
     },
     formSubmitHandler: async function () {
       const team = this.teamObj;
-      await addToFirestore(`${team.division}-league`, team.teamName, team);
-      store.commit("setTeam", team);
-      sessionStorage.setItem("team", JSON.stringify(team));
-      this.$router.push("/sign-up-success");
+      addToFirestore(`${team.division}-league`, team)
+        .then((resp) => {
+          if (resp) {
+            //loop through players array and create a URL-encoded string we can pass to our success page
+            let playersString = "";
+            team.players.forEach((playerName, index, arr) => {
+              //if this is not the last entry, add a plus to the end
+              index < arr.length - 1
+                ? (playersString += `${playerName.first_name} ${playerName.last_name}|`)
+                : (playersString += `${playerName.first_name} ${playerName.last_name}`);
+            });
+
+            //programmatically route to success page w/ relevant form data we can post back for user review
+            this.$router.push({
+              path: "/sign-up-success",
+              query: {
+                players: playersString,
+                division: team.division,
+                teamName: team.teamName,
+              },
+            });
+          }
+        })
+        .catch((err) => {
+          console.error(error);
+        });
     },
   },
 };
