@@ -1,7 +1,8 @@
 <template>
-  <dialog open class="admin--card">
+  <dialog open class="admin--card edit-team-dialog">
     <button class="close-tools" @click="closeEditModal">&times;</button>
     <form id="editTeam-form">
+      <small>ID: {{ this.teamInfo.id }}</small>
       <fieldset>
         <legend>Team Name</legend>
         <input
@@ -11,7 +12,6 @@
           :value="this.teamInfo.teamName"
           @input="(event) => (this.teamInfo.teamName = event.target.value)"
         />
-        <small>ID: {{ this.teamInfo.id }}</small>
       </fieldset>
       <fieldset>
         <legend>Division</legend>
@@ -24,7 +24,7 @@
           <option value="coed">Co-ed Division</option>
         </select>
       </fieldset>
-      <fieldset class="row m-auto">
+      <fieldset class="row">
         <legend>Players</legend>
         <!-- player 1 -->
         <input
@@ -115,6 +115,31 @@
           "
         />
       </fieldset>
+      <div class="row w-100 m-auto">
+        <div class="col-6">
+          <p>
+            Current payment status:
+            <span class="paid" v-if="this.teamInfo.paid">PAID</span>
+            <span class="paid unpaid" v-if="!this.teamInfo.paid">UNPAID</span>
+          </p>
+        </div>
+        <div class="col-6">
+          <button
+            class="payment-button"
+            v-if="!this.teamInfo.paid"
+            @click="(event) => (this.teamInfo.paid = true)"
+          >
+            Mark Team Paid
+          </button>
+          <button
+            class="payment-button"
+            v-if="this.teamInfo.paid"
+            @click="(event) => (this.teamInfo.paid = false)"
+          >
+            Mark Team Unpaid
+          </button>
+        </div>
+      </div>
       <button
         role="button"
         id="editTeam-submit"
@@ -129,6 +154,9 @@
 <script>
 export default {
   props: ["teamInfo"],
+  mounted() {
+    console.log(this.teamInfo);
+  },
   methods: {
     submitTeamChangesHandler(e) {
       e.preventDefault();
@@ -143,9 +171,9 @@ export default {
 </script>
 <style scoped>
 dialog {
-  position: fixed;
+  position: absolute;
   z-index: 999;
-  max-width: 400px;
+  max-width: 500px;
   transform: translate(0%, 25%);
   top: 0;
   left: 0;
@@ -160,5 +188,13 @@ fieldset {
 }
 .full-width {
   width: 100%;
+}
+.payment-button {
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 12px;
+  max-width: 200px;
+  background-color: white;
+  border: 2px solid var(--mainColor);
+  color: var(--mainColor);
 }
 </style>

@@ -67,6 +67,7 @@ export default {
         //teamObj.players = `${value.players[0].first_name} ${value.players[0].last_name}`;
         teamObj.needsGrouping = value.needsGrouping === true ? "yes" : "no";
         teamObj.id = value.id;
+        teamObj.paid = value.paid;
         this.teamsSignedUp.push(teamObj);
       });
     },
@@ -102,6 +103,7 @@ export default {
       this.teamInfo.teamName = team.teamName;
       this.teamInfo.id = team.id;
       this.teamInfo.division = team.division;
+      this.teamInfo.paid = team.paid;
       this.isEditing = true;
     },
     async submitTeamChanges() {
@@ -148,6 +150,10 @@ export default {
   background: grey;
   padding: unset;
   font-size: unset;
+}
+.admin--tools button:hover,
+.edit-team-dialog .payment-button:hover {
+  background-color: #e6e6e6;
 }
 .admin--item {
   justify-content: space-between;
@@ -242,5 +248,19 @@ export default {
   max-width: 15px;
   background: none;
   color: var(--mainColor);
+}
+.paid {
+  display: inline;
+  max-width: 100px;
+  border-radius: 5px;
+  background-color: var(--success);
+  font-weight: bold;
+  color: white;
+  margin-left: 20px;
+  font-size: 0.8rem;
+  padding: 0.25rem;
+}
+.paid.unpaid {
+  background-color: var(--danger);
 }
 </style>

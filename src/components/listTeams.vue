@@ -56,16 +56,6 @@
               Delete Team
             </button>
           </li>
-          <li>
-            <button :data-tool-target="team.id" @click="markTeamPaidHandler">
-              Mark as paid
-            </button>
-          </li>
-          <li>
-            <button :data-tool-target="team.id" @click="markTeamUnPaidHandler">
-              Mark as un-paid
-            </button>
-          </li>
         </ul>
       </div>
     </div>
@@ -117,19 +107,5 @@ h6 {
 }
 .team {
   font-size: 0.95rem;
-}
-.paid {
-  display: inline;
-  max-width: 100px;
-  border-radius: 5px;
-  background-color: #51cc8a;
-  font-weight: bold;
-  color: white;
-  margin-left: 20px;
-  font-size: 0.8rem;
-  padding: 0.25rem;
-}
-.paid.unpaid {
-  background-color: #ef376e;
 }
 </style>

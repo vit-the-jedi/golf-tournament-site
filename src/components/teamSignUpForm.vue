@@ -329,6 +329,8 @@ export default {
       this.teamObj["needsGrouping"] = this.needsGrouping;
       this.teamObj["teamName"] = this.teamName;
       this.teamObj["division"] = this.division;
+      //we don't offer payments so let's default to false
+      this.teamObj.paid = false;
 
       //need to pass collection ("teams"), document name (currently sorting by divison), and data
       this.formSubmitHandler();
