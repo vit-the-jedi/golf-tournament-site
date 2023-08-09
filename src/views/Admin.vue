@@ -8,43 +8,106 @@ import editTeamModal from "../components/editTeamModal.vue";
   <secondaryNav />
   <div class="container">
     <div class="col-md-7 col-12 admin--card">
-      <listTeams @edit-team="editTeam" />
+      <listTeams
+        :teamsSignedUp="this.teamsSignedUp"
+        @edit-team="editTeam"
+        @delete-team="deleteTeam"
+      />
     </div>
   </div>
   <editTeamModal
     v-if="this.isEditing"
     :teamInfo="this.teamInfo"
     @close-modal="closeEditModal"
+    @submit-changes="submitTeamChanges"
   />
 </template>
 <script>
+import { listTeamDocs } from "../middleware/db.js";
+import { addToFirestore } from "../middleware/db";
+import { deleteFromFirestore } from "../middleware/db.js";
 export default {
   components: { editTeamModal },
   data() {
     return {
       isEditing: false,
       hello: true,
+      adminChoices: {
+        division: null,
+        teamName: null,
+      },
+      teamsSignedUp: [],
       teamInfo: {
         teamName: null,
         id: null,
-        player1_name: null,
-        player2_name: null,
-        player3_name: null,
-        player4_name: null,
+        players: [],
         division: null,
       },
     };
   },
   methods: {
+    getTeamsListHandler: async function () {
+      const teamsList = await listTeamDocs(
+        this.adminChoices.division ?? "mens-league"
+      );
+      return teamsList;
+    },
+    async listTeams() {
+      const teamsFromDb = await this.getTeamsListHandler();
+      //destructure array of nested objects to get the values we need
+      teamsFromDb.forEach((nestedObj) => {
+        const [[key, value]] = Object.entries(nestedObj);
+        const teamObj = {};
+        teamObj.teamName = value.teamName;
+        teamObj.division = value.division;
+        teamObj.players = [];
+        value.players.forEach((player) => {
+          teamObj.players.push(player);
+        });
+        //teamObj.players = `${value.players[0].first_name} ${value.players[0].last_name}`;
+        teamObj.needsGrouping = value.needsGrouping === true ? "yes" : "no";
+        teamObj.id = value.id;
+        this.teamsSignedUp.push(teamObj);
+      });
+    },
     closeEditModal() {
       this.isEditing = false;
     },
+    async deleteTeam(team) {
+      const answer = prompt(
+        `Are you sure you want to delete ${team.teamName}?
+        Type YES (all caps) below to delete.`
+      );
+      if (answer === "YES") {
+        //delete team from db collection
+        //re-hydrate ui w/ new list of teams
+        const deleteComplete = await deleteFromFirestore(
+          `${team.division}-league`,
+          team.id
+        );
+        if (deleteComplete) {
+          this.teamsSignedUp = [];
+          await this.listTeams();
+        } else {
+          this.errors.push(
+            "There was a problem deleting this team, please try again"
+          );
+        }
+      } else {
+        return;
+      }
+    },
     editTeam(team) {
-      this.concatPlayerNames(team.players);
+      this.teamInfo.players = team.players;
       this.teamInfo.teamName = team.teamName;
       this.teamInfo.id = team.id;
       this.teamInfo.division = team.division;
       this.isEditing = true;
+    },
+    async submitTeamChanges() {
+      await addToFirestore(`${this.teamInfo.division}-league`, this.teamInfo);
+      this.teamsSignedUp = [];
+      await this.listTeams();
     },
     concatPlayerNames(playersArr) {
       playersArr.forEach((player, i, arr) => {
@@ -56,6 +119,10 @@ export default {
         this.teamInfo[`player${playerNum}_name`] = name;
       });
     },
+  },
+  //await the call to firebase for teams list
+  async mounted() {
+    await this.listTeams();
   },
 };
 </script>

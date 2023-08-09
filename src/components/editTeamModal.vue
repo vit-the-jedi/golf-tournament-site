@@ -24,39 +24,95 @@
           <option value="coed">Co-ed Division</option>
         </select>
       </fieldset>
-      <fieldset>
+      <fieldset class="row m-auto">
         <legend>Players</legend>
+        <!-- player 1 -->
         <input
-          class="input full-width"
-          v-if="this.teamInfo.player1_name"
+          class="input col-6"
+          v-if="this.teamInfo.players[0]"
           type="text"
-          id="player1-name"
-          :value="this.teamInfo.player1_name"
-          @input="(event) => (this.teamInfo.player1_name = event.target.value)"
+          id="player1-first-name"
+          :value="this.teamInfo.players[0].first_name"
+          @input="
+            (event) =>
+              (this.teamInfo.players[0].first_name = event.target.value)
+          "
         />
         <input
-          class="input full-width"
-          v-if="this.teamInfo.player2_name"
+          class="input col-6"
+          v-if="this.teamInfo.players[0]"
           type="text"
-          id="player2-name"
-          :value="this.teamInfo.player2_name"
-          @input="(event) => (this.teamInfo.player2_name = event.target.value)"
+          id="player1-first-name"
+          :value="this.teamInfo.players[0].last_name"
+          @input="
+            (event) => (this.teamInfo.players[0].last_name = event.target.value)
+          "
+        />
+        <!-- player 2 -->
+        <input
+          class="input col-6"
+          v-if="this.teamInfo.players[1]"
+          type="text"
+          id="player1-first-name"
+          :value="this.teamInfo.players[1].first_name"
+          @input="
+            (event) =>
+              (this.teamInfo.players[1].first_name = event.target.value)
+          "
         />
         <input
-          class="input full-width"
-          v-if="this.teamInfo.player3_name"
+          class="input col-6"
+          v-if="this.teamInfo.players[1]"
           type="text"
-          id="player3-name"
-          :value="this.teamInfo.player3_name"
-          @input="(event) => (this.teamInfo.player3_name = event.target.value)"
+          id="player1-first-name"
+          :value="this.teamInfo.players[1].last_name"
+          @input="
+            (event) => (this.teamInfo.players[1].last_name = event.target.value)
+          "
+        />
+        <!-- player 3 -->
+        <input
+          class="input col-6"
+          v-if="this.teamInfo.players[2]"
+          type="text"
+          id="player1-first-name"
+          :value="this.teamInfo.players[2].first_name"
+          @input="
+            (event) =>
+              (this.teamInfo.players[2].first_name = event.target.value)
+          "
         />
         <input
-          class="input full-width"
-          v-if="this.teamInfo.player4_name"
+          class="input col-6"
+          v-if="this.teamInfo.players[2]"
           type="text"
-          id="player4-name"
-          :value="this.teamInfo.player4_name"
-          @input="(event) => (this.teamInfo.player4_name = event.target.value)"
+          id="player1-first-name"
+          :value="this.teamInfo.players[2].last_name"
+          @input="
+            (event) => (this.teamInfo.players[2].last_name = event.target.value)
+          "
+        />
+        <!-- player 4 -->
+        <input
+          class="input col-6"
+          v-if="this.teamInfo.players[3]"
+          type="text"
+          id="player1-first-name"
+          :value="this.teamInfo.players[3].first_name"
+          @input="
+            (event) =>
+              (this.teamInfo.players[3].first_name = event.target.value)
+          "
+        />
+        <input
+          class="input col-6"
+          v-if="this.teamInfo.players[3]"
+          type="text"
+          id="player1-first-name"
+          :value="this.teamInfo.players[3].last_name"
+          @input="
+            (event) => (this.teamInfo.players[3].last_name = event.target.value)
+          "
         />
       </fieldset>
       <button
@@ -71,20 +127,13 @@
   <div id="dialog--bg" class="ui--backdrop backdrop--open"></div>
 </template>
 <script>
-import { doc } from "firebase/firestore";
-import { addToFirestore } from "../middleware/db";
 export default {
   props: ["teamInfo"],
   methods: {
     submitTeamChangesHandler(e) {
       e.preventDefault();
-      addToFirestore(`${this.teamInfo.division}-league`, this.teamInfo).then(
-        (resp) => {
-          if (resp) {
-            console.log(resp);
-          }
-        }
-      );
+      this.$emit("submit-changes");
+      this.closeEditModal();
     },
     closeEditModal(ev) {
       this.$emit("close-modal");
