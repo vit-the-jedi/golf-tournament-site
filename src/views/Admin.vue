@@ -3,6 +3,7 @@
 import secondaryNav from "../components/secondaryNav.vue";
 import listTeams from "../components/listTeams.vue";
 import editTeamModal from "../components/editTeamModal.vue";
+import groupTeamModal from "../components/groupTeamModal.vue";
 </script>
 <template>
   <secondaryNav />
@@ -12,6 +13,7 @@ import editTeamModal from "../components/editTeamModal.vue";
         :teamsSignedUp="this.teamsSignedUp"
         @edit-team="editTeam"
         @delete-team="deleteTeam"
+        @group-team="groupTeam"
       />
     </div>
   </div>
@@ -21,16 +23,24 @@ import editTeamModal from "../components/editTeamModal.vue";
     @close-modal="closeEditModal"
     @submit-changes="submitTeamChanges"
   />
+  <groupTeamModal
+    v-if="this.isGrouping"
+    :teamsSignedUp="this.teamsSignedUp"
+    :teamInfo="this.teamInfo"
+    @close-group-modal="closeGroupModal"
+    @submit-group-changes="submitGroupChanges"
+  />
 </template>
 <script>
 import { listTeamDocs } from "../middleware/db.js";
 import { addToFirestore } from "../middleware/db";
 import { deleteFromFirestore } from "../middleware/db.js";
 export default {
-  components: { editTeamModal },
+  components: { editTeamModal, groupTeamModal },
   data() {
     return {
       isEditing: false,
+      isGrouping: false,
       hello: true,
       adminChoices: {
         division: null,
@@ -42,6 +52,8 @@ export default {
         id: null,
         players: [],
         division: null,
+        needsGrouping: null,
+        numOfPlayers: null,
       },
     };
   },
@@ -64,8 +76,9 @@ export default {
         value.players.forEach((player) => {
           teamObj.players.push(player);
         });
+        teamObj.numOfPlayers = value.numOfPlayers;
         //teamObj.players = `${value.players[0].first_name} ${value.players[0].last_name}`;
-        teamObj.needsGrouping = value.needsGrouping === true ? "yes" : "no";
+        teamObj.needsGrouping = value.needsGrouping;
         teamObj.id = value.id;
         teamObj.paid = value.paid;
         this.teamsSignedUp.push(teamObj);
@@ -73,6 +86,9 @@ export default {
     },
     closeEditModal() {
       this.isEditing = false;
+    },
+    closeGroupModal() {
+      this.isGrouping = false;
     },
     async deleteTeam(team) {
       const answer = prompt(
@@ -106,8 +122,38 @@ export default {
       this.teamInfo.paid = team.paid;
       this.isEditing = true;
     },
+    groupTeam(team) {
+      this.teamInfo.players = team.players;
+      this.teamInfo.teamName = team.teamName;
+      this.teamInfo.id = team.id;
+      this.teamInfo.division = team.division;
+      this.teamInfo.needsGrouping = team.needsGrouping;
+      this.teamInfo.numOfPlayers = team.numOfPlayers;
+      this.isGrouping = true;
+    },
     async submitTeamChanges() {
       await addToFirestore(`${this.teamInfo.division}-league`, this.teamInfo);
+      this.teamsSignedUp = [];
+      await this.listTeams();
+    },
+    async submitGroupChanges(teamToMerge) {
+      //first we add the destination team with the target team
+      //then we do an addToFirestore call on the target team for merging
+      //then we pass the competely merged team as an arg
+      //finally we delete the destination team, as it has been merged with the target
+
+      //merge the teams
+      teamToMerge.players.forEach((player) =>
+        this.teamInfo.players.push(player)
+      );
+      if (this.teamInfo.players.length === 4) {
+        this.teamInfo.needsGrouping = false;
+      }
+      await addToFirestore(`${this.teamInfo.division}-league`, this.teamInfo);
+      await deleteFromFirestore(
+        `${teamToMerge.division}-league`,
+        teamToMerge.id
+      );
       this.teamsSignedUp = [];
       await this.listTeams();
     },
@@ -249,18 +295,20 @@ export default {
   background: none;
   color: var(--mainColor);
 }
-.paid {
-  display: inline;
-  max-width: 100px;
-  border-radius: 5px;
-  background-color: var(--success);
+.ui-info {
   font-weight: bold;
   color: white;
   margin-left: 20px;
   font-size: 0.8rem;
   padding: 0.25rem;
+  display: inline;
+  max-width: 100px;
+  border-radius: 5px;
 }
-.paid.unpaid {
+.paid {
+  background-color: var(--success);
+}
+.unpaid {
   background-color: var(--danger);
 }
 </style>
