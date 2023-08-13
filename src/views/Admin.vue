@@ -149,6 +149,7 @@ export default {
       if (this.teamInfo.players.length === 4) {
         this.teamInfo.needsGrouping = false;
       }
+      this.teamInfo.numOfPlayers = this.teamInfo.players.length;
       await addToFirestore(`${this.teamInfo.division}-league`, this.teamInfo);
       await deleteFromFirestore(
         `${teamToMerge.division}-league`,
