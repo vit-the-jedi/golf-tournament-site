@@ -119,8 +119,10 @@
         <div class="col-6">
           <p>
             Current payment status:
-            <span class="paid" v-if="this.teamInfo.paid">PAID</span>
-            <span class="paid unpaid" v-if="!this.teamInfo.paid">UNPAID</span>
+            <span class="ui-info paid" v-if="this.teamInfo.paid">PAID</span>
+            <span class="ui-info unpaid" v-if="!this.teamInfo.paid"
+              >UNPAID</span
+            >
           </p>
         </div>
         <div class="col-6">
@@ -154,9 +156,6 @@
 <script>
 export default {
   props: ["teamInfo"],
-  mounted() {
-    console.log(this.teamInfo);
-  },
   methods: {
     submitTeamChangesHandler(e) {
       e.preventDefault();

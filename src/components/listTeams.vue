@@ -9,8 +9,8 @@
       <div class="admin--item">
         <div class="d-flex justify-content-between">
           <h6>{{ team.teamName }}</h6>
-          <span class="paid" v-if="team.paid">PAID</span>
-          <span class="paid unpaid" v-if="!team.paid">UNPAID</span>
+          <span class="ui-info paid" v-if="team.paid">PAID</span>
+          <span class="ui-info unpaid" v-if="!team.paid">UNPAID</span>
         </div>
         <div class="team">
           <form action="">
@@ -34,7 +34,8 @@
     </div>
     <div class="admin--column">
       <div class="admin--item">
-        <span>{{ team.needsGrouping }}</span>
+        <span v-if="team.needsGrouping">yes</span>
+        <span v-if="!team.needsGrouping">no</span>
       </div>
     </div>
     <div class="admin--tools">
@@ -54,6 +55,11 @@
           <li>
             <button :data-tool-target="team.id" @click="deleteTeamHandler">
               Delete Team
+            </button>
+          </li>
+          <li v-if="team.needsGrouping">
+            <button :data-tool-target="team.id" @click="groupTeamHandler">
+              Group Team
             </button>
           </li>
         </ul>
@@ -82,6 +88,14 @@ export default {
       )[0];
 
       this.$emit("delete-team", targetTeam);
+    },
+    groupTeamHandler(ev) {
+      const teamId = ev.target.getAttribute("data-tool-target");
+      const targetTeam = Object.values(this.teamsSignedUp).filter(
+        (team) => team.id === teamId
+      )[0];
+
+      this.$emit("group-team", targetTeam);
     },
     editTeamHandler(ev) {
       const id = ev.target.getAttribute("data-tool-target");
