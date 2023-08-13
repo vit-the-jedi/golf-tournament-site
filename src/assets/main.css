@@ -9,6 +9,8 @@
   --player-icon-width: calc(100% / 4.25);
   --player-icon-height: calc(100% / 2);
   --ui-dialog-bg: rgba(0, 26, 50, 0.7);
+  --success: #51cc8a;
+  --danger: #ef376e;
 }
 body {
   font-family: "Nunito Sans", sans-serif;

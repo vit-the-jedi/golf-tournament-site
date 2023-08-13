@@ -1,6 +1,8 @@
 <template>
-  <dialog open class="admin--card">
+  <dialog open class="admin--card edit-team-dialog">
+    <button class="close-tools" @click="closeEditModal">&times;</button>
     <form id="editTeam-form">
+      <small>ID: {{ this.teamInfo.id }}</small>
       <fieldset>
         <legend>Team Name</legend>
         <input
@@ -10,7 +12,6 @@
           :value="this.teamInfo.teamName"
           @input="(event) => (this.teamInfo.teamName = event.target.value)"
         />
-        <small>ID: {{ this.teamInfo.id }}</small>
       </fieldset>
       <fieldset>
         <legend>Division</legend>
@@ -23,41 +24,124 @@
           <option value="coed">Co-ed Division</option>
         </select>
       </fieldset>
-      <fieldset>
+      <fieldset class="row">
         <legend>Players</legend>
+        <!-- player 1 -->
         <input
-          class="input full-width"
-          v-if="this.teamInfo.player1_name"
+          class="input col-6"
+          v-if="this.teamInfo.players[0]"
           type="text"
-          id="player1-name"
-          :value="this.teamInfo.player1_name"
-          @input="(event) => (this.teamInfo.player1_name = event.target.value)"
+          id="player1-first-name"
+          :value="this.teamInfo.players[0].first_name"
+          @input="
+            (event) =>
+              (this.teamInfo.players[0].first_name = event.target.value)
+          "
         />
         <input
-          class="input full-width"
-          v-if="this.teamInfo.player2_name"
+          class="input col-6"
+          v-if="this.teamInfo.players[0]"
           type="text"
-          id="player2-name"
-          :value="this.teamInfo.player2_name"
-          @input="(event) => (this.teamInfo.player2_name = event.target.value)"
+          id="player1-first-name"
+          :value="this.teamInfo.players[0].last_name"
+          @input="
+            (event) => (this.teamInfo.players[0].last_name = event.target.value)
+          "
+        />
+        <!-- player 2 -->
+        <input
+          class="input col-6"
+          v-if="this.teamInfo.players[1]"
+          type="text"
+          id="player1-first-name"
+          :value="this.teamInfo.players[1].first_name"
+          @input="
+            (event) =>
+              (this.teamInfo.players[1].first_name = event.target.value)
+          "
         />
         <input
-          class="input full-width"
-          v-if="this.teamInfo.player3_name"
+          class="input col-6"
+          v-if="this.teamInfo.players[1]"
           type="text"
-          id="player3-name"
-          :value="this.teamInfo.player3_name"
-          @input="(event) => (this.teamInfo.player3_name = event.target.value)"
+          id="player1-first-name"
+          :value="this.teamInfo.players[1].last_name"
+          @input="
+            (event) => (this.teamInfo.players[1].last_name = event.target.value)
+          "
+        />
+        <!-- player 3 -->
+        <input
+          class="input col-6"
+          v-if="this.teamInfo.players[2]"
+          type="text"
+          id="player1-first-name"
+          :value="this.teamInfo.players[2].first_name"
+          @input="
+            (event) =>
+              (this.teamInfo.players[2].first_name = event.target.value)
+          "
         />
         <input
-          class="input full-width"
-          v-if="this.teamInfo.player4_name"
+          class="input col-6"
+          v-if="this.teamInfo.players[2]"
           type="text"
-          id="player4-name"
-          :value="this.teamInfo.player4_name"
-          @input="(event) => (this.teamInfo.player4_name = event.target.value)"
+          id="player1-first-name"
+          :value="this.teamInfo.players[2].last_name"
+          @input="
+            (event) => (this.teamInfo.players[2].last_name = event.target.value)
+          "
+        />
+        <!-- player 4 -->
+        <input
+          class="input col-6"
+          v-if="this.teamInfo.players[3]"
+          type="text"
+          id="player1-first-name"
+          :value="this.teamInfo.players[3].first_name"
+          @input="
+            (event) =>
+              (this.teamInfo.players[3].first_name = event.target.value)
+          "
+        />
+        <input
+          class="input col-6"
+          v-if="this.teamInfo.players[3]"
+          type="text"
+          id="player1-first-name"
+          :value="this.teamInfo.players[3].last_name"
+          @input="
+            (event) => (this.teamInfo.players[3].last_name = event.target.value)
+          "
         />
       </fieldset>
+      <div class="row w-100 m-auto">
+        <div class="col-6">
+          <p>
+            Current payment status:
+            <span class="ui-info paid" v-if="this.teamInfo.paid">PAID</span>
+            <span class="ui-info unpaid" v-if="!this.teamInfo.paid"
+              >UNPAID</span
+            >
+          </p>
+        </div>
+        <div class="col-6">
+          <button
+            class="payment-button"
+            v-if="!this.teamInfo.paid"
+            @click="(event) => (this.teamInfo.paid = true)"
+          >
+            Mark Team Paid
+          </button>
+          <button
+            class="payment-button"
+            v-if="this.teamInfo.paid"
+            @click="(event) => (this.teamInfo.paid = false)"
+          >
+            Mark Team Unpaid
+          </button>
+        </div>
+      </div>
       <button
         role="button"
         id="editTeam-submit"
@@ -70,29 +154,25 @@
   <div id="dialog--bg" class="ui--backdrop backdrop--open"></div>
 </template>
 <script>
-import { doc } from "firebase/firestore";
-import { addToFirestore } from "../middleware/db";
 export default {
   props: ["teamInfo"],
   methods: {
     submitTeamChangesHandler(e) {
       e.preventDefault();
-      addToFirestore(`${this.teamInfo.division}-league`, this.teamInfo).then(
-        (resp) => {
-          if (resp) {
-            console.log(resp);
-          }
-        }
-      );
+      this.$emit("submit-changes");
+      this.closeEditModal();
+    },
+    closeEditModal(ev) {
+      this.$emit("close-modal");
     },
   },
 };
 </script>
 <style scoped>
 dialog {
-  position: fixed;
+  position: absolute;
   z-index: 999;
-  max-width: 400px;
+  max-width: 500px;
   transform: translate(0%, 25%);
   top: 0;
   left: 0;
@@ -107,5 +187,13 @@ fieldset {
 }
 .full-width {
   width: 100%;
+}
+.payment-button {
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 12px;
+  max-width: 200px;
+  background-color: white;
+  border: 2px solid var(--mainColor);
+  color: var(--mainColor);
 }
 </style>
