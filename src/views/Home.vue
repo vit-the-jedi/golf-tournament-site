@@ -11,7 +11,7 @@ export default {
       golfCourse: "East Mountain Golf Course",
       golfCourseAddress: "171 E Mountain Rd, Waterbury, CT 06706",
       pricing: {
-        ticketPrice: "$85.00",
+        ticketPrice: "$95.00",
         addOns: [
           "$10 Pro Shop credit",
           "Coffee & at check-in",
@@ -81,6 +81,7 @@ export default {
         <div class="ball-icons">
           <img src="/src/assets/player-icons.png" />
         </div>
+        <h1 class="text-center">Come alone, or bring help!</h1>
         <div class="button-container mb-4">
           <button><router-link to="/sign-up">SIGN UP</router-link></button>
           <small class="text-center d-block w-100">(max 4 players)</small>
@@ -110,7 +111,7 @@ export default {
           <div class="row">
             <div class="col-md-6 col-12">
               <h1>Pricing</h1>
-              <h2>Entry fee: $85.00</h2>
+              <h2>Entry fee: {{ this.pricing.ticketPrice }}</h2>
             </div>
             <div class="col-md-6 col-12">
               <h2>What's included:</h2>
