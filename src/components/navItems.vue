@@ -49,6 +49,7 @@
   </div>
   <div id="menu--bg" class="ui--backdrop"></div>
 </template>
+
 <script>
 import { store } from "../store/index.js";
 import { useRouter } from "vue-router";

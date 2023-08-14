@@ -40,9 +40,6 @@
 </template>
 
 <script>
-import { useRouter } from "vue-router";
-import { addToFirestore } from "../middleware/db.js";
-import loadingSpinner from "../components/loading.vue";
 import { app, getUserPermissions, db } from "../middleware/db.js";
 import { store } from "../store/index.js";
 import {

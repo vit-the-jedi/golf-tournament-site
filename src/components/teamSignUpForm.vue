@@ -4,7 +4,6 @@ const mainColor = ref("#003566");
 const secondColor = ref("#FFC300");
 </script>
 <template>
-  <!-- <loadingSpinner /> -->
   <form @submit="checkForm">
     <h1>Sign Up</h1>
     <p v-if="!playersAdded">Choose your squad</p>
@@ -130,7 +129,8 @@ const secondColor = ref("#FFC300");
 
 <script>
 import { addToFirestore } from "../middleware/db.js";
-import loadingSpinner from "../components/loading.vue";
+import { store } from "../store/index.js";
+
 export default {
   data() {
     return {
@@ -187,6 +187,9 @@ export default {
     },
   },
   methods: {
+    loadingScreenHandler(action) {
+      this.$emit("loading-screen");
+    },
     checkPlayerName: function (v) {
       if (v === null || v.length == 0 || v.match(/\d+/g)) {
         return false;
@@ -230,6 +233,7 @@ export default {
         this.errors.push("Please choose a division to be entered in.");
       }
       e.preventDefault();
+      //this.loadingScreen("show");
     },
     addError: function (errorString) {
       if (this.errors.length > 0) {
@@ -325,48 +329,21 @@ export default {
       this.teamObj["needsGrouping"] = this.needsGrouping;
       this.teamObj["teamName"] = this.teamName;
       this.teamObj["division"] = this.division;
-      // //delete the originals we dont need them anymore
-      // delete this.player1__firstName;
-      // delete this.player1__lastName;
-      // delete this.player2__firstName;
-      // delete this.player2__lastName;
-      // delete this.player3__firstName;
-      // delete this.player3__lastName;
-      // delete this.player4__firstName;
-      // delete this.player4__lastName;
-      console.log(this.teamObj);
+      //we don't offer payments so let's default to false
+      this.teamObj.paid = false;
 
       //need to pass collection ("teams"), document name (currently sorting by divison), and data
       this.formSubmitHandler();
     },
     formSubmitHandler: async function () {
       const team = this.teamObj;
-      addToFirestore(`${team.division}-league`, team.teamName, team)
-        .then((resp) => {
-          if (resp) {
-            //loop through players array and create a URL-encoded string we can pass to our success page
-            let playersString = "";
-            team.players.forEach((playerName, index, arr) => {
-              //if this is not the last entry, add a plus to the end
-              index < arr.length - 1
-                ? (playersString += `${playerName.first_name} ${playerName.last_name}|`)
-                : (playersString += `${playerName.first_name} ${playerName.last_name}`);
-            });
-
-            //programmatically route to success page w/ relevant form data we can post back for user review
-            this.$router.push({
-              path: "/sign-up-success",
-              query: {
-                players: playersString,
-                division: team.division,
-                teamName: team.teamName,
-              },
-            });
-          }
-        })
-        .catch((err) => {
-          console.error(error);
-        });
+      addToFirestore(`${team.division}-league`, team);
+      store.commit("setTeam", this.teamObj);
+      sessionStorage.setItem("team", JSON.stringify(this.teamObj));
+      //programmatically route to success page w/ relevant form data we can post back for user review
+      this.$router.push({
+        path: "/sign-up-success",
+      });
     },
   },
 };
