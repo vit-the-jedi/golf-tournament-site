@@ -111,7 +111,7 @@ export default {
           <div class="row">
             <div class="col-md-6 col-12">
               <h1>Pricing</h1>
-              <h2>Entry fee: {{ this.pricing.ticketPrice }}</h2>
+              <h2>Entry fee: {{ outputPrice }}</h2>
             </div>
             <div class="col-md-6 col-12">
               <h2>What's included:</h2>
