@@ -264,6 +264,10 @@ button a {
 
 /*ui stuff*/
 
+.no--data {
+  margin: 2em auto;
+  text-align: center;
+}
 .ui--backdrop {
   opacity: 0;
   z-index: -999;

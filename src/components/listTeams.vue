@@ -59,18 +59,27 @@
               <li>
                 <button
                   :data-tool-target="team.id"
+                  :data-league="team.division"
                   @click="this.editTeamHandler"
                 >
                   Edit Team
                 </button>
               </li>
               <li>
-                <button :data-tool-target="team.id" @click="deleteTeamHandler">
+                <button
+                  :data-tool-target="team.id"
+                  :data-league="team.division"
+                  @click="deleteTeamHandler"
+                >
                   Delete Team
                 </button>
               </li>
               <li v-if="team.needsGrouping">
-                <button :data-tool-target="team.id" @click="groupTeamHandler">
+                <button
+                  :data-tool-target="team.id"
+                  :data-league="team.division"
+                  @click="groupTeamHandler"
+                >
                   Group Team
                 </button>
               </li>
@@ -136,6 +145,7 @@
                 <li>
                   <button
                     :data-tool-target="team.id"
+                    :data-league="team.division"
                     @click="this.editTeamHandler"
                   >
                     Edit Team
@@ -144,13 +154,18 @@
                 <li>
                   <button
                     :data-tool-target="team.id"
+                    :data-league="team.division"
                     @click="deleteTeamHandler"
                   >
                     Delete Team
                   </button>
                 </li>
                 <li v-if="team.needsGrouping">
-                  <button :data-tool-target="team.id" @click="groupTeamHandler">
+                  <button
+                    :data-tool-target="team.id"
+                    :data-league="team.division"
+                    @click="groupTeamHandler"
+                  >
                     Group Team
                   </button>
                 </li>
@@ -234,6 +249,7 @@
                 <li>
                   <button
                     :data-tool-target="team.id"
+                    :data-league="team.division"
                     @click="this.editTeamHandler"
                   >
                     Edit Team
@@ -242,13 +258,18 @@
                 <li>
                   <button
                     :data-tool-target="team.id"
+                    :data-league="team.division"
                     @click="deleteTeamHandler"
                   >
                     Delete Team
                   </button>
                 </li>
                 <li v-if="team.needsGrouping">
-                  <button :data-tool-target="team.id" @click="groupTeamHandler">
+                  <button
+                    :data-tool-target="team.id"
+                    :data-league="team.division"
+                    @click="groupTeamHandler"
+                  >
                     Group Team
                   </button>
                 </li>
@@ -315,6 +336,7 @@
                 <li>
                   <button
                     :data-tool-target="team.id"
+                    :data-league="team.division"
                     @click="this.editTeamHandler"
                   >
                     Edit Team
@@ -323,13 +345,18 @@
                 <li>
                   <button
                     :data-tool-target="team.id"
+                    :data-league="team.division"
                     @click="deleteTeamHandler"
                   >
                     Delete Team
                   </button>
                 </li>
                 <li v-if="team.needsGrouping">
-                  <button :data-tool-target="team.id" @click="groupTeamHandler">
+                  <button
+                    :data-tool-target="team.id"
+                    :data-league="team.division"
+                    @click="groupTeamHandler"
+                  >
                     Group Team
                   </button>
                 </li>
@@ -365,25 +392,26 @@ export default {
       menu.classList.add("show");
     },
     async deleteTeamHandler(ev) {
-      const teamId = ev.target.getAttribute("data-tool-target");
-      const targetTeam = Object.values(this.teamsSignedUp).filter(
-        (team) => team.id === teamId
-      )[0];
-
-      this.$emit("delete-team", targetTeam);
+      this.$emit("delete-team", this.teamGetter(ev.target));
     },
     groupTeamHandler(ev) {
-      const teamId = ev.target.getAttribute("data-tool-target");
-      const targetTeam = Object.values(this.teamsSignedUp).filter(
-        (team) => team.id === teamId
-      )[0];
+      this.$emit("group-team", this.teamGetter(ev.target));
+    },
+    teamGetter(target) {
+      //re-usable to get the target team from teamsSignedUp
+      const id = target.getAttribute("data-tool-target");
+      const league = target.getAttribute("data-league");
 
-      this.$emit("group-team", targetTeam);
+      for (const [teamId, teamObj] of Object.entries(
+        this.teamsSignedUp[league]
+      )) {
+        if (teamId === id) {
+          return teamObj;
+        }
+      }
     },
     editTeamHandler(ev) {
-      const id = ev.target.getAttribute("data-tool-target");
-      const targetTeam = this.teamsSignedUp.filter((team) => team.id === id);
-      this.$emit("edit-team", targetTeam[0]);
+      this.$emit("edit-team", this.teamGetter(ev.target));
       //edit the teamsSignedUp data
       //send the edits to firebase on save
       //re-hydrate ui w/ new data
@@ -408,9 +436,5 @@ h6 {
 }
 .team {
   font-size: 0.95rem;
-}
-.no--data {
-  margin: 2em auto;
-  text-align: center;
 }
 </style>
