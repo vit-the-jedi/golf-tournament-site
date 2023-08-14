@@ -11,6 +11,7 @@ import adminPanel from "../components/adminPanel.vue";
   <div class="container row m-auto">
     <div class="col-md-7 col-12">
       <listTeams
+        v-if="this.teamsSignedUp"
         :teamsSignedUp="this.teamsSignedUp"
         :adminChoices="this.adminChoices"
         @edit-team="editTeam"
@@ -20,6 +21,7 @@ import adminPanel from "../components/adminPanel.vue";
     </div>
     <div class="col-md-5 col-12 admin--panel">
       <adminPanel
+        v-if="this.teamsSignedUp"
         :adminChoices="this.adminChoices"
         @filter-league="filterLeague"
         @filter-attribute="filterAttribute"
