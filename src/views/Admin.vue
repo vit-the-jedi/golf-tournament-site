@@ -8,11 +8,14 @@ import adminPanel from "../components/adminPanel.vue";
 </script>
 <template>
   <secondaryNav />
-  <div class="container row m-auto">
+  <div
+    class="container row m-auto"
+    v-if="Object.keys(teamsSignedUp).length > 0"
+  >
     <div class="col-md-7 col-12">
       <listTeams
-        :teamsSignedUp="this.teamsSignedUp"
-        :adminChoices="this.adminChoices"
+        :teamsSignedUp="teamsSignedUp"
+        :adminChoices="adminChoices"
         @edit-team="editTeam"
         @delete-team="deleteTeam"
         @group-team="groupTeam"
@@ -20,7 +23,7 @@ import adminPanel from "../components/adminPanel.vue";
     </div>
     <div class="col-md-5 col-12 admin--panel">
       <adminPanel
-        :adminChoices="this.adminChoices"
+        :adminChoices="adminChoices"
         @filter-league="filterLeague"
         @filter-attribute="filterAttribute"
         @clear-filters="clearFilters"
@@ -28,15 +31,15 @@ import adminPanel from "../components/adminPanel.vue";
     </div>
   </div>
   <editTeamModal
-    v-if="this.isEditing"
-    :teamInfo="this.teamInfo"
+    v-if="isEditing"
+    :teamInfo="teamInfo"
     @close-modal="closeEditModal"
     @submit-changes="submitTeamChanges"
   />
   <groupTeamModal
-    v-if="this.isGrouping"
-    :teamsSignedUp="this.teamsSignedUp"
-    :teamInfo="this.teamInfo"
+    v-if="isGrouping"
+    :teamsSignedUp="teamsSignedUp"
+    :teamInfo="teamInfo"
     @close-group-modal="closeGroupModal"
     @submit-group-changes="submitGroupChanges"
   />
@@ -51,7 +54,6 @@ export default {
     return {
       isEditing: false,
       isGrouping: false,
-      hello: true,
       adminChoices: {
         league: null,
         renderCoedList: true,
@@ -65,7 +67,7 @@ export default {
         },
         isFiltering: false,
       },
-      teamsSignedUp: [],
+      teamsSignedUp: {},
       teamInfo: {
         teamName: null,
         id: null,
@@ -84,12 +86,12 @@ export default {
       this.teamsSignedUp.mens = {};
       this.teamsSignedUp.coed = {};
       //create nested objects for each league
-      mensTeamsList = mensTeamsList.forEach((team) => {
+      mensTeamsList = mensTeamsList.forEach(function (team) {
         this.createTeamsData(team, "mens");
-      });
-      coedTeamsList = coedTeamsList.forEach((team) => {
+      }, this);
+      coedTeamsList = coedTeamsList.forEach(function (team) {
         this.createTeamsData(team, "coed");
-      });
+      }, this);
       //if admin has no choice or wants both, render both
       if (!this.adminChoices.division) {
         this.adminChoices.renderMensList = true;
@@ -98,9 +100,9 @@ export default {
       console.log(this.teamsSignedUp);
     },
     createTeamsData(team, league) {
-      Object.values(team).forEach((teamObj) => {
+      Object.values(team).forEach(function (teamObj) {
         this.teamsSignedUp[league][teamObj.id] = teamObj;
-      });
+      }, this);
     },
     createFilteredTeamsData(team, league) {
       this.adminChoices.filteredTeams[league][team.id] = {};
@@ -254,7 +256,7 @@ export default {
     },
   },
   //await the call to firebase for teams list
-  async mounted() {
+  async created() {
     await this.getTeamsListHandler();
   },
 };
