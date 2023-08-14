@@ -37,6 +37,12 @@
             </div>
           </label>
         </div>
+        <div
+          class="no--data"
+          v-if="Object.keys(this.availableTeams).length === 0"
+        >
+          <p>No results matching your request</p>
+        </div>
       </fieldset>
       <button
         role="button"
