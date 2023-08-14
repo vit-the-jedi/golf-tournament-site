@@ -4,16 +4,26 @@ import secondaryNav from "../components/secondaryNav.vue";
 import listTeams from "../components/listTeams.vue";
 import editTeamModal from "../components/editTeamModal.vue";
 import groupTeamModal from "../components/groupTeamModal.vue";
+import adminPanel from "../components/adminPanel.vue";
 </script>
 <template>
   <secondaryNav />
-  <div class="container">
-    <div class="col-md-7 col-12 admin--card">
+  <div class="container row m-auto">
+    <div class="col-md-7 col-12">
       <listTeams
         :teamsSignedUp="this.teamsSignedUp"
+        :adminChoices="this.adminChoices"
         @edit-team="editTeam"
         @delete-team="deleteTeam"
         @group-team="groupTeam"
+      />
+    </div>
+    <div class="col-md-5 col-12 admin--panel">
+      <adminPanel
+        :adminChoices="this.adminChoices"
+        @filter-league="filterLeague"
+        @filter-attribute="filterAttribute"
+        @clear-filters="clearFilters"
       />
     </div>
   </div>
@@ -43,8 +53,17 @@ export default {
       isGrouping: false,
       hello: true,
       adminChoices: {
-        division: null,
-        teamName: null,
+        league: null,
+        renderCoedList: true,
+        renderMensList: true,
+        renderPaid: true,
+        renderUnpaid: true,
+        renderNeedsGrouping: true,
+        filteredTeams: {
+          mens: [],
+          coed: [],
+        },
+        isFiltering: false,
       },
       teamsSignedUp: [],
       teamInfo: {
@@ -59,30 +78,40 @@ export default {
   },
   methods: {
     getTeamsListHandler: async function () {
-      const teamsList = await listTeamDocs(
-        this.adminChoices.division ?? "mens-league"
-      );
-      return teamsList;
-    },
-    async listTeams() {
-      const teamsFromDb = await this.getTeamsListHandler();
-      //destructure array of nested objects to get the values we need
-      teamsFromDb.forEach((nestedObj) => {
-        const [[key, value]] = Object.entries(nestedObj);
-        const teamObj = {};
-        teamObj.teamName = value.teamName;
-        teamObj.division = value.division;
-        teamObj.players = [];
-        value.players.forEach((player) => {
-          teamObj.players.push(player);
-        });
-        teamObj.numOfPlayers = value.numOfPlayers;
-        //teamObj.players = `${value.players[0].first_name} ${value.players[0].last_name}`;
-        teamObj.needsGrouping = value.needsGrouping;
-        teamObj.id = value.id;
-        teamObj.paid = value.paid;
-        this.teamsSignedUp.push(teamObj);
+      //create data partition for mens and coed league so we can filter them
+      let mensTeamsList = await listTeamDocs("mens-league");
+      let coedTeamsList = await listTeamDocs("coed-league");
+      this.teamsSignedUp.mens = {};
+      this.teamsSignedUp.coed = {};
+      //create nested objects for each league
+      mensTeamsList = mensTeamsList.forEach((team) => {
+        this.createTeamsData(team, "mens");
       });
+      coedTeamsList = coedTeamsList.forEach((team) => {
+        this.createTeamsData(team, "coed");
+      });
+      //if admin has no choice or wants both, render both
+      if (!this.adminChoices.division) {
+        this.adminChoices.renderMensList = true;
+        this.adminChoices.renderCoedList = true;
+      }
+      console.log(this.teamsSignedUp);
+    },
+    createTeamsData(team, league) {
+      Object.values(team).forEach((teamObj) => {
+        this.teamsSignedUp[league][teamObj.id] = teamObj;
+      });
+    },
+    createFilteredTeamsData(team, league) {
+      this.adminChoices.filteredTeams[league][team.id] = {};
+      for (const [teamKey, teamVal] of Object.entries(team)) {
+        this.adminChoices.filteredTeams[league][team.id][teamKey] = teamVal;
+      }
+    },
+    clearFilters() {
+      this.adminChoices.isFiltering = false;
+      this.adminChoices.filteredTeams.mens = {};
+      this.adminChoices.filteredTeams.coed = {};
     },
     closeEditModal() {
       this.isEditing = false;
@@ -104,7 +133,7 @@ export default {
         );
         if (deleteComplete) {
           this.teamsSignedUp = [];
-          await this.listTeams();
+          await this.getTeamsListHandler();
         } else {
           this.errors.push(
             "There was a problem deleting this team, please try again"
@@ -134,7 +163,7 @@ export default {
     async submitTeamChanges() {
       await addToFirestore(`${this.teamInfo.division}-league`, this.teamInfo);
       this.teamsSignedUp = [];
-      await this.listTeams();
+      await this.getTeamsListHandler();
     },
     async submitGroupChanges(teamToMerge) {
       //first we add the destination team with the target team
@@ -155,7 +184,63 @@ export default {
         teamToMerge.id
       );
       this.teamsSignedUp = [];
-      await this.listTeams();
+      await this.getTeamsListHandler();
+    },
+    filterLeague(filterTeamValue) {
+      if (filterTeamValue === "mens") {
+        this.adminChoices.renderMensList = true;
+        this.adminChoices.renderCoedList = false;
+      } else if (filterTeamValue === "coed") {
+        this.adminChoices.renderMensList = false;
+        this.adminChoices.renderCoedList = true;
+      } else {
+        this.adminChoices.renderMensList = true;
+        this.adminChoices.renderCoedList = true;
+      }
+    },
+    filterAttribute(attr) {
+      this.adminChoices.isFiltering = true;
+      let leagues = [];
+      if (
+        this.adminChoices.renderCoedList &&
+        this.adminChoices.renderMensList
+      ) {
+        leagues = ["mens", "coed"];
+      } else if (this.adminChoices.renderCoedList) {
+        leagues = ["coed"];
+      } else {
+        leagues = ["mens"];
+      }
+
+      this.adminChoices.filteredTeams.mens = {};
+      this.adminChoices.filteredTeams.coed = {};
+      switch (attr) {
+        case "paid":
+          leagues.forEach((league) =>
+            Object.values(this.teamsSignedUp[league]).forEach((team) => {
+              if (team.paid) this.createFilteredTeamsData(team, league);
+            })
+          );
+          break;
+        case "unpaid":
+          leagues.forEach((league) =>
+            Object.values(this.teamsSignedUp[league]).forEach((team) => {
+              if (!team.paid) this.createFilteredTeamsData(team, league);
+            })
+          );
+          break;
+        case "needsGrouping":
+          leagues.forEach((league) =>
+            Object.values(this.teamsSignedUp[league]).forEach((team) => {
+              if (team.needsGrouping)
+                this.createFilteredTeamsData(team, league);
+            })
+          );
+          break;
+        default:
+          return;
+      }
+      console.log(this.adminChoices.filteredTeams);
     },
     concatPlayerNames(playersArr) {
       playersArr.forEach((player, i, arr) => {
@@ -170,7 +255,7 @@ export default {
   },
   //await the call to firebase for teams list
   async mounted() {
-    await this.listTeams();
+    await this.getTeamsListHandler();
   },
 };
 </script>
@@ -183,8 +268,9 @@ export default {
   background-color: white;
   border-radius: var(--card-border-radius);
   padding: 2em;
+  margin: 2em auto;
 }
-.admin--row:hover {
+.data.admin--row:hover {
   background-color: #e6e6e6;
 }
 .admin--tools {
@@ -206,8 +292,10 @@ export default {
   padding: 5vh 2vh;
 }
 .admin--row {
-  border-bottom: 1px solid var(--mainColor);
   margin: auto;
+}
+.admin--row:not(:last-child) {
+  border-bottom: 1px solid var(--mainColor);
 }
 .admin--item span {
   display: block;
