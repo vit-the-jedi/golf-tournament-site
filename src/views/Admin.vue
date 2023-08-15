@@ -166,6 +166,8 @@ export default {
       await addToFirestore(`${this.teamInfo.division}-league`, this.teamInfo);
       this.teamsSignedUp = [];
       await this.getTeamsListHandler();
+      //hotfix for issue with vue state not updating until refresh
+      location.reload();
     },
     async submitGroupChanges(teamToMerge) {
       //first we add the destination team with the target team
@@ -199,6 +201,8 @@ export default {
         this.adminChoices.renderMensList = true;
         this.adminChoices.renderCoedList = true;
       }
+      //hotfix for issue with vue state not updating until refresh
+      location.reload();
     },
     filterAttribute(attr) {
       this.adminChoices.isFiltering = true;
