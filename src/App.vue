@@ -1,37 +1,35 @@
 <script setup>
-import mainNav from "./components/mainNav.vue";
+import infoModal from "./components/infoModal.vue";
+import loadingScreen from "./components/loadingScreen.vue";
 </script>
 
 <template>
-  <mainNav />
+  <!-- <loadingScreen v-if="this.$store.getters.getLoadingState">
+    <h1>{{ this.loadingHeader }}</h1>
+    <img src="./assets/icons/loading-icon.png" />
+    <h4>{{ this.loadingSubheader }}</h4>
+  </loadingScreen> -->
   <router-view></router-view>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>
+<script>
+import { mapState } from "vuex";
+import { store } from "./store";
+export default {
+  name: "vuex3",
+  data() {
+    return {
+      alert: {
+        showAlert: false,
+        alertOptions: {
+          type: "",
+          title: "",
+          body: "",
+          removable: null,
+          action: {},
+        },
+      },
+    };
+  },
+  computed: mapState(["user"]),
+};
+</script>

@@ -1,18 +1,42 @@
 <script setup>
-import topContent from "../components/topContent.vue";
-import signUpForm from "../components/signUpForm.vue";
+import teamSignUpForm from "../components/teamSignUpForm.vue";
+import secondaryNav from "../components/secondaryNav.vue";
+import loadingScreen from "../components/loadingScreen.vue";
 </script>
 <template>
+  <secondaryNav />
+  <!-- <loadingScreen :loading-screen="loadingScreen" v-if="this.showLoader">
+    <h1>{{ this.loadingHeader }}</h1>
+    <img src="./assets/icons/loading-icon.png" />
+    <h4>{{ this.loadingSubheader }}</h4>
+  </loadingScreen> -->
   <div class="sign-up">
-    <topContent>
-      <template #heading>Sign your team up</template>
-    </topContent>
     <div class="container">
-      <signUpForm />
+      <teamSignUpForm />
     </div>
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      showLoader: false,
+      loadingHeader: "hello",
+      loadingSubheader: "test test test",
+    };
+  },
+  methods: {
+    loadingScreen() {
+      alert("ayyyy");
+    },
+  },
+};
+</script>
 <style scoped>
+.sign-up {
+  height: 100vh;
+  padding: 10vh 0;
+}
 .sign-up .top-content {
   background-image: linear-gradient(
       90deg,
