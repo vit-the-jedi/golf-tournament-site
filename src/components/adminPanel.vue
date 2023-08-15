@@ -34,7 +34,11 @@
           <option value="unpaid">Unpaid</option>
           <option value="needsGrouping">Needs Grouping</option>
         </select>
-        <button role="button" @click="clearFiltersHandler">
+        <button
+          v-if="this.adminChoices.isFiltering"
+          role="button"
+          @click="clearFiltersHandler"
+        >
           Clear Filters
         </button>
       </fieldset>
