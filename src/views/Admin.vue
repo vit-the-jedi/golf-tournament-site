@@ -114,6 +114,7 @@ export default {
       this.adminChoices.isFiltering = false;
       this.adminChoices.filteredTeams.mens = {};
       this.adminChoices.filteredTeams.coed = {};
+      this.getTeamsListHandler();
     },
     closeEditModal() {
       this.isEditing = false;
@@ -201,8 +202,6 @@ export default {
         this.adminChoices.renderMensList = true;
         this.adminChoices.renderCoedList = true;
       }
-      //hotfix for issue with vue state not updating until refresh
-      location.reload();
     },
     filterAttribute(attr) {
       this.adminChoices.isFiltering = true;
