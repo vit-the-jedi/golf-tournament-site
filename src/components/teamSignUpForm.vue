@@ -4,10 +4,17 @@ const mainColor = ref("#003566");
 const secondColor = ref("#FFC300");
 </script>
 <template>
-  <form @submit="checkForm">
+  <form @submit="checkForm" class="mt-4">
     <h1>Sign Up</h1>
-    <p v-if="!playersAdded">Choose your squad</p>
-    <p v-if="playersAdded">Choose your division and team name</p>
+    <p class="ui--info">
+      Please sign up your entire team in the same session. While single players
+      are welcomed, we prefer the team captain signs up his/her entire team
+      at&nbsp;once.
+    </p>
+    <h2 class="text-center" v-if="!playersAdded">Choose your squad</h2>
+    <h2 class="text-center" v-if="playersAdded">
+      Choose your division and team name
+    </h2>
     <div class="form-inner">
       <span v-if="errors.length" class="error-list error">
         <span>Please correct the following error(s):</span>
