@@ -104,7 +104,7 @@ const auth = getAuth();
 router.beforeEach(async (to) => {
   const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
   if (requiresAuth && !(await getCurrentUser())) {
-    return '/sign-in'
+    return `/sign-in?redirect=${to.fullPath}`
   }
 })
 

@@ -2,9 +2,10 @@
 import { createStore } from "vuex";
 import { app } from "../middleware/db.js";
 import { signOut, getAuth } from "firebase/auth";
-import { useRouter } from "vue-router";
+
 //firebase auth
 const auth = getAuth(app);
+
 const store = createStore({
   state: {
     //The user state data will initially be empty. After login, this state will be updated
@@ -29,7 +30,6 @@ const store = createStore({
         state.user.userData = {};
         state.user.userLoggedIn = false;
       }
-      console.log("store user commit");
       console.log(state.user);
     },
     setUserLoggedIn(state, value) {
@@ -47,9 +47,8 @@ const store = createStore({
     },
   },
   actions: {
-    async logOut(context) {
-      await signOut(auth);
-      context.commit("setUser", null);
+    logOut(context) {
+      signOut(auth);
     },
     async fetchUser(context, user) {
       context.commit("setUserLoggedIn", user !== null);
