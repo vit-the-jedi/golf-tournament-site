@@ -119,7 +119,7 @@ export default {
             <div class="col-md-6 col-12">
               <h2>What's included:</h2>
               <ul>
-                <li v-for="item in this.addOns">
+                <li v-for="item in addOns">
                   {{ item }}
                 </li>
                 <li>
@@ -128,7 +128,7 @@ export default {
                     href="https://www.valleyfoundation.org/articles/alphonso-and-eulalia-vitello-family-fund"
                     target="_blank"
                   >
-                    {{ this.charity }}</a
+                    {{ outputCharity }}</a
                   >.
                 </li>
               </ul>

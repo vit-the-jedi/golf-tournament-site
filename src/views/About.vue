@@ -16,10 +16,11 @@ import secondaryNav from "../components/secondaryNav.vue";
         <p>
           The PJA Tournament is fun, family golf contest with a cause. Any
           dollars not spent on the facilitation of the tournament go straight to
-          the {{ this.charity }}, an organization that provides sports gear for
-          underprivaleged young&nbsp;athletes. To learn more about the impact
-          and mission Valley Community Foundation, and the Alphonso and Eulalia
-          Vitello Family Fund visit the
+          the Alphonso and Eulalia Vitello Family Fund, an organization that
+          provides support for underprivaleged young&nbsp;athletes in the Valley
+          area. To learn more about the impact and mission of the Valley
+          Community Foundation and the Alphonso and Eulalia Vitello Family Fund
+          visit the
           <a
             href="https://www.valleyfoundation.org/articles/alphonso-and-eulalia-vitello-family-fund"
             target="_blank"
