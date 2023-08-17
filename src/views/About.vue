@@ -12,23 +12,31 @@ import secondaryNav from "../components/secondaryNav.vue";
       <h2>34 Years and counting</h2>
 
       <div class="mt-4">
-        <h5>We are fun</h5>
+        <h3>We are fun</h3>
         <p>
           The PJA Tournament is fun, family golf contest with a cause. Any
-          dollars not spent on the faciliation of the tournament go straight to
-          the Valley League Fund, an organization that provides sports gear for
-          underprivaleged young&nbsp;athletes.
+          dollars not spent on the facilitation of the tournament go straight to
+          the Alphonso and Eulalia Vitello Family Fund, an organization that
+          provides support for underprivaleged young&nbsp;athletes in the Valley
+          area. To learn more about the impact and mission of the Valley
+          Community Foundation and the Alphonso and Eulalia Vitello Family Fund
+          visit the
+          <a
+            href="https://www.valleyfoundation.org/articles/alphonso-and-eulalia-vitello-family-fund"
+            target="_blank"
+            >website</a
+          >.
         </p>
 
-        <h5>We are inclusive</h5>
+        <h3>We are inclusive</h3>
         <p>
           We encourage men and women of all ages to join the tournament. We
-          offer both a Men's League and a Co-Ed league to partcipate in. We
+          offer both a Men's division and a Co-Ed division to partcipate in. We
           accept all skill levels to come and play. We value family fun over
           everything&nbsp;else!
         </p>
 
-        <h5>We are family</h5>
+        <h3>We are family</h3>
         <p>
           For 30+ years this tournament has grown to be a can't-miss for our
           family and friends. In 2022, we had a record number of golfers attend,

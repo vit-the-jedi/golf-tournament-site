@@ -10,16 +10,16 @@ export default {
       time: "10:00am",
       golfCourse: "East Mountain Golf Course",
       golfCourseAddress: "171 E Mountain Rd, Waterbury, CT 06706",
+      charity: "Valley Community Foundation",
+      addOns: [
+        "$10 Pro Shop credit",
+        "Coffee & at check-in",
+        "Golf Cart (per 1-2 players)",
+        "Snacks and drinks at the tee boxes",
+        "Trophies (1st, 2nd, 3rd place per division, plus longest drive and closest to pin for both front and back 9)",
+      ],
       pricing: {
         ticketPrice: "$95.00",
-        addOns: [
-          "$10 Pro Shop credit",
-          "Coffee & at check-in",
-          "Golf Cart (per 1-2 players)",
-          "Snacks and drinks at the tee boxes",
-          "Trophies (1st, 2nd, 3rd place per division, plus longest drive and closest to pin for both front and back 9)",
-          "All proceeds after operational expenses will be donated to the Valley Community Fund",
-        ],
         trophies: [
           "First Place",
           "Second Place",
@@ -54,6 +54,9 @@ export default {
       // `this` points to the component instance
       return this.pricing.ticketPrice;
     },
+    outputCharity() {
+      return this.charity;
+    },
   },
 };
 </script>
@@ -81,7 +84,7 @@ export default {
         <div class="ball-icons">
           <img src="/src/assets/player-icons.png" />
         </div>
-        <h1 class="text-center">Come alone, or bring help!</h1>
+        <h1 class="text-center">Come alone, or bring&nbsp;help!</h1>
         <div class="button-container mb-4">
           <button><router-link to="/sign-up">SIGN UP</router-link></button>
           <small class="text-center d-block w-100">(max 4 players)</small>
@@ -116,8 +119,17 @@ export default {
             <div class="col-md-6 col-12">
               <h2>What's included:</h2>
               <ul>
-                <li v-for="item in pricing.addOns">
+                <li v-for="item in addOns">
                   {{ item }}
+                </li>
+                <li>
+                  All proceeds after operational expenses will be donated to the
+                  <a
+                    href="https://www.valleyfoundation.org/articles/alphonso-and-eulalia-vitello-family-fund"
+                    target="_blank"
+                  >
+                    {{ outputCharity }}</a
+                  >.
                 </li>
               </ul>
             </div>
@@ -150,7 +162,7 @@ export default {
               <ul>
                 <li>Teams of four.</li>
                 <li>Scramble (best ball) format.</li>
-                <li>Men's and Co-ed Divisions available.</li>
+                <li>Men's and Co-ed divisions available.</li>
                 <li>Incomplete teams will be joined to make a foursome.</li>
                 <li>Have fun!</li>
               </ul>
@@ -218,6 +230,9 @@ export default {
   text-align: center;
   width: 100%;
   display: block;
+}
+.info-container {
+  background: transparent;
 }
 .info--row {
   background-color: black;
