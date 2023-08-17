@@ -85,8 +85,6 @@ export default {
       await store.dispatch("logOut");
       this.closeMenuHandler();
       this.$router.push("/");
-      //hotfix for issue with vue state not updating until refresh
-      location.reload();
     },
   },
 };
