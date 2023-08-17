@@ -4,7 +4,9 @@ import navItems from "./navItems.vue";
 
 <template>
   <nav class="nav-container">
-    <img src="../assets/logo-secondary.svg" alt="PJA Tournament logo" />
+    <router-link to="/"
+      ><img src="../assets/logo-secondary.svg" alt="PJA Tournament logo"
+    /></router-link>
     <navItems />
   </nav>
 </template>
