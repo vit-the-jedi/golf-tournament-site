@@ -135,10 +135,11 @@ export default {
           "setPermissionLevel",
           await this.userPermissionsHandler(result.user.phoneNumber)
         );
-
-        this.$router.push("/");
+        //check if there is redirect metadata in route,
+        //if yes, go to redirect
+        //else go to home page
+        this.$router.push(this.$route.query.redirect || "/");
         //hotfix for issue with vue state not updating until refresh
-        location.reload();
       } else {
         this.errors.push("Sign in failed, please try again.");
         console.log(error);
