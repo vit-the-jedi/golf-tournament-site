@@ -54,9 +54,9 @@ async function getData() {
   return dataArr;
 }
 
-async function getUserPermissions(db, phoneNumber) {
+async function getUserPermissions(db, id) {
   //check if user attempting to sign in is admin
-  const adminDocRef = doc(db, "admins", phoneNumber);
+  const adminDocRef = doc(db, "admins", id);
   const docSnap = await getDoc(adminDocRef);
 
   if (docSnap.exists()) {

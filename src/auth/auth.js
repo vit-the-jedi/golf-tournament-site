@@ -13,7 +13,7 @@ const checkAuthStatus = new Promise((resolve) => {
     if (user) {
       const permissionLevel = await getUserPermissions(
         db,
-        store.state.user.userData.phoneNumber
+        store.state.user.userData.uid
       );
       store.commit("setPermissionLevel", permissionLevel);
       console.log("user set in store");

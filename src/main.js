@@ -51,7 +51,7 @@ const router = createRouter({
       name: "SignUp",
       component: SignUp,
       meta: {
-        requiresAuth: true
+        //requiresAuth: true
       }
       //beforeEnter: loginRequired,
     },
