@@ -23,6 +23,21 @@
   </div>
   <script type="module" src="/src/main.js"></script>
   <script type="module" src="/src/auth/auth.js"></script>
+  <footer>
+    <div class="container mt-4" style="background-color: #fff;">
+      <p>
+        PJA Golf Tournament <span id="year"></span>
+      </p>
+    </div>
+  </footer>
 </body>
 
 </html>
+<script>
+  const outputYear = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    document.getElementById("year").textContent = `©${year}`;
+  };
+  outputYear();
+</script>

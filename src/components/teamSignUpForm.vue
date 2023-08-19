@@ -13,7 +13,7 @@ const secondColor = ref("#FFC300");
     </p>
     <h2 class="text-center" v-if="!playersAdded">Choose your squad</h2>
     <h2 class="text-center" v-if="playersAdded">
-      Choose your division and team name
+      Choose your league and team name
     </h2>
     <div class="form-inner">
       <span v-if="errors.length" class="error-list error">
@@ -104,18 +104,11 @@ const secondColor = ref("#FFC300");
           <span class="delete" @click="numOfPlayers--"></span>
         </div>
       </div>
-      <div class="form-control card card--summary" v-if="playersAdded">
-        <div class="row">
-          <div v-for="player in Object.values(players)">
-            <p>{{ player }}</p>
-          </div>
-        </div>
-      </div>
       <div class="form-control card" v-if="playersAdded">
-        <h2>Choose Your Division</h2>
+        <h2>Choose Your league</h2>
         <select v-model="division" class="input full-width">
-          <option value="mens">Men's Division</option>
-          <option value="coed">Co-ed Division</option>
+          <option value="mens">Men's league</option>
+          <option value="coed">Co-ed league</option>
         </select>
         <h2>Team Name</h2>
         <p>
@@ -237,7 +230,7 @@ export default {
       }
 
       if (!this.division) {
-        this.errors.push("Please choose a division to be entered in.");
+        this.errors.push("Please choose a league to be entered in.");
       }
       e.preventDefault();
       //this.loadingScreen("show");
@@ -338,8 +331,6 @@ export default {
       this.teamObj["division"] = this.division;
       //we don't offer payments so let's default to false
       this.teamObj.paid = false;
-
-      //need to pass collection ("teams"), document name (currently sorting by divison), and data
       this.formSubmitHandler();
     },
     formSubmitHandler: async function () {

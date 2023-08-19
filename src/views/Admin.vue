@@ -137,6 +137,8 @@ export default {
         if (deleteComplete) {
           this.teamsSignedUp = [];
           await this.getTeamsListHandler();
+          //hotfix for issue with vue state not updating until refresh
+          location.reload();
         } else {
           this.errors.push(
             "There was a problem deleting this team, please try again"
@@ -190,6 +192,8 @@ export default {
       );
       this.teamsSignedUp = [];
       await this.getTeamsListHandler();
+      //hotfix for issue with vue state not updating until refresh
+      location.reload();
     },
     filterLeague(filterTeamValue) {
       if (filterTeamValue === "mens") {

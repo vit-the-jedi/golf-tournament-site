@@ -9,8 +9,6 @@
   --player-icon-width: calc(100% / 4.25);
   --player-icon-height: calc(100% / 2);
   --ui-dialog-bg: rgba(0, 26, 50, 0.7);
-  --success: #51cc8a;
-  --danger: #3796ef;
   --info: #abd4fa;
 }
 body {
@@ -138,7 +136,7 @@ ul {
 .form-inner {
   max-width: 1200px;
   width: 100%;
-  margin: 25% auto 0 auto;
+  margin: 15% auto 0 auto;
   display: block;
 }
 .form-inset {
@@ -223,6 +221,7 @@ button a {
 .card {
   border-radius: var(--card-border-radius);
   background-color: var(--tertiaryColor);
+  height: auto;
 }
 
 .card--summary .row {
@@ -232,9 +231,9 @@ button a {
 }
 
 .card--summary .row > div {
-  flex-basis: 20%;
+  /* flex-basis: 20%;
   width: 20%;
-  padding: 1%;
+  padding: 1%; */
   position: relative;
   display: flex;
   flex-wrap: nowrap;
