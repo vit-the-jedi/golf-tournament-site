@@ -96,7 +96,7 @@ export default {
               <h2>
                 <!--TODO create method to putput deadline (date of tourny minus 1 week)
                   {{ outputDeadline }}-->
-                September 31st, 2023
+                September 30th, 2023
               </h2>
             </div>
             <div class="col-md-6 col-12">
