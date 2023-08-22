@@ -101,12 +101,53 @@
         </div>
       </div>
       <div class="form-control card" v-if="playersAdded">
-        <h2>Choose Your league</h2>
+        <button role="button" class="back--btn" @click="goBack">
+          <span class="d-block w-100">Go Back</span>
+        </button>
+        <div class="team-summary my-4">
+          <h5>Your Team</h5>
+          <ol class="row mx-auto my-4 w-100">
+            <li class="col-6" v-if="numOfPlayers >= 1">
+              <span v-if="players.player1__firstName">{{
+                players.player1__firstName
+              }}</span
+              >&nbsp;
+              <span v-if="players.player1__lastName">{{
+                players.player1__lastName
+              }}</span>
+            </li>
+            <li class="col-6" v-if="numOfPlayers >= 2">
+              <span v-if="players.player2__firstName">{{
+                players.player2__firstName
+              }}</span
+              >&nbsp;<span v-if="players.player2__lastName">{{
+                players.player2__lastName
+              }}</span>
+            </li>
+            <li class="col-6" v-if="numOfPlayers >= 3">
+              <span v-if="players.player3__firstName">{{
+                players.player3__firstName
+              }}</span
+              >&nbsp;<span v-if="players.player3__lastName">{{
+                players.player3__lastName
+              }}</span>
+            </li>
+            <li class="col-6" v-if="numOfPlayers === 4">
+              <span v-if="players.player4__firstName">{{
+                players.player4__firstName
+              }}</span
+              >&nbsp;<span v-if="players.player4__lastName">{{
+                players.player4__lastName
+              }}</span>
+            </li>
+          </ol>
+        </div>
+        <h2 class="mt-4">Choose Your league</h2>
         <select v-model="division" class="input full-width">
           <option value="mens">Men's league</option>
           <option value="coed">Co-ed league</option>
         </select>
-        <h2>Team Name</h2>
+        <h2 class="mt-4">Team Name</h2>
         <p>
           If you leave this blank, your team name will be Player 1’s full
           name.<br />
@@ -191,6 +232,10 @@ export default {
     },
   },
   methods: {
+    goBack(e) {
+      e.preventDefault();
+      this.playersAdded = false;
+    },
     verifyRecaptcha(res) {
       if (res) {
         this.isRecaptchaVerified = true;
@@ -229,6 +274,7 @@ export default {
       }
       if (!this.errors.length) {
         this.playersAdded = true;
+        console.log(this);
         return true;
       }
     },
@@ -385,6 +431,24 @@ export default {
 .error-list {
   display: none;
 }
+.back--btn {
+  background: none;
+  font-size: 100%;
+  border: none;
+  color: var(--mainColor);
+  text-decoration: underline;
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 600;
+  text-align: left;
+  letter-spacing: normal;
+}
+.back--btn span::before {
+  content: "<<";
+  font-size: 100%;
+}
 .form-control {
   padding-top: calc(var(--player-icon-height) / 4);
   margin-bottom: calc(var(--player-icon-height) / 8);
@@ -415,6 +479,15 @@ export default {
 }
 .form-control:nth-of-type(4)::before {
   background-image: url("../assets/icons/player4.svg");
+}
+.team-summary {
+  background-color: white;
+  border-radius: var(--input-border-radius);
+  border: 3px solid var(--mainColor);
+  padding: 1em;
+}
+.team-summary ol li::marker {
+  list-style-position: inside;
 }
 @media screen and (min-width: 768px) {
   .form-inner {
