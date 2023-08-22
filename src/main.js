@@ -4,10 +4,12 @@ import App from "./App.vue";
 
 //auth
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { VueRecaptchaPlugin } from 'vue-recaptcha'
 
 // import store
 import { store } from "./store/index.js";
+
+//toast messages
+import ToastPlugin from 'vue-toast-notification';
 
 //views
 import Home from "@/views/Home.vue";
@@ -111,4 +113,6 @@ router.beforeEach(async (to) => {
 })
 
 //create app and init router on it
-createApp(App).use(router).use(store).mount("#app");
+createApp(App).use(router).use(store).use(ToastPlugin, {
+  position: 'bottom-right'
+}).mount("#app");

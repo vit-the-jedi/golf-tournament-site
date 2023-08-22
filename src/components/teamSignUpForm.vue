@@ -351,6 +351,9 @@ export default {
       addToFirestore(`${team.division}-league`, team).then((teamAdded) => {
         if (teamAdded.value) {
           //show success msg
+          this.$toast.success("Team signed up successfully!", {
+            duration: 3000,
+          });
           //set team to vuex store
           // and navigate
           store.commit("setTeam", this.teamObj);
@@ -362,6 +365,10 @@ export default {
         } else {
           //show error msg and dont navigate
           if (teamAdded.error) {
+            //msg error
+            this.$toast.error("There was a problem, please try again.", {
+              duration: 3000,
+            });
             console.error(teamAdded.error);
           }
         }

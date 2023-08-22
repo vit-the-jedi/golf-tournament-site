@@ -87,6 +87,9 @@ export default {
     },
     signOutHandler: async function () {
       await store.dispatch("logOut");
+      this.$toast.success("Signed out successfully", {
+        duration: 3000,
+      });
       this.closeMenuHandler();
       this.$router.push("/");
     },
