@@ -6,8 +6,8 @@ import secondaryNav from "../components/secondaryNav.vue";
   <secondaryNav />
   <div class="sign-up__success">
     <div class="container info-container mt-4">
-      <div class="text-center">
-        <h1>All Set!</h1>
+      <div class="text-center pt-4">
+        <h1 class="pt-4">All Set!</h1>
         <h4>Review your details below</h4>
       </div>
       <teamInfo />

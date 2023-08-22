@@ -1,19 +1,14 @@
-<script setup>
-import { ref } from "vue";
-const mainColor = ref("#003566");
-const secondColor = ref("#FFC300");
-</script>
+<script setup></script>
 <template>
   <form @submit="checkForm" class="mt-4">
-    <h1>Sign Up</h1>
+    <h1>Choose your squad</h1>
     <p class="ui--info">
       Please sign up your entire team in the same session. While single players
       are welcomed, we prefer the team captain signs up his/her entire team
       at&nbsp;once.
     </p>
-    <h2 class="text-center" v-if="!playersAdded">Choose your squad</h2>
     <h2 class="text-center" v-if="playersAdded">
-      Choose your division and team name
+      Choose your league and team name
     </h2>
     <div class="form-inner">
       <span v-if="errors.length" class="error-list error">
@@ -26,6 +21,7 @@ const secondColor = ref("#FFC300");
       <div id="players" class="form-inset" v-if="!playersAdded">
         <div class="form-control card" v-if="numOfPlayers >= 1">
           <h2>Player 1</h2>
+          <h5 class="text-uppercase font-weight-bold">Team Captain</h5>
           <input
             v-model="players.player1__firstName"
             class="input"
@@ -104,22 +100,16 @@ const secondColor = ref("#FFC300");
           <span class="delete" @click="numOfPlayers--"></span>
         </div>
       </div>
-      <div class="form-control card card--summary" v-if="playersAdded">
-        <div class="row">
-          <div v-for="player in Object.values(players)">
-            <p>{{ player }}</p>
-          </div>
-        </div>
-      </div>
       <div class="form-control card" v-if="playersAdded">
-        <h2>Choose Your Division</h2>
+        <h2>Choose Your league</h2>
         <select v-model="division" class="input full-width">
-          <option value="mens">Men's Division</option>
-          <option value="coed">Co-ed Division</option>
+          <option value="mens">Men's league</option>
+          <option value="coed">Co-ed league</option>
         </select>
         <h2>Team Name</h2>
         <p>
-          If you leave this blank, your team name will be Player 1’s full name.
+          If you leave this blank, your team name will be Player 1’s full
+          name.<br />
           Ex: Team John Smith
         </p>
         <input
@@ -128,7 +118,12 @@ const secondColor = ref("#FFC300");
           type="text"
           placeholder="Team Name (optional)"
         />
-        <button type="submit">Sign Up</button>
+        <recaptcha
+          ref="recaptcha"
+          @verify="verifyRecaptcha"
+          :grReset="grReset"
+        ></recaptcha>
+        <button type="submit" :disabled="!isRecaptchaVerified">Sign Up</button>
       </div>
     </div>
   </form>
@@ -137,8 +132,13 @@ const secondColor = ref("#FFC300");
 <script>
 import { addToFirestore } from "../middleware/db.js";
 import { store } from "../store/index.js";
+import Recaptcha from "./Recaptcha.vue";
 
 export default {
+  components: {
+    Recaptcha,
+  },
+  mounted() {},
   data() {
     return {
       errors: [],
@@ -157,6 +157,7 @@ export default {
       teamName: null,
       division: "mens",
       needsGrouping: false,
+      isRecaptchaVerified: false,
     };
   },
   watch: {
@@ -194,6 +195,11 @@ export default {
     },
   },
   methods: {
+    verifyRecaptcha(res) {
+      if (res) {
+        this.isRecaptchaVerified = true;
+      }
+    },
     loadingScreenHandler(action) {
       this.$emit("loading-screen");
     },
@@ -237,7 +243,7 @@ export default {
       }
 
       if (!this.division) {
-        this.errors.push("Please choose a division to be entered in.");
+        this.errors.push("Please choose a league to be entered in.");
       }
       e.preventDefault();
       //this.loadingScreen("show");
@@ -338,18 +344,27 @@ export default {
       this.teamObj["division"] = this.division;
       //we don't offer payments so let's default to false
       this.teamObj.paid = false;
-
-      //need to pass collection ("teams"), document name (currently sorting by divison), and data
       this.formSubmitHandler();
     },
     formSubmitHandler: async function () {
       const team = this.teamObj;
-      addToFirestore(`${team.division}-league`, team);
-      store.commit("setTeam", this.teamObj);
-      sessionStorage.setItem("team", JSON.stringify(this.teamObj));
-      //programmatically route to success page w/ relevant form data we can post back for user review
-      this.$router.push({
-        path: "/sign-up-success",
+      addToFirestore(`${team.division}-league`, team).then((teamAdded) => {
+        if (teamAdded.value) {
+          //show success msg
+          //set team to vuex store
+          // and navigate
+          store.commit("setTeam", this.teamObj);
+          sessionStorage.setItem("team", JSON.stringify(this.teamObj));
+          //programmatically route to success page w/ relevant form data we can post back for user review
+          this.$router.push({
+            path: "/sign-up-success",
+          });
+        } else {
+          //show error msg and dont navigate
+          if (teamAdded.error) {
+            console.error(teamAdded.error);
+          }
+        }
       });
     },
   },

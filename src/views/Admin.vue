@@ -80,18 +80,35 @@ export default {
   },
   methods: {
     getTeamsListHandler: async function () {
-      //create data partition for mens and coed league so we can filter them
-      let mensTeamsList = await listTeamDocs("mens-league");
-      let coedTeamsList = await listTeamDocs("coed-league");
       this.teamsSignedUp.mens = {};
       this.teamsSignedUp.coed = {};
-      //create nested objects for each league
-      mensTeamsList = mensTeamsList.forEach(function (team) {
-        this.createTeamsData(team, "mens");
-      }, this);
-      coedTeamsList = coedTeamsList.forEach(function (team) {
-        this.createTeamsData(team, "coed");
-      }, this);
+      //create data partition for mens and coed league so we can filter them
+      await listTeamDocs("mens-league")
+        .then((listTeamData) => {
+          if (listTeamData.data && !listTeamData.error) {
+            listTeamData.data.forEach(function (team) {
+              this.createTeamsData(team, "mens");
+            }, this);
+          } else {
+            //msg error
+            console.log(listTeamData.error);
+            console.log("admin list error");
+          }
+        })
+        .catch((error) => {});
+      await listTeamDocs("coed-league")
+        .then((listTeamData) => {
+          if (listTeamData.data && !listTeamData.error) {
+            listTeamData.data.forEach(function (team) {
+              this.createTeamsData(team, "coed");
+            }, this);
+          } else {
+            //msg error
+            console.log(listTeamData.error);
+            console.log("admin list error");
+          }
+        })
+        .catch((error) => {});
       //if admin has no choice or wants both, render both
       if (!this.adminChoices.division) {
         this.adminChoices.renderMensList = true;
@@ -130,19 +147,20 @@ export default {
       if (answer === "YES") {
         //delete team from db collection
         //re-hydrate ui w/ new list of teams
-        const deleteComplete = await deleteFromFirestore(
-          `${team.division}-league`,
-          team.id
+        await deleteFromFirestore(`${team.division}-league`, team.id).then(
+          async (teamDeleted) => {
+            if (teamDeleted.value) {
+              //success message
+              this.teamsSignedUp = {};
+              await this.getTeamsListHandler();
+            } else {
+              //msg error
+              console.error(teamDeleted.error);
+            }
+          }
         );
-        if (deleteComplete) {
-          this.teamsSignedUp = [];
-          await this.getTeamsListHandler();
-        } else {
-          this.errors.push(
-            "There was a problem deleting this team, please try again"
-          );
-        }
       } else {
+        //msg to try again
         return;
       }
     },
@@ -164,11 +182,22 @@ export default {
       this.isGrouping = true;
     },
     async submitTeamChanges() {
-      await addToFirestore(`${this.teamInfo.division}-league`, this.teamInfo);
-      this.teamsSignedUp = [];
-      await this.getTeamsListHandler();
-      //hotfix for issue with vue state not updating until refresh
-      location.reload();
+      await addToFirestore(
+        `${this.teamInfo.division}-league`,
+        this.teamInfo
+      ).then(async (teamAdded) => {
+        if (teamAdded.value) {
+          //show success msg
+          //get teams again
+          this.teamsSignedUp = {};
+          await this.getTeamsListHandler();
+        } else {
+          //show error msg and dont navigate
+          if (teamAdded.error) {
+            console.error(teamAdded.error);
+          }
+        }
+      });
     },
     async submitGroupChanges(teamToMerge) {
       //first we add the destination team with the target team
@@ -188,7 +217,7 @@ export default {
         `${teamToMerge.division}-league`,
         teamToMerge.id
       );
-      this.teamsSignedUp = [];
+      this.teamsSignedUp = {};
       await this.getTeamsListHandler();
     },
     filterLeague(filterTeamValue) {
@@ -259,7 +288,7 @@ export default {
     },
   },
   //await the call to firebase for teams list
-  async created() {
+  async mounted() {
     await this.getTeamsListHandler();
   },
 };
