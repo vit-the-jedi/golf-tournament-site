@@ -4,6 +4,8 @@ import App from "./App.vue";
 
 //auth
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { VueRecaptchaPlugin } from 'vue-recaptcha'
+
 // import store
 import { store } from "./store/index.js";
 
@@ -51,7 +53,7 @@ const router = createRouter({
       name: "SignUp",
       component: SignUp,
       meta: {
-        requiresAuth: true
+        //requiresAuth: true
       }
       //beforeEnter: loginRequired,
     },

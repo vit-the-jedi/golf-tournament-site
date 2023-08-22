@@ -38,13 +38,18 @@
           <slot name="navItemText">Admin</slot>
         </router-link>
       </div>
+      <div class="menu--item" v-if="!this.$store.getters.getLoginState">
+        <router-link to="/sign-in">
+          <img src="../assets/icons/sign-in.svg" alt="sign-in page" />
+          <slot name="navItemText">Sign In</slot>
+        </router-link>
+      </div>
       <div class="menu--item" v-if="this.$store.getters.getLoginState">
         <button id="menu-sign-out" class="sign-out" @click="signOutHandler">
           Sign Out
         </button>
       </div>
     </div>
-
     <span class="delete" @click="closeMenuHandler"></span>
   </div>
   <div id="menu--bg" class="ui--backdrop"></div>
@@ -52,7 +57,6 @@
 
 <script>
 import { store } from "../store/index.js";
-import { useRouter } from "vue-router";
 
 export default {
   data() {

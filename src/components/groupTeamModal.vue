@@ -13,7 +13,7 @@
 
         <div
           class="team-container admin--row row mx-auto mt-4"
-          v-for="team in availableTeams"
+          v-for="team in this.availableTeams"
         >
           <input
             class="col-2"
@@ -66,12 +66,15 @@ export default {
     };
   },
   beforeMount() {
-    this.availableTeams = this.teamsSignedUp.filter((team) => {
+    //bug here - returning every team regardless of numOfPlayers value
+    const teamGroup = this.teamsSignedUp[this.teamInfo.division];
+    this.availableTeams = [];
+    Object.keys(teamGroup).forEach((teamKey) => {
       if (
-        team.numOfPlayers + this.teamInfo.numOfPlayers === 4 &&
-        team.id !== this.teamInfo.id
+        teamGroup[teamKey].numOfPlayers + this.teamInfo.numOfPlayers <= 4 &&
+        teamGroup[teamKey].id !== this.teamInfo.id
       ) {
-        return team;
+        this.availableTeams.push(teamGroup[teamKey]);
       }
     });
   },

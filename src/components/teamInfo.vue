@@ -62,9 +62,12 @@ export default {
 .players {
   margin: 2em auto;
   position: relative;
+  border: 2px solid var(--mainColor);
+  border-radius: calc(var(--card-border-radius) / 2);
 }
 .players .table {
   position: relative;
+  padding-top: 1em;
 }
 .players ol {
   margin-top: 2em;
