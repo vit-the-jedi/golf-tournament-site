@@ -1,5 +1,6 @@
 "use strict";
 
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
@@ -33,26 +34,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth();
 
-async function getData() {
-  const orderedDataQuery = query(
-    scoreCollection,
-    orderBy("score", "desc"),
-    limit(25)
-  );
-  const checkPermissions = query(adminsCollection);
-  const orderedData = await getDocs(orderedDataQuery);
-  //order data highest -> lowest
-  let dataArr = [];
-  orderedData.forEach((doc) => {
-    //create empty obj to store values
-    const nestedDataObj = {};
-    nestedDataObj[doc.id] = doc.data();
-    //push to array so we can preserve the correct order we got from firebase query
-    dataArr.push(nestedDataObj);
-  });
-  console.log(dataArr);
-  return dataArr;
-}
 
 async function getUserPermissions(db, id) {
   //check if user attempting to sign in is admin
@@ -67,64 +48,78 @@ async function getUserPermissions(db, id) {
 }
 
 async function listTeamDocs(collectionName) {
-  const teamsRef = collection(db, collectionName);
-  const orderedDataQuery = query(teamsRef, orderBy("teamName", "asc"));
+  return new Promise(async (resolve) => {
+    const teamsRef = collection(db, collectionName);
+    const orderedDataQuery = query(teamsRef, orderBy("teamName", "asc"));
 
-  const orderedData = await getDocs(orderedDataQuery);
-  //order data highest -> lowest
-  let dataArr = [];
-  orderedData.forEach((doc) => {
-    //create empty obj to store values
-    const nestedDataObj = {};
-    nestedDataObj[doc.id] = doc.data();
-    //push to array so we can preserve the correct order we got from firebase query
-    dataArr.push(nestedDataObj);
-  });
-  return dataArr;
+    await getDocs(orderedDataQuery).then((orderedData) => {
+      //order data highest -> lowest
+      let dataArr = [];
+      orderedData.forEach((doc) => {
+        //create empty obj to store values
+        const nestedDataObj = {};
+        nestedDataObj[doc.id] = doc.data();
+        //push to array so we can preserve the correct order we got from firebase query
+        dataArr.push(nestedDataObj);
+      });
+      resolve({
+        data: dataArr,
+        error: null
+      })
+    }).catch((error) => {
+      resolve({
+        data: null,
+        error: error
+      })
+    });
+
+  })
+
 }
 
 //have to pass either mens or coed as docName to enter new data into each document
 async function addToFirestore(coll, data = null) {
-  if (!data.hasOwnProperty("id")) {
-    data.id = self.crypto.randomUUID();
-  }
-  const docRef = doc(db, coll, data.id);
+  return new Promise((resolve, reject) => {
+    if (!data.hasOwnProperty("id")) {
+      data.id = self.crypto.randomUUID();
+    }
+    const docRef = doc(db, coll, data.id);
+    const resolveObj = {
+      error: null,
+      value: null
+    }
+    setDoc(docRef, data, { merge: true })
+      .then(() => {
+        resolveObj.value = true;
+        resolve(resolveObj);
+      })
+      .catch((error) => {
+        resolveObj.error = error;
+        resolveObj.value = false;
+        resolve(resolveObj);
+      });
+  });
 
-  setDoc(docRef, data, { merge: true })
-    .then(() => {
-      console.log("Document has been added successfully");
-      return true;
-    })
-    .catch((error) => {
-      console.log(error);
-      return false;
-    });
 }
 async function deleteFromFirestore(coll, docName) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const docRefToDelete = doc(db, coll, docName);
-    const completed = deleteDoc(docRefToDelete).then(() => {
-      console.log("Document deleted successfully");
-      return true;
+    const resolveObj = {
+      error: null,
+      value: null
+    }
+    deleteDoc(docRefToDelete).then(() => {
+      resolveObj.value = true;
+      resolve(resolveObj);
     })
       .catch((error) => {
-        console.log(error);
-        return false
+        resolveObj.error = error;
+        resolveObj.value = false;
+        resolve(resolveObj);
       })
-    resolve(completed);
   })
 }
-async function updateFirestoreDoc(db, coll, id) {
-  //check if user attempting to sign in is admin
-  const docToUpdateRef = doc(db, coll, phoneNumber);
-  const docSnap = await getDoc(adminDocRef);
 
-  if (docSnap.exists()) {
-    return "admin";
-  } else {
-    return "user";
-  }
-}
 export {
   firebaseConfig,
   app,

@@ -4,6 +4,8 @@ import App from "./App.vue";
 
 //auth
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { VueRecaptchaPlugin } from 'vue-recaptcha'
+
 // import store
 import { store } from "./store/index.js";
 

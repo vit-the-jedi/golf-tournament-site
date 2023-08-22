@@ -16,7 +16,6 @@ body {
   font-size: 17px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: antialiased;
-  font-smoothing: antialiased;
   font-weight: 600;
 }
 img {
@@ -164,6 +163,7 @@ form label {
   width: 100%;
   flex-basis: 100%;
   position: relative;
+  color: var(--mainColor);
 }
 .form-control:has(.button-container) {
   padding-bottom: 2%;
@@ -197,6 +197,9 @@ button {
   font-size: 1.5rem;
   letter-spacing: 2px;
   text-transform: uppercase;
+}
+button:disabled {
+  opacity: 0.7;
 }
 button a {
   text-decoration: none;
