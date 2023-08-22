@@ -118,11 +118,7 @@
           type="text"
           placeholder="Team Name (optional)"
         />
-        <recaptcha
-          ref="recaptcha"
-          @verify="verifyRecaptcha"
-          :grReset="grReset"
-        ></recaptcha>
+        <recaptcha ref="recaptcha" @verify="verifyRecaptcha"></recaptcha>
         <button type="submit" :disabled="!isRecaptchaVerified">Sign Up</button>
       </div>
     </div>
@@ -221,6 +217,12 @@ export default {
         );
         if (!fNameValid || !lNameValid) {
           this.addError("Please enter a first and last name for each player.");
+          this.$toast.error(
+            "Please enter a first and last name for each player",
+            {
+              duration: 3000,
+            }
+          );
         } else {
           this.errors = [];
         }
@@ -243,10 +245,11 @@ export default {
       }
 
       if (!this.division) {
-        this.errors.push("Please choose a league to be entered in.");
+        this.$toast.error("Please select a division", {
+          duration: 3000,
+        });
       }
       e.preventDefault();
-      //this.loadingScreen("show");
     },
     addError: function (errorString) {
       if (this.errors.length > 0) {
@@ -379,6 +382,9 @@ export default {
 </script>
 
 <style scoped>
+.error-list {
+  display: none;
+}
 .form-control {
   padding-top: calc(var(--player-icon-height) / 4);
   margin-bottom: calc(var(--player-icon-height) / 8);
