@@ -1,6 +1,5 @@
 <script setup>
-import infoModal from "./components/infoModal.vue";
-import loadingScreen from "./components/loadingScreen.vue";
+import "vue-toast-notification/dist/theme-bootstrap.css";
 </script>
 
 <template>
@@ -16,20 +15,6 @@ import { mapState } from "vuex";
 import { store } from "./store";
 export default {
   name: "vuex3",
-  data() {
-    return {
-      alert: {
-        showAlert: false,
-        alertOptions: {
-          type: "",
-          title: "",
-          body: "",
-          removable: null,
-          action: {},
-        },
-      },
-    };
-  },
   computed: mapState(["user"]),
 };
 </script>
