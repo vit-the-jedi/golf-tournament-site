@@ -151,10 +151,16 @@ export default {
           async (teamDeleted) => {
             if (teamDeleted.value) {
               //success message
+              this.$toast.success("Team deleted", {
+                duration: 3000,
+              });
               this.teamsSignedUp = {};
               await this.getTeamsListHandler();
             } else {
               //msg error
+              this.$toast.error("There was a problem, please try again.", {
+                duration: 3000,
+              });
               console.error(teamDeleted.error);
             }
           }
@@ -188,12 +194,19 @@ export default {
       ).then(async (teamAdded) => {
         if (teamAdded.value) {
           //show success msg
+          this.$toast.success("Team updated", {
+            duration: 3000,
+          });
           //get teams again
           this.teamsSignedUp = {};
           await this.getTeamsListHandler();
         } else {
           //show error msg and dont navigate
           if (teamAdded.error) {
+            //msg error
+            this.$toast.error("There was a problem, please try again.", {
+              duration: 3000,
+            });
             console.error(teamAdded.error);
           }
         }

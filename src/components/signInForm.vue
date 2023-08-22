@@ -108,6 +108,9 @@ export default {
         signInWithEmailAndPassword(auth, email, password)
           .then(async (result) => {
             if (result.user) {
+              this.$toast.success("Sign in successful", {
+                duration: 3000,
+              });
               //create async function so we can await the call to check + set user permissions
               store.commit(
                 "setPermissionLevel",
@@ -119,7 +122,9 @@ export default {
               this.$router.push(this.$route.query.redirect || "/");
               //hotfix for issue with vue state not updating until refresh
             } else {
-              this.errors.push("Sign in failed, please try again.");
+              this.$toast.error("Sign in failed, please try again.", {
+                duration: 3000,
+              });
               console.log(error);
             }
           })

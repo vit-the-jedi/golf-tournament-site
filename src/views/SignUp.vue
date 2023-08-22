@@ -35,7 +35,6 @@ export default {
 <style scoped>
 .sign-up {
   height: 100vh;
-  padding: 10vh 0;
 }
 .sign-up .top-content {
   background-image: linear-gradient(
