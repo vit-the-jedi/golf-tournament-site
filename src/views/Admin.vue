@@ -446,4 +446,21 @@ export default {
 .unpaid {
   background-color: var(--danger);
 }
+@media screen and (max-width: 767px) {
+  .admin--card {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .admin--card h2 {
+    width: 100%;
+    flex-basis: 100%;
+  }
+  .data .admin--column {
+    width: 100%;
+    flex-basis: 100% !important;
+  }
+  .data .admin--column h6 {
+    text-align: left;
+  }
+}
 </style>

@@ -7,9 +7,6 @@
       are welcomed, we prefer the team captain signs up his/her entire team
       at&nbsp;once.
     </p>
-    <h2 class="text-center" v-if="playersAdded">
-      Choose your league and team name
-    </h2>
     <div class="form-inner">
       <span v-if="errors.length" class="error-list error">
         <span>Please correct the following error(s):</span>
@@ -18,7 +15,7 @@
         </ul>
       </span>
 
-      <div id="players" class="form-inset" v-if="!playersAdded">
+      <div id="players" class="form-inset players-form" v-if="!playersAdded">
         <div class="form-control card" v-if="numOfPlayers >= 1">
           <h2>Player 1</h2>
           <h5 class="text-uppercase font-weight-bold">Team Captain</h5>
@@ -100,17 +97,65 @@
           <span class="delete" @click="numOfPlayers--"></span>
         </div>
       </div>
+      <div class="form-control card summary-container" v-if="playersAdded">
+        <div class="team-summary">
+          <div class="ball-icons">
+            <img src="/src/assets/player-icons.png" />
+          </div>
+          <h2>Your Squad</h2>
+          <ol class="row mx-auto my-4 w-100">
+            <li class="col-md-6 col-12" v-if="numOfPlayers >= 1">
+              <span v-if="players.player1__firstName">{{
+                players.player1__firstName
+              }}</span
+              >&nbsp;
+              <span v-if="players.player1__lastName">{{
+                players.player1__lastName
+              }}</span>
+            </li>
+            <li class="col-md-6 col-12" v-if="numOfPlayers >= 2">
+              <span v-if="players.player2__firstName">{{
+                players.player2__firstName
+              }}</span
+              >&nbsp;<span v-if="players.player2__lastName">{{
+                players.player2__lastName
+              }}</span>
+            </li>
+            <li class="col-md-6 col-12" v-if="numOfPlayers >= 3">
+              <span v-if="players.player3__firstName">{{
+                players.player3__firstName
+              }}</span
+              >&nbsp;<span v-if="players.player3__lastName">{{
+                players.player3__lastName
+              }}</span>
+            </li>
+            <li class="col-md-6 col-12" v-if="numOfPlayers === 4">
+              <span v-if="players.player4__firstName">{{
+                players.player4__firstName
+              }}</span
+              >&nbsp;<span v-if="players.player4__lastName">{{
+                players.player4__lastName
+              }}</span>
+            </li>
+          </ol>
+        </div>
+      </div>
       <div class="form-control card" v-if="playersAdded">
-        <h2>Choose Your league</h2>
+        <button role="button" class="back--btn mb-4" @click="goBack">
+          <span class="d-block w-100">Go Back</span>
+        </button>
+        <h2 class="mt-4">Choose Your league</h2>
         <select v-model="division" class="input full-width">
           <option value="mens">Men's league</option>
           <option value="coed">Co-ed league</option>
         </select>
-        <h2>Team Name</h2>
+        <h2 class="mt-4">Team Name</h2>
         <p>
-          If you leave this blank, your team name will be Player 1’s full
-          name.<br />
-          Ex: Team John Smith
+          If you leave this blank, your team name will be Player 1’s full name.
+        </p>
+        <p>
+          Ex: Team {{ players.player1__firstName }}
+          {{ players.player1__lastName }}
         </p>
         <input
           v-model="teamName"
@@ -191,6 +236,10 @@ export default {
     },
   },
   methods: {
+    goBack(e) {
+      e.preventDefault();
+      this.playersAdded = false;
+    },
     verifyRecaptcha(res) {
       if (res) {
         this.isRecaptchaVerified = true;
@@ -229,6 +278,7 @@ export default {
       }
       if (!this.errors.length) {
         this.playersAdded = true;
+        console.log(this);
         return true;
       }
     },
@@ -385,6 +435,24 @@ export default {
 .error-list {
   display: none;
 }
+.back--btn {
+  background: none;
+  font-size: 100%;
+  border: none;
+  color: var(--mainColor);
+  text-decoration: underline;
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 600;
+  text-align: left;
+  letter-spacing: normal;
+}
+.back--btn span::before {
+  content: "<<";
+  font-size: 100%;
+}
 .form-control {
   padding-top: calc(var(--player-icon-height) / 4);
   margin-bottom: calc(var(--player-icon-height) / 8);
@@ -392,7 +460,7 @@ export default {
   padding-right: 2%;
   padding-bottom: 10%;
 }
-.form-control::before {
+.players-form .form-control::before {
   width: var(--player-icon-width);
   height: var(--player-icon-height);
   content: "";
@@ -404,17 +472,28 @@ export default {
   top: calc(-1 * var(--player-icon-height) / 2);
   left: calc(100% / 2 - var(--player-icon-width) / 2);
 }
-.form-control:nth-of-type(1)::before {
+.players-form .form-control:nth-of-type(1)::before {
   background-image: url("../assets/icons/player1.svg");
 }
-.form-control:nth-of-type(2)::before {
+.players-form .form-control:nth-of-type(2)::before {
   background-image: url("../assets/icons/player2.svg");
 }
-.form-control:nth-of-type(3)::before {
-  background-image: url("../assets/icons/player3.svg");
+.players-form .form-control:nth-of-type(3)::before {
+  background-image: url("../assets/icons/player3.png");
 }
-.form-control:nth-of-type(4)::before {
-  background-image: url("../assets/icons/player4.svg");
+.players-form .form-control:nth-of-type(4)::before {
+  background-image: url("../assets/icons/player4.png");
+}
+.summary-container {
+  background-color: var(--secondColor);
+}
+
+.team-summary {
+  padding: 0.5em;
+}
+.team-summary ol li {
+  list-style-position: inside;
+  margin-bottom: 2em;
 }
 @media screen and (min-width: 768px) {
   .form-inner {
