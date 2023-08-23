@@ -114,9 +114,6 @@ export default {
         signInWithEmailAndPassword(auth, email, password)
           .then(async (result) => {
             if (result.user) {
-              this.$toast.success("Sign in successful", {
-                duration: 3000,
-              });
               //create async function so we can await the call to check + set user permissions
               store.commit(
                 "setPermissionLevel",
@@ -125,8 +122,10 @@ export default {
               //check if there is redirect metadata in route,
               //if yes, go to redirect
               //else go to home page
-              this.$router.push(this.$route.query.redirect || "/");
-              //hotfix for issue with vue state not updating until refresh
+              this.$router.push("/admin");
+              this.$toast.success("Sign in successful", {
+                duration: 3000,
+              });
             } else {
               this.$toast.error("Sign in failed, please try again.", {
                 duration: 3000,
