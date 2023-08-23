@@ -170,4 +170,13 @@ button {
   margin: 1em auto auto auto;
   max-width: 304px;
 }
+@media screen and (max-width: 767px) {
+  h1 {
+    min-width: 100%;
+    width: 100%;
+  }
+  .form-inner input {
+    width: 100%;
+  }
+}
 </style>
