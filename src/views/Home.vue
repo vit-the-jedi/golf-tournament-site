@@ -1,6 +1,7 @@
 <script setup>
 import mainNav from "../components/mainNav.vue";
 import venmo from "../components/Venmo.vue";
+import check from "../components/Check.vue";
 </script>
 
 <script>
@@ -115,7 +116,7 @@ export default {
           <div class="row">
             <div class="col-md-6 col-12">
               <h1>Pricing</h1>
-              <h2>Entry fee: {{ outputPrice }}</h2>
+              <h2>Entry fee: {{ outputPrice }} per&nbsp;player</h2>
             </div>
             <div class="col-md-6 col-12">
               <h2>What's included:</h2>
@@ -135,16 +136,10 @@ export default {
               </ul>
             </div>
           </div>
+          <h2 class="text-center">Payment Methods</h2>
           <div class="row pricing--payment">
             <div class="col-md-6 col-12">
-              <h2>Payment Methods</h2>
-              <h5>Check payable to:</h5>
-              <ul>
-                <li>John Vitello</li>
-                <li>P.O Box 7009</li>
-                <li>Meriden, CT, 06450</li>
-                <li><a href="mailto:jayvee1@att.net">jayvee1@att.net</a></li>
-              </ul>
+              <check />
             </div>
             <div class="col-md-6 col-12">
               <venmo />
