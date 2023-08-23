@@ -1,5 +1,6 @@
 <script setup>
 import mainNav from "../components/mainNav.vue";
+import venmo from "../components/Venmo.vue";
 </script>
 
 <script>
@@ -146,10 +147,7 @@ export default {
               </ul>
             </div>
             <div class="col-md-6 col-12">
-              <img src="../assets/Venmo_Logo_White.png" alt="Venmo Logo" />
-              <p>@PJA-tournament</p>
-              <!---VENMO QR HERE-->
-              <div id="venmo"></div>
+              <venmo />
             </div>
           </div>
         </div>
@@ -268,11 +266,7 @@ export default {
   background: none;
   border-color: white;
 }
-.pricing .pricing--payment ul {
-  list-style-type: none;
-  padding: 0;
-  max-width: 30%;
-}
+
 .rules {
   background: white;
   border: none;
@@ -295,6 +289,11 @@ export default {
   .card:has(.entry--info)::before {
     max-width: 20vw;
   }
+  .pricing .pricing--payment ul {
+    list-style-type: none;
+    padding: 0;
+    max-width: 30%;
+  }
 }
 @media screen and (max-width: 767px) {
   .container {
@@ -308,6 +307,9 @@ export default {
   }
   .top-info div p {
     margin-bottom: 0;
+  }
+  .pricing .pricing--payment ul {
+    max-width: 60%;
   }
 }
 </style>
