@@ -31,16 +31,6 @@ export default {
           <span class="line line-v"></span> -->
         </div>
       </div>
-      <div class="col-md-10 mx-auto">
-        <p>
-          If you see an issue with your submission, please reach out to our
-          tournament admins at
-          <a href="mailto:pjatournament@gmail.com">pjatournament@gmail.com</a>.
-        </p>
-        <p>
-          Please provide your team name, team id and division in your inquiry.
-        </p>
-      </div>
     </div>
   </div>
 </template>
@@ -112,10 +102,23 @@ export default {
 a:hover {
   color: var(--mainColor);
 }
+@media screen and (min-width: 768px) {
+  .player-name p {
+    margin-left: 25px;
+  }
+}
 
 @media screen and (max-width: 767px) {
+  .players .table {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
   .players .table div::before {
     left: 5px;
+  }
+  .player-name p {
+    margin-left: 5px;
+    text-align: left;
   }
 }
 </style>
