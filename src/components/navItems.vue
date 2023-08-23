@@ -168,7 +168,7 @@ export default {
   flex-direction: column;
 }
 .menu--item img {
-  max-width: 55px;
+  max-width: 50px;
   width: 100%;
   margin: auto;
   padding: 0 0 1rem 0;
@@ -177,7 +177,7 @@ export default {
   background-color: rgb(204, 241, 253);
 }
 .menu--open {
-  margin-top: 5%;
+  margin-top: 1%;
   visibility: visible;
 }
 @media screen and (max-width: 767px) {
@@ -197,6 +197,9 @@ export default {
     border: 3px solid var(--tertiaryColor);
     top: -2px;
     left: -3px;
+  }
+  .menu--item img {
+    max-width: 40px;
   }
 }
 </style>
