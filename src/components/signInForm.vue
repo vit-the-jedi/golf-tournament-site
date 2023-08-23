@@ -94,7 +94,13 @@ export default {
       //   this.startSignIn();
       // }
       e.preventDefault();
-      this.startSignIn();
+      if (!this.userEmail || !this.userPassword) {
+        this.$toast.error("Please provide a valid email/password", {
+          duration: 3000,
+        });
+      } else {
+        this.startSignIn();
+      }
     },
     removeErrors: function () {
       this.errors = [];
@@ -129,7 +135,12 @@ export default {
             }
           })
           .catch((error) => {
-            console.error(error);
+            this.$toast.error(
+              "Sign in failed, please make sure email and password are correct.",
+              {
+                duration: 3000,
+              }
+            );
           });
       });
     },
