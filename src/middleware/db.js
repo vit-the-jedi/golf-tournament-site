@@ -40,11 +40,17 @@ async function getUserPermissions(db, id) {
   const adminDocRef = doc(db, "admins", id);
   const docSnap = await getDoc(adminDocRef);
 
-  if (docSnap.exists()) {
-    return "admin";
-  } else {
-    return "user";
+  const adminData = {
+    permissionLevel: null,
+    displayName: null
   }
+  if (docSnap.exists()) {
+    adminData.permissionLevel = "admin";
+    adminData.displayName = docSnap.data().displayName;
+  } else {
+    adminData.permissionLevel = "user";
+  }
+  return adminData;
 }
 
 async function listTeamDocs(collectionName) {

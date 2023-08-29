@@ -1,6 +1,9 @@
 <template>
   <div id="open-menu" class="menu--toggle" @click="openMenuHandler"></div>
   <div id="menu" class="menu--list">
+    <h3 class="w-100 text-center" v-if="this.$store.getters.checkAdmin">
+      Hello, {{ this.$store.getters.getUserDisplayName }}
+    </h3>
     <div class="menu--row">
       <div class="menu--item">
         <router-link to="/">
