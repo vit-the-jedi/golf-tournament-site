@@ -43,12 +43,12 @@ export default {
         {
           year: 2022,
           division: "Men's",
-          team: ["John Doe", "John Doe", "Ricky Jones", "Jim Kramer"],
+          team: ["Mike Sundwall", "Tom Seaver", "Silengo"],
         },
         {
           year: 2022,
           division: "Co-Ed",
-          team: ["John Doe", "John Doe", "Ricky Jones", "Jim Kramer"],
+          team: ["Nicole Vitello", "Hannah Dill", "Brian Dill", "Adam Faass"],
         },
         {
           year: 2021,

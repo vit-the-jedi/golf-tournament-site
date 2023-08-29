@@ -16,8 +16,8 @@ export default {
       addOns: [
         "$10 Pro Shop credit",
         "Coffee & at check-in",
-        "Golf Cart (per 1-2 players)",
-        "Snacks and drinks at the tee boxes",
+        "Golf Cart",
+        "Snacks and drinks",
         "Trophies (1st, 2nd, 3rd place per division, plus longest drive and closest to pin for both front and back 9)",
       ],
       pricing: {
@@ -125,12 +125,11 @@ export default {
                   {{ item }}
                 </li>
                 <li>
-                  All proceeds after operational expenses will be donated to the
-                  <a
-                    href="https://www.valleyfoundation.org/articles/alphonso-and-eulalia-vitello-family-fund"
-                    target="_blank"
-                  >
-                    {{ outputCharity }}</a
+                  All proceeds after operational expenses will be donated to The
+                  Vitello Family Fund, a charity within the Vitello Family Fund,
+                  a charity within the
+                  <a href="https://www.valleyfoundation.org/" target="_blank"
+                    >Valley Community Foundation</a
                   >.
                 </li>
               </ul>
@@ -151,13 +150,12 @@ export default {
         <div class="card sub--card">
           <div class="row">
             <div class="col-md-6 col-12">
-              <h2>Rules</h2>
+              <h2>Format</h2>
               <ul>
                 <li>Teams of four.</li>
                 <li>Scramble (best ball) format.</li>
                 <li>Men's and Co-ed divisions available.</li>
-                <li>Incomplete teams will be joined to make a foursome.</li>
-                <li>Have fun!</li>
+                <li>Fun first!</li>
               </ul>
             </div>
             <div class="col-md-6 col-12">
