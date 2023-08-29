@@ -126,8 +126,7 @@ export default {
                 </li>
                 <li>
                   All proceeds after operational expenses will be donated to The
-                  Vitello Family Fund, a charity within the Vitello Family Fund,
-                  a charity within the
+                  Vitello Family Fund, a charity within the
                   <a href="https://www.valleyfoundation.org/" target="_blank"
                     >Valley Community Foundation</a
                   >.
