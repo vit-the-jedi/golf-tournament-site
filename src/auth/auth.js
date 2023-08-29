@@ -11,11 +11,15 @@ const checkAuthStatus = new Promise((resolve) => {
   auth.onAuthStateChanged(async (user) => {
     store.dispatch("fetchUser", user);
     if (user) {
-      const permissionLevel = await getUserPermissions(
+      const permissionLevelResp = await getUserPermissions(
         db,
         store.state.user.userData.uid
       );
-      store.commit("setPermissionLevel", permissionLevel);
+      store.commit("setPermissionLevel", permissionLevelResp.permissionLevel);
+      store.commit(
+        "setUserDisplayName",
+        permissionLevelResp.displayName
+      );
       console.log("user set in store");
       console.log(store.state.user);
       resolve(user);

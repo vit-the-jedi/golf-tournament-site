@@ -237,7 +237,7 @@ export default {
   },
   methods: {
     goBack(e) {
-      e.preventDefault();
+      if (e) e.preventDefault();
       this.playersAdded = false;
     },
     verifyRecaptcha(res) {
@@ -276,6 +276,17 @@ export default {
           this.errors = [];
         }
       }
+
+      if (this.numOfPlayers === 1) {
+        this.$toast.open({
+          message: `If you are part of a team, we encourage you to sign up your entire team at once.
+              If you have more players, go back and sign them up.`,
+          type: "warning",
+          duration: 10000,
+          // all of other options may go here
+        });
+      }
+
       if (!this.errors.length) {
         this.playersAdded = true;
         console.log(this);
@@ -436,18 +447,24 @@ export default {
   display: none;
 }
 .back--btn {
-  background: none;
+  background: var(--secondColor);
+  max-width: 120px;
   font-size: 100%;
-  border: none;
+  border: 2px solid var(--mainColor);
   color: var(--mainColor);
   text-decoration: underline;
   position: absolute;
   left: 15px;
   top: 15px;
   font-family: "Nunito Sans", sans-serif;
-  font-weight: 600;
+  font-weight: bold;
   text-align: left;
   letter-spacing: normal;
+}
+.back--btn span {
+  width: 100%;
+  display: block;
+  text-align: center;
 }
 .back--btn span::before {
   content: "<<";
@@ -498,6 +515,9 @@ export default {
 @media screen and (min-width: 768px) {
   .form-inner {
     margin-top: 15%;
+  }
+  .back--btn {
+    margin-bottom: 1em;
   }
 }
 </style>

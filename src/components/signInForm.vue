@@ -115,9 +115,16 @@ export default {
           .then(async (result) => {
             if (result.user) {
               //create async function so we can await the call to check + set user permissions
+              const permissionLevelResp = await this.userPermissionsHandler(
+                result.user.uid
+              );
               store.commit(
                 "setPermissionLevel",
-                await this.userPermissionsHandler(result.user.uid)
+                permissionLevelResp.permissionLevel
+              );
+              store.commit(
+                "setUserDisplayName",
+                permissionLevelResp.displayName
               );
               //check if there is redirect metadata in route,
               //if yes, go to redirect

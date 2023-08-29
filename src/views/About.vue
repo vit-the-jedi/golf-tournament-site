@@ -14,13 +14,12 @@ import secondaryNav from "../components/secondaryNav.vue";
       <div class="mt-4">
         <h3>We are fun</h3>
         <p>
-          The PJA Tournament is fun, family golf contest with a cause. Any
-          dollars not spent on the facilitation of the tournament go straight to
-          the Alphonso and Eulalia Vitello Family Fund, an organization that
-          provides support for underprivaleged young&nbsp;athletes in the Valley
-          area. To learn more about the impact and mission of the Valley
-          Community Foundation and the Alphonso and Eulalia Vitello Family Fund
-          visit the
+          The PJA Scramble Tournament is a fun golf competition held for a
+          worthy cause. After all expenses are paid, the remaining proceeds are
+          donated to the Alphonso and Eulalia Vitello Family Fund/Valley
+          Community Foundation for the benefit of the residents of Derby and the
+          Valley, especially disadvantaged youth. To learn more about the
+          mission and impact of this charitable endeavor please visit the
           <a
             href="https://www.valleyfoundation.org/articles/alphonso-and-eulalia-vitello-family-fund"
             target="_blank"
@@ -30,10 +29,9 @@ import secondaryNav from "../components/secondaryNav.vue";
 
         <h3>We are inclusive</h3>
         <p>
-          We encourage men and women of all ages to join the tournament. We
-          offer both a Men's division and a Co-Ed division to partcipate in. We
-          accept all skill levels to come and play. We value family fun over
-          everything&nbsp;else!
+          We encourage men and women to join the tournament. We offer both a
+          Men's division and a Co-Ed division. All skill levels are welcome to
+          join us. Our highest priority is camaraderie and fun!
         </p>
 
         <h3>We are family</h3>
