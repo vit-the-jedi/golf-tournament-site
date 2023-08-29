@@ -38,6 +38,9 @@ const store = createStore({
     setPermissionLevel(state, value) {
       state.user.userData.permissionLevel = value;
     },
+    setUserDisplayName(state, value) {
+      state.user.userData.displayName = value
+    },
     setLoadingState(state, value) {
       state.loading = value;
     },
@@ -62,6 +65,10 @@ const store = createStore({
   getters: {
     checkAdmin(state) {
       return state.user.userData.permissionLevel === "admin" ? true : false;
+    },
+    getUserDisplayName(state) {
+      const displayName = state.user.userData.displayName;
+      return displayName !== null ? displayName : "Admin"
     },
     getUser(state) {
       return state.user.userData;
