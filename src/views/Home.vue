@@ -104,7 +104,7 @@ export default {
             <div class="col-md-6 col-12">
               <h2>When &amp; where?</h2>
               <p>{{ outputDate }}</p>
-              <p>SHOTGUN START @ 8AM</p>
+              <p>SHOTGUN START @ 9AM</p>
               <p>{{ outputGolfCourse }},</p>
               <p>{{ outputGolfCourseAddress }}</p>
             </div>
