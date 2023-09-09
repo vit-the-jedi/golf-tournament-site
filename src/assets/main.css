@@ -18,6 +18,12 @@ body {
   -moz-osx-font-smoothing: antialiased;
   font-weight: 600;
 }
+@supports (-webkit-touch-callout: none) {
+  body {
+    font-weight: 600;
+  }
+}
+
 img {
   max-width: 100%;
 }
