@@ -134,7 +134,7 @@ h1 span {
       rgba(0, 0, 0, 0.15) 00%,
       rgba(0, 0, 0, 0.75) 100%
     ),
-    url("../assets/about.jpg");
+    url("../assets/about-desktop.jpg");
   min-height: 75vh;
   position: relative;
   background-size: 100%;
@@ -266,6 +266,15 @@ p {
     width: 50%;
     background-position: center center;
     background-size: cover !important;
+  }
+  .about .top-content {
+    background-image: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.15) 00%,
+        rgba(0, 0, 0, 0.75) 100%
+      ),
+      url("../assets/about-mobile.jpg");
+    background-size: cover;
   }
 }
 </style>
