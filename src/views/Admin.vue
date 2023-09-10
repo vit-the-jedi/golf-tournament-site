@@ -297,6 +297,8 @@ export default {
         this.adminChoices.renderMensList = true;
         this.adminChoices.renderCoedList = true;
       }
+      //quick and dirty scroll to top for mobile users
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
     },
     filterAttribute(attr) {
       this.adminChoices.isFiltering = true;
@@ -340,7 +342,8 @@ export default {
         default:
           return;
       }
-      console.log(this.adminChoices.filteredTeams);
+      //quick and dirty scroll to top for mobile users
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
     },
     concatPlayerNames(playersArr) {
       playersArr.forEach((player, i, arr) => {
