@@ -41,13 +41,17 @@
           class="no--data"
           v-if="Object.keys(this.availableTeams).length === 0"
         >
-          <p>No results matching your request</p>
+          <p>
+            No teams available for grouping. Please try again when more teams
+            have signed&nbsp;up.
+          </p>
         </div>
       </fieldset>
       <button
         role="button"
         id="groupTeam-submit"
         @click="submitGroupTeamChangesHandler"
+        :disabled="Object.keys(this.availableTeams).length === 0"
       >
         GROUP TEAMS
       </button>

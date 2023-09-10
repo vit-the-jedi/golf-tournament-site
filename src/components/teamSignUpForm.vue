@@ -366,6 +366,7 @@ export default {
           });
           break;
         case 4:
+          this.needsGrouping = false;
           playersArr.push({
             first_name: this.players.player1__firstName,
             last_name: this.players.player1__lastName,
@@ -412,7 +413,12 @@ export default {
     },
     formSubmitHandler: async function () {
       const team = this.teamObj;
-      addToFirestore(`${team.division}-league`, team).then((teamAdded) => {
+      addToFirestore(
+        import.meta.env.MODE === "development"
+          ? "testing"
+          : `${team.division}-league`,
+        team
+      ).then((teamAdded) => {
         if (teamAdded.value) {
           //show success msg
           this.$toast.success("Team signed up successfully!", {
