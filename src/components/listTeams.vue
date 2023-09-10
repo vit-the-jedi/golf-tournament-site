@@ -2,7 +2,7 @@
   <!--mens list-->
   <div class="admin--card" v-if="this.adminChoices.renderMensList">
     <h2 class="mb-4">Mens League</h2>
-    <div class="row admin--row">
+    <div class="row admin--row admin--legend">
       <div class="admin--column"><h5>Team</h5></div>
       <div class="admin--column"><h5>Division</h5></div>
       <div class="admin--column"><h5>Needs Grouping</h5></div>
@@ -20,7 +20,7 @@
         <div class="admin--column">
           <div class="admin--item">
             <div class="d-flex justify-content-between">
-              <h6>{{ team.teamName }}</h6>
+              <h6 class="team-name">{{ team.teamName }}</h6>
               <span class="ui-info paid" v-if="team.paid">PAID</span>
               <span class="ui-info unpaid" v-if="!team.paid">UNPAID</span>
             </div>
@@ -35,12 +35,12 @@
           </div>
         </div>
         <div class="admin--column">
-          <div class="admin--item">
+          <div class="admin--item team-division">
             <span>{{ team.division }}</span>
           </div>
         </div>
         <div class="admin--column">
-          <div class="admin--item">
+          <div class="admin--item team-needsGrouping">
             <span v-if="team.needsGrouping">yes</span>
             <span v-if="!team.needsGrouping">no</span>
           </div>
@@ -103,7 +103,7 @@
           <div class="admin--column">
             <div class="admin--item">
               <div class="d-flex justify-content-between">
-                <h6>{{ team.teamName }}</h6>
+                <h6 class="team-name">{{ team.teamName }}</h6>
                 <span class="ui-info paid" v-if="team.paid">PAID</span>
                 <span class="ui-info unpaid" v-if="!team.paid">UNPAID</span>
               </div>
@@ -118,12 +118,12 @@
             </div>
           </div>
           <div class="admin--column">
-            <div class="admin--item">
+            <div class="admin--item team-division">
               <span>{{ team.division }}</span>
             </div>
           </div>
           <div class="admin--column">
-            <div class="admin--item">
+            <div class="admin--item team-needsGrouping">
               <span v-if="team.needsGrouping">yes</span>
               <span v-if="!team.needsGrouping">no</span>
             </div>
@@ -188,7 +188,7 @@
   <!--coed list-->
   <div class="admin--card" v-if="this.adminChoices.renderCoedList">
     <h2 class="mb-4">Coed League</h2>
-    <div class="row admin--row">
+    <div class="row admin--row admin--legend">
       <div class="admin--column"><h5>Team</h5></div>
       <div class="admin--column"><h5>Division</h5></div>
       <div class="admin--column"><h5>Needs Grouping</h5></div>
@@ -207,7 +207,7 @@
           <div class="admin--column">
             <div class="admin--item">
               <div class="d-flex justify-content-between">
-                <h6>{{ team.teamName }}</h6>
+                <h6 class="team-name">{{ team.teamName }}</h6>
                 <span class="ui-info paid" v-if="team.paid">PAID</span>
                 <span class="ui-info unpaid" v-if="!team.paid">UNPAID</span>
               </div>
@@ -222,12 +222,12 @@
             </div>
           </div>
           <div class="admin--column">
-            <div class="admin--item">
+            <div class="admin--item team-division">
               <span>{{ team.division }}</span>
             </div>
           </div>
           <div class="admin--column">
-            <div class="admin--item">
+            <div class="admin--item team-needsGrouping">
               <span v-if="team.needsGrouping">yes</span>
               <span v-if="!team.needsGrouping">no</span>
             </div>
@@ -294,7 +294,7 @@
           <div class="admin--column">
             <div class="admin--item">
               <div class="d-flex justify-content-between">
-                <h6>{{ team.teamName }}</h6>
+                <h6 class="team-name">{{ team.teamName }}</h6>
                 <span class="ui-info paid" v-if="team.paid">PAID</span>
                 <span class="ui-info unpaid" v-if="!team.paid">UNPAID</span>
               </div>
@@ -309,12 +309,12 @@
             </div>
           </div>
           <div class="admin--column">
-            <div class="admin--item">
+            <div class="admin--item team-division">
               <span>{{ team.division }}</span>
             </div>
           </div>
           <div class="admin--column">
-            <div class="admin--item">
+            <div class="admin--item team-needsGrouping">
               <span v-if="team.needsGrouping">yes</span>
               <span v-if="!team.needsGrouping">no</span>
             </div>
@@ -436,5 +436,73 @@ h6 {
 }
 .team {
   font-size: 0.95rem;
+}
+
+@media screen and (max-width: 767px) {
+  .admin--legend {
+    display: none;
+  }
+  .paid,
+  .unpaid {
+    margin-top: 3em;
+    max-height: 25px;
+  }
+  .team-name::before {
+    content: "Team Name";
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 1em;
+    width: 100%;
+  }
+  .team::before {
+    content: "Players";
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 1em 0;
+    width: 100%;
+  }
+  .team-division::before {
+    content: "Division";
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 1em;
+    width: 100%;
+  }
+  .team-needsGrouping::before {
+    content: "Needs Grouping";
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 1em;
+    width: 100%;
+  }
+  .admin--item {
+    padding: 2vh 1vh;
+  }
+  .admin--row {
+    margin-bottom: 1em;
+  }
+  .dropdown-content {
+    right: 20px;
+    left: unset;
+    background-color: var(--mainColor);
+  }
+  .dropdown-content ul li button {
+    color: #fff;
+  }
+  .close-tools {
+    font-weight: bold;
+    font-size: 35px;
+    top: -20px;
+    right: 12px;
+    color: #fff;
+  }
 }
 </style>

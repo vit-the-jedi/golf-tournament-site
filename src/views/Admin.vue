@@ -45,6 +45,9 @@ import adminPanel from "../components/adminPanel.vue";
   />
 </template>
 <script>
+const getEnvMode = () => {
+  return import.meta.env.MODE === "development" ? "testing" : "mens-league";
+};
 import { listTeamDocs } from "../middleware/db.js";
 import { addToFirestore } from "../middleware/db";
 import { deleteFromFirestore } from "../middleware/db.js";
@@ -83,7 +86,9 @@ export default {
       this.teamsSignedUp.mens = {};
       this.teamsSignedUp.coed = {};
       //create data partition for mens and coed league so we can filter them
-      await listTeamDocs("mens-league")
+      await listTeamDocs(
+        import.meta.env.MODE === "development" ? "testing" : "mens-league"
+      )
         .then((listTeamData) => {
           if (listTeamData.data && !listTeamData.error) {
             listTeamData.data.forEach(function (team) {
@@ -96,7 +101,9 @@ export default {
           }
         })
         .catch((error) => {});
-      await listTeamDocs("coed-league")
+      await listTeamDocs(
+        import.meta.env.MODE === "development" ? "testing" : "coed-league"
+      )
         .then((listTeamData) => {
           if (listTeamData.data && !listTeamData.error) {
             listTeamData.data.forEach(function (team) {
@@ -147,24 +154,27 @@ export default {
       if (answer === "YES") {
         //delete team from db collection
         //re-hydrate ui w/ new list of teams
-        await deleteFromFirestore(`${team.division}-league`, team.id).then(
-          async (teamDeleted) => {
-            if (teamDeleted.value) {
-              //success message
-              this.$toast.success("Team deleted", {
-                duration: 3000,
-              });
-              this.teamsSignedUp = {};
-              await this.getTeamsListHandler();
-            } else {
-              //msg error
-              this.$toast.error("There was a problem, please try again.", {
-                duration: 3000,
-              });
-              console.error(teamDeleted.error);
-            }
+        await deleteFromFirestore(
+          import.meta.env.MODE === "development"
+            ? "testing"
+            : `${team.division}-league`,
+          team.id
+        ).then(async (teamDeleted) => {
+          if (teamDeleted.value) {
+            //success message
+            this.$toast.success("Team deleted", {
+              duration: 3000,
+            });
+            this.teamsSignedUp = {};
+            await this.getTeamsListHandler();
+          } else {
+            //msg error
+            this.$toast.error("There was a problem, please try again.", {
+              duration: 3000,
+            });
+            console.error(teamDeleted.error);
           }
-        );
+        });
       } else {
         //msg to try again
         return;
@@ -176,6 +186,8 @@ export default {
       this.teamInfo.id = team.id;
       this.teamInfo.division = team.division;
       this.teamInfo.paid = team.paid;
+      //quick and dirty scroll to top for mobile users
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
       this.isEditing = true;
     },
     groupTeam(team) {
@@ -185,11 +197,15 @@ export default {
       this.teamInfo.division = team.division;
       this.teamInfo.needsGrouping = team.needsGrouping;
       this.teamInfo.numOfPlayers = team.numOfPlayers;
+      //quick and dirty scroll to top for mobile users
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
       this.isGrouping = true;
     },
     async submitTeamChanges() {
       await addToFirestore(
-        `${this.teamInfo.division}-league`,
+        import.meta.env.MODE === "development"
+          ? "testing"
+          : `${this.teamInfo.division}-league`,
         this.teamInfo
       ).then(async (teamAdded) => {
         if (teamAdded.value) {
@@ -219,19 +235,56 @@ export default {
       //finally we delete the destination team, as it has been merged with the target
 
       //merge the teams
-      teamToMerge.players.forEach((player) =>
-        this.teamInfo.players.push(player)
-      );
+      teamToMerge.players.forEach(function (player) {
+        this.teamInfo.players.push(player);
+      }, this);
       if (this.teamInfo.players.length === 4) {
         this.teamInfo.needsGrouping = false;
       }
-      await addToFirestore(`${this.teamInfo.division}-league`, this.teamInfo);
-      await deleteFromFirestore(
-        `${teamToMerge.division}-league`,
-        teamToMerge.id
+      this.teamInfo.numOfPlayers = this.teamInfo.players.length;
+
+      const answer = prompt(
+        `Are you sure you want to group these teams?
+        Team after grouping will be:
+          ${this.teamInfo.teamName}
+              ${this.teamInfo.players[0]?.first_name || ""} ${
+          this.teamInfo.players[0]?.last_name || ""
+        }
+              ${this.teamInfo.players[1]?.first_name || ""} ${
+          this.teamInfo.players[1]?.last_name || ""
+        }
+              ${this.teamInfo.players[2]?.first_name || ""} ${
+          this.teamInfo.players[2]?.last_name || ""
+        }
+              ${this.teamInfo.players[3]?.first_name || ""} ${
+          this.teamInfo.players[3]?.last_name || ""
+        }
+        Type YES (all caps) below to confirm group.`
       );
-      this.teamsSignedUp = {};
-      await this.getTeamsListHandler();
+      if (answer === "YES") {
+        await addToFirestore(
+          import.meta.env.MODE === "development"
+            ? "testing"
+            : `${this.teamInfo.division}-league`,
+          this.teamInfo
+        ).then(async (teamAdded) => {
+          await deleteFromFirestore(
+            import.meta.env.MODE === "development"
+              ? "testing"
+              : `${teamToMerge.division}-league`,
+            teamToMerge.id
+          ).then(async () => {
+            this.$toast.success("Teams grouped sucessfully");
+            this.teamsSignedUp = {};
+            await this.getTeamsListHandler();
+          });
+        });
+      } else {
+        this.$toast.warning(
+          "You must confirm you want to group teams together. Please try again."
+        );
+        return;
+      }
     },
     filterLeague(filterTeamValue) {
       if (filterTeamValue === "mens") {
@@ -244,6 +297,8 @@ export default {
         this.adminChoices.renderMensList = true;
         this.adminChoices.renderCoedList = true;
       }
+      //quick and dirty scroll to top for mobile users
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
     },
     filterAttribute(attr) {
       this.adminChoices.isFiltering = true;
@@ -287,7 +342,8 @@ export default {
         default:
           return;
       }
-      console.log(this.adminChoices.filteredTeams);
+      //quick and dirty scroll to top for mobile users
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
     },
     concatPlayerNames(playersArr) {
       playersArr.forEach((player, i, arr) => {
