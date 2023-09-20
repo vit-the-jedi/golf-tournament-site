@@ -1,12 +1,17 @@
 <script setup></script>
 <template>
-  <form @submit="checkForm" class="mt-4">
-    <h1>Choose your squad</h1>
-    <p class="ui--info">
-      Please sign up your entire team in the same session. While single players
-      are welcomed, we prefer the team captain signs up his/her entire team
-      at&nbsp;once.
-    </p>
+  <form @submit="checkForm" class="mt-4 w-100">
+    <div v-if="this.adminChoices">
+      <h1>Create a Team</h1>
+    </div>
+    <div v-if="!this.adminChoices">
+      <h1>Choose your squad</h1>
+      <p class="ui--info">
+        Please sign up your entire team in the same session. While single
+        players are welcomed, we prefer the team captain signs up his/her entire
+        team at&nbsp;once.
+      </p>
+    </div>
     <div class="form-inner">
       <span v-if="errors.length" class="error-list error">
         <span>Please correct the following error(s):</span>
@@ -179,6 +184,7 @@ export default {
   components: {
     Recaptcha,
   },
+  props: ["adminChoices"],
   mounted() {},
   data() {
     return {
@@ -277,7 +283,7 @@ export default {
         }
       }
 
-      if (this.numOfPlayers === 1) {
+      if (this.numOfPlayers === 1 && !this.adminChoices) {
         this.$toast.open({
           message: `If you are part of a team, we encourage you to sign up your entire team at once.
               If you have more players, go back and sign them up.`,
@@ -429,9 +435,15 @@ export default {
           store.commit("setTeam", this.teamObj);
           sessionStorage.setItem("team", JSON.stringify(this.teamObj));
           //programmatically route to success page w/ relevant form data we can post back for user review
-          this.$router.push({
-            path: "/sign-up-success",
-          });
+
+          //if we aren't signing up from admin panel, continue through sign up flow
+          if (!this.adminChoices) {
+            this.$router.push({
+              path: "/sign-up-success",
+            });
+          } else {
+            this.$emit("adminTeamCreated");
+          }
         } else {
           //show error msg and dont navigate
           if (teamAdded.error) {

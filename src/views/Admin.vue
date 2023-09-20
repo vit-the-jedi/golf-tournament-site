@@ -5,6 +5,7 @@ import listTeams from "../components/listTeams.vue";
 import editTeamModal from "../components/editTeamModal.vue";
 import groupTeamModal from "../components/groupTeamModal.vue";
 import adminPanel from "../components/adminPanel.vue";
+import teamSignUpForm from "../components/teamSignUpForm.vue";
 </script>
 <template>
   <secondaryNav />
@@ -28,6 +29,12 @@ import adminPanel from "../components/adminPanel.vue";
         @filter-attribute="filterAttribute"
         @clear-filters="clearFilters"
       />
+      <div class="admin--card">
+        <teamSignUpForm
+          :adminChoices="adminChoices"
+          @adminTeamCreated="getTeamsListHandler"
+        />
+      </div>
     </div>
   </div>
   <editTeamModal
@@ -52,7 +59,7 @@ import { listTeamDocs } from "../middleware/db.js";
 import { addToFirestore } from "../middleware/db";
 import { deleteFromFirestore } from "../middleware/db.js";
 export default {
-  components: { editTeamModal, groupTeamModal },
+  components: { editTeamModal, groupTeamModal, teamSignUpForm },
   data() {
     return {
       isEditing: false,
