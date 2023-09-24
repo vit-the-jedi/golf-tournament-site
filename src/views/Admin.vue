@@ -5,6 +5,7 @@ import listTeams from "../components/listTeams.vue";
 import editTeamModal from "../components/editTeamModal.vue";
 import groupTeamModal from "../components/groupTeamModal.vue";
 import adminPanel from "../components/adminPanel.vue";
+import teamSignUpForm from "../components/teamSignUpForm.vue";
 </script>
 <template>
   <secondaryNav />
@@ -21,13 +22,40 @@ import adminPanel from "../components/adminPanel.vue";
         @group-team="groupTeam"
       />
     </div>
-    <div class="col-md-5 col-12 admin--panel">
+    <div id="filter-team" class="col-md-5 col-12 admin--panel">
       <adminPanel
         :adminChoices="adminChoices"
         @filter-league="filterLeague"
         @filter-attribute="filterAttribute"
         @clear-filters="clearFilters"
       />
+      <div id="create-team" class="admin--card">
+        <teamSignUpForm
+          :adminChoices="adminChoices"
+          @adminTeamCreated="getTeamsListHandler"
+        />
+      </div>
+    </div>
+    <div class="admin-actions">
+      <div class="actions--mobile">
+        <h5>Quick Actions</h5>
+        <div class="actions-container">
+          <button
+            class="secondary--button"
+            :data-scroll-target="'filter-team'"
+            @click="scrollToActionHandler"
+          >
+            Filter Teams
+          </button>
+          <button
+            class="secondary--button"
+            :data-scroll-target="'create-team'"
+            @click="scrollToActionHandler"
+          >
+            Create Team
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <editTeamModal
@@ -52,7 +80,7 @@ import { listTeamDocs } from "../middleware/db.js";
 import { addToFirestore } from "../middleware/db";
 import { deleteFromFirestore } from "../middleware/db.js";
 export default {
-  components: { editTeamModal, groupTeamModal },
+  components: { editTeamModal, groupTeamModal, teamSignUpForm },
   data() {
     return {
       isEditing: false,
@@ -82,6 +110,17 @@ export default {
     };
   },
   methods: {
+    scrollToActionHandler(ev) {
+      console.log(ev.currentTarget);
+      const scrollTargetId =
+        ev.currentTarget.getAttribute("data-scroll-target");
+      const scrollTarget = document.getElementById(`${scrollTargetId}`);
+      scrollTarget.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+        inline: "nearest",
+      });
+    },
     getTeamsListHandler: async function () {
       this.teamsSignedUp.mens = {};
       this.teamsSignedUp.coed = {};
@@ -387,7 +426,7 @@ export default {
   font-size: unset;
 }
 .admin--tools button:hover,
-.edit-team-dialog .payment-button:hover {
+.edit-team-dialog .secondary--button:hover {
   background-color: #e6e6e6;
 }
 .admin--item {
@@ -502,6 +541,39 @@ export default {
 .unpaid {
   background-color: var(--danger);
 }
+.admin-actions {
+  position: relative;
+  display: none;
+}
+.actions--mobile h5 {
+  margin: 0;
+}
+.actions--mobile {
+  width: 100%;
+  background: white;
+  position: fixed;
+  bottom: 0;
+  padding: 0.5em;
+  left: 0;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  z-index: 998;
+}
+.actions-container {
+  display: flex;
+  flex-wrap: nowrap;
+  padding: 0.5em;
+}
+.actions-container button {
+  margin: 1em;
+}
+.secondary--button {
+  font-family: "Nunito Sans", sans-serif;
+  font-size: 12px;
+  max-width: 200px;
+  background-color: white;
+  border: 2px solid var(--mainColor);
+  color: var(--mainColor);
+}
 @media screen and (max-width: 767px) {
   .admin--card {
     display: flex;
@@ -517,6 +589,9 @@ export default {
   }
   .data .admin--column h6 {
     text-align: left;
+  }
+  .admin-actions {
+    display: block;
   }
 }
 </style>
