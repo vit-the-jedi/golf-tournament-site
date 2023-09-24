@@ -168,8 +168,17 @@
           type="text"
           placeholder="Team Name (optional)"
         />
-        <recaptcha ref="recaptcha" @verify="verifyRecaptcha"></recaptcha>
-        <button type="submit" :disabled="!isRecaptchaVerified">Sign Up</button>
+        <recaptcha
+          v-if="!this.adminChoices"
+          ref="recaptcha"
+          @verify="verifyRecaptcha"
+        ></recaptcha>
+        <button
+          type="submit"
+          :disabled="!isRecaptchaVerified && !this.adminChoices"
+        >
+          Sign Up
+        </button>
       </div>
     </div>
   </form>
@@ -330,6 +339,21 @@ export default {
     removeErrors: function (e) {
       this.errors = [];
     },
+    resetSignUpForm() {
+      this.numOfPlayers = 1;
+      this.players.player1__firstName = null;
+      this.players.player1__lastName = null;
+      this.players.player2__firstName = null;
+      this.players.player2__lastName = null;
+      this.players.player3__firstName = null;
+      this.players.player3__lastName = null;
+      this.players.player4__firstName = null;
+      this.players.player4__lastName = null;
+      this.teamName = null;
+      this.division = "mens";
+      this.needsGrouping = false;
+      this.playersAdded = false;
+    },
     preProcessData: function () {
       let numOfPlayers = Number(this.numOfPlayers);
       this.teamObj = {};
@@ -442,6 +466,7 @@ export default {
               path: "/sign-up-success",
             });
           } else {
+            this.resetSignUpForm();
             this.$emit("adminTeamCreated");
           }
         } else {
