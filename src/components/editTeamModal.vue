@@ -127,14 +127,14 @@
         </div>
         <div class="col-6">
           <button
-            class="payment-button"
+            class="secondary--button"
             v-if="!this.teamInfo.paid"
             @click="(event) => (this.teamInfo.paid = true)"
           >
             Mark Team Paid
           </button>
           <button
-            class="payment-button"
+            class="secondary--button"
             v-if="this.teamInfo.paid"
             @click="(event) => (this.teamInfo.paid = false)"
           >
@@ -187,13 +187,5 @@ fieldset {
 }
 .full-width {
   width: 100%;
-}
-.payment-button {
-  font-family: "Nunito Sans", sans-serif;
-  font-size: 12px;
-  max-width: 200px;
-  background-color: white;
-  border: 2px solid var(--mainColor);
-  color: var(--mainColor);
 }
 </style>
