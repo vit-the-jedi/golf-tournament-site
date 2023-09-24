@@ -42,96 +42,6 @@
           Clear Filters
         </button>
       </fieldset>
-      <fieldset class="mt-4" v-if="false">
-        <legend>Add a Team</legend>
-
-        <div class="row">
-          <label>Player 1</label>
-          <div class="col-md-6">
-            <input
-              v-model="players.player1__firstName"
-              class="input"
-              type="text"
-              placeholder="First Name"
-            />
-          </div>
-          <div class="col-md-6">
-            <input
-              v-model="players.player1__lastName"
-              class="input"
-              type="text"
-              placeholder="Last Name"
-            />
-          </div>
-          <label>Player 2</label>
-          <div class="col-md-6">
-            <input
-              v-model="players.player2__firstName"
-              class="input"
-              type="text"
-              placeholder="First Name"
-            />
-          </div>
-          <div class="col-md-6">
-            <input
-              v-model="players.player2__lastName"
-              class="input"
-              type="text"
-              placeholder="Last Name"
-            />
-          </div>
-          <label>Player 3</label>
-          <div class="col-md-6">
-            <input
-              v-model="players.player3__firstName"
-              class="input"
-              type="text"
-              placeholder="First Name"
-            />
-          </div>
-          <div class="col-md-6">
-            <input
-              v-model="players.player3__lastName"
-              class="input"
-              type="text"
-              placeholder="Last Name"
-            />
-          </div>
-          <label>Player 4</label>
-          <div class="col-md-6">
-            <input
-              v-model="players.player4__firstName"
-              class="input"
-              type="text"
-              placeholder="First Name"
-            />
-          </div>
-          <div class="col-md-6">
-            <input
-              v-model="players.player4__lastName"
-              class="input"
-              type="text"
-              placeholder="Last Name"
-            />
-          </div>
-          <label>Team Info</label>
-          <div class="col-md-6">
-            <input
-              v-model="teamName"
-              class="input full-width"
-              type="text"
-              placeholder="Team Name (optional)"
-            />
-          </div>
-          <div class="col-md-6">
-            <select v-model="division" class="input full-width">
-              <option value="mens">Men's league</option>
-              <option value="coed">Co-ed league</option>
-            </select>
-            <button type="submit">Create Team</button>
-          </div>
-        </div>
-      </fieldset>
     </form>
   </div>
 </template>
@@ -142,20 +52,6 @@ export default {
     return {
       leagueFilter: null,
       attributeFilter: null,
-      numOfPlayers: 1,
-      players: {
-        player1__firstName: null,
-        player1__lastName: null,
-        player2__firstName: null,
-        player2__lastName: null,
-        player3__firstName: null,
-        player3__lastName: null,
-        player4__firstName: null,
-        player4__lastName: null,
-      },
-      teamName: null,
-      division: "mens",
-      needsGrouping: false,
     };
   },
   methods: {
