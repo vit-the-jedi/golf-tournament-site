@@ -2,12 +2,14 @@
 import mainNav from "../components/mainNav.vue";
 import venmo from "../components/Venmo.vue";
 import check from "../components/Check.vue";
+import checkInBanner from "../components/checkInBanner.vue";
 </script>
 
 <script>
 export default {
   data() {
     return {
+      addBanner: false,
       date: "October 7th, 2023",
       time: "10:00am",
       golfCourse: "East Mountain Golf Course",
@@ -33,6 +35,11 @@ export default {
         ],
       },
     };
+  },
+  beforeMount() {
+    if (!sessionStorage.getItem("banner-removed")) {
+      this.addBanner = true;
+    }
   },
   computed: {
     // a computed getter
@@ -60,9 +67,16 @@ export default {
       return this.charity;
     },
   },
+  methods: {
+    bannerMounted() {
+      const header = document.querySelector("header");
+      header.classList.add("banner--mounted");
+    },
+  },
 };
 </script>
 <template>
+  <checkInBanner v-if="addBanner" @banner-mounted="bannerMounted" />
   <mainNav />
   <header class="top-content">
     <div class="logo py-3"><img src="../assets/logo.svg" alt="PJA logo" /></div>
@@ -188,6 +202,9 @@ export default {
 </template>
 
 <style scoped>
+.top-content.banner--mounted {
+  padding-top: 5em;
+}
 .top-content .info--item::before {
   display: inline-block;
   width: 3vw;
