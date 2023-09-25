@@ -4,7 +4,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { update } from "firebase/database";
 
 import {
   getFirestore,
@@ -13,6 +12,8 @@ import {
   getDoc,
   setDoc,
   deleteDoc,
+  updateDoc,
+  arrayUnion,
   doc,
   query,
   where,
@@ -87,16 +88,46 @@ async function listTeamDocs(collectionName) {
 async function addPropertyToDoc(collection, docId, valueObj) {
   return new Promise(async (resolve) => {
     const docRef = doc(db, collection, docId)
-    //BUG - right now everycall of this function is overwriting the checkedIn array
-    //we need to add the array if it doesn't exists
-    //and we need to add to the array if it does
-    await setDoc(docRef, valueObj, { merge: true })
-      .then(() => {
+    //get document we want to update
+    const docSnap = await getDoc(docRef);
+
+    const checkInResolveObj = {
+      value: null,
+      error: null
+    }
+
+    const docData = docSnap.data();
+    //check if checkedIn array exists
+    if (docData.hasOwnProperty("checkedIn")) {
+
+      //check if our player is already present in the checkedIn array
+      for (const value of docData.checkedIn) {
+        if (value === valueObj.checkedIn[0]) {
+          //resolve to false and pass along a message
+          checkInResolveObj.value = false;
+          checkInResolveObj.error = "Player already checked in!"
+          resolve(checkInResolveObj)
+        }
+      }
+      //if the array is present, update with new value, while preserving the existing ones
+      await updateDoc(docRef, {
+        checkedIn: arrayUnion(valueObj.checkedIn[0])
+      }).then(() => {
         resolve(true);
       })
-      .catch((error) => {
-        resolve(error);
-      });
+        .catch((error) => {
+          resolve(error);
+        });
+    } else {
+      //else add the checkedIn array and value
+      await setDoc(docRef, valueObj, { merge: true })
+        .then(() => {
+          resolve(true);
+        })
+        .catch((error) => {
+          resolve(error);
+        });
+    }
   });
 };
 //have to pass either mens or coed as docName to enter new data into each document

@@ -101,15 +101,31 @@ export default {
       //track players by index
       checkInObj.checkedIn.push(this.searchResult.foundIndex);
       //pass division, team id, and obj w/ key as new field name and value as the value for the field
-      await addPropertyToDoc(
+      const propertyAdded = await addPropertyToDoc(
         import.meta.env.MODE === "development"
           ? "testing"
           : `${this.checkInPlayer__division}-league`,
         this.searchResult.id,
         checkInObj
-      ).then(() => {
+      );
+
+      //if promise resolved to true, our player was successfully checked in
+      if (propertyAdded.value) {
         this.$toast.success("Player checked in successfully.");
-      });
+      }
+      //else there was an issue
+      else {
+        //handles condition where player is already checked in
+        if (propertyAdded.error.includes("checked in")) {
+          this.$toast.warning(propertyAdded.error);
+        }
+        //handles error from firebase
+        else {
+          this.$toast.error(
+            "There was a problem checking you in, please try again."
+          );
+        }
+      }
     },
   },
 };

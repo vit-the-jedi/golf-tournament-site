@@ -1,7 +1,7 @@
 <template>
   <div class="info-banner">
     <h5 class="info-banner--header">
-      Ready to start? <router-link to="/check-in">Check in</router-link> now!
+      Ready to play? <router-link to="/check-in">Check in</router-link> now!
     </h5>
     <span @click="removeBanner" class="delete"></span>
   </div>

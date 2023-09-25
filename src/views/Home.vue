@@ -37,7 +37,10 @@ export default {
     };
   },
   beforeMount() {
-    if (!sessionStorage.getItem("banner-removed")) {
+    if (
+      !sessionStorage.getItem("banner-removed") &&
+      import.meta.env.MODE === "development"
+    ) {
       this.addBanner = true;
     }
   },
