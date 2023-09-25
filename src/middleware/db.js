@@ -4,6 +4,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { update } from "firebase/database";
 
 import {
   getFirestore,
@@ -83,6 +84,21 @@ async function listTeamDocs(collectionName) {
 
 }
 
+async function addPropertyToDoc(collection, docId, valueObj) {
+  return new Promise(async (resolve) => {
+    const docRef = doc(db, collection, docId)
+    //BUG - right now everycall of this function is overwriting the checkedIn array
+    //we need to add the array if it doesn't exists
+    //and we need to add to the array if it does
+    await setDoc(docRef, valueObj, { merge: true })
+      .then(() => {
+        resolve(true);
+      })
+      .catch((error) => {
+        resolve(error);
+      });
+  });
+};
 //have to pass either mens or coed as docName to enter new data into each document
 async function addToFirestore(coll, data = null) {
   return new Promise((resolve, reject) => {
@@ -134,5 +150,6 @@ export {
   getUserPermissions,
   listTeamDocs,
   deleteFromFirestore,
+  addPropertyToDoc,
   auth,
 };

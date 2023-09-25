@@ -1,0 +1,138 @@
+<script setup></script>
+<template>
+  <secondaryNav />
+  <div class="check-in col-md-10 m-auto col-12">
+    <div class="container row m-auto">
+      <div class="form-inner">
+        <div class="form-inset">
+          <h1>Check In</h1>
+          <div class="form-control card">
+            <form id="check-in-form" class="w-100">
+              <fieldset v-if="!this.searchResult.id">
+                <legend>Check in by player name</legend>
+                <input
+                  class="input"
+                  type="text"
+                  v-model="checkInPlayer__firstName"
+                  placeholder="First Name"
+                />
+                <input
+                  class="input"
+                  type="text"
+                  v-model="checkInPlayer__lastName"
+                  placeholder="Last Name"
+                />
+                <select v-model="division" class="input full-width">
+                  <option value="mens">Men's league</option>
+                  <option value="coed">Co-ed league</option>
+                </select>
+                <button class="w-100" type="submit" @click="searchForPlayer">
+                  Search
+                </button>
+              </fieldset>
+
+              <div
+                v-if="this.searchResult.id"
+                class="search--result col-md-8 mx-auto col-12"
+              >
+                <h4 class="mt-4">Is this you?</h4>
+                <h5>{{ this.searchResult.teamName }}</h5>
+                <p v-for="player in this.searchResult.players">
+                  {{ player.first_name }} {{ player.last_name }}
+                </p>
+                <button @click="checkPlayerIn">Check In</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import { listTeamDocs, addPropertyToDoc } from "../middleware/db.js";
+export default {
+  data() {
+    return {
+      checkInPlayer__firstName: null,
+      checkInPlayer__lastName: null,
+      checkInPlayer__division: null,
+      searchResult: {
+        players: [],
+        teamName: null,
+        id: null,
+      },
+      playersToCheckIn: [],
+    };
+  },
+  methods: {
+    searchForPlayer: async function (ev) {
+      ev.preventDefault();
+      console.log(this);
+      await listTeamDocs(
+        import.meta.env.MODE === "development"
+          ? "testing"
+          : `${this.checkInPlayer__division}-league`
+      ).then((teams) => {
+        for (const team of teams.data) {
+          const id = Object.keys(team)[0];
+          team[id].players.forEach((player, index, arr) => {
+            if (
+              player.first_name.toLowerCase().replaceAll(" ", "") ===
+                this.checkInPlayer__firstName.toLowerCase() &&
+              player.last_name.toLowerCase().replaceAll(" ", "") ===
+                this.checkInPlayer__lastName.toLowerCase()
+            ) {
+              this.searchResult.players = team[id].players;
+              this.searchResult.teamName = team[id].teamName;
+              this.searchResult.id = team[id].id;
+              this.searchResult.divison = this.checkInPlayer__division;
+              this.searchResult.foundIndex = index;
+            }
+          });
+        }
+      });
+    },
+    checkPlayerIn: async function (ev) {
+      ev.preventDefault();
+      const checkInObj = {
+        checkedIn: [],
+      };
+      //track players by index
+      checkInObj.checkedIn.push(this.searchResult.foundIndex);
+      //pass division, team id, and obj w/ key as new field name and value as the value for the field
+      await addPropertyToDoc(
+        import.meta.env.MODE === "development"
+          ? "testing"
+          : `${this.checkInPlayer__division}-league`,
+        this.searchResult.id,
+        checkInObj
+      ).then(() => {
+        this.$toast.success("Player checked in successfully.");
+      });
+    },
+  },
+};
+</script>
+<style scoped>
+.card {
+  padding: 4% 2%;
+}
+form fieldset {
+  display: flex;
+  flex-wrap: wrap;
+}
+input {
+  width: 100%;
+  margin: 0.5em auto;
+}
+.search--result {
+  background: #fff;
+  border-radius: var(--card-border-radius);
+}
+.search--result h5,
+.search--result p {
+  width: 100%;
+  text-align: left;
+}
+</style>

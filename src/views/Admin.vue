@@ -402,7 +402,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .container {
   background-color: #f0f4f7;
 }
