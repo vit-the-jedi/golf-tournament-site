@@ -17,6 +17,7 @@ import {
   doc,
   query,
   where,
+  onSnapshot,
   orderBy,
   limit,
 } from "firebase/firestore";
@@ -85,6 +86,30 @@ async function listTeamDocs(collectionName) {
 
 }
 
+async function getCheckedInTeams(collectionName) {
+  return new Promise(async (resolve) => {
+
+    const teams = await listTeamDocs(collectionName);
+    const checkedInTeamsResolveObj = {
+      data: null,
+      error: null
+    }
+    const checkedInTeams = teams.data.filter((team) => {
+      const teamData = team[Object.keys(team)[0]];
+      if (teamData.hasOwnProperty("checkedIn")) {
+        return teamData;
+      }
+    });
+
+    if (checkedInTeams.length > 0) {
+      checkedInTeamsResolveObj.data = checkedInTeams;
+    } else {
+      checkedInTeamsResolveObj.error = "No teams checked in yet, try again soon.";
+    }
+    resolve(checkedInTeamsResolveObj);
+  });
+};
+
 async function addPropertyToDoc(collection, docId, valueObj) {
   return new Promise(async (resolve) => {
     const docRef = doc(db, collection, docId)
@@ -130,6 +155,26 @@ async function addPropertyToDoc(collection, docId, valueObj) {
     }
   });
 };
+
+async function unsubscribeToCheckedInUpdates(collection,) {
+  const teamsCollRef = collection(db, collection);
+  const q = query(teamsCollRef, where('checkedIn', 'in', [0, 1, 2, 3]));
+  onSnapshot(q, (querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      console.log(doc.data());
+    });
+  });
+}
+async function unsubscribeToNotCheckedInUpdates(collection,) {
+  const teamsCollRef = collection(db, collection);
+  const q = query(teamsCollRef, where('checkedIn', 'in', [0, 1, 2, 3]));
+  onSnapshot(q, (querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      console.log(doc.data());
+    });
+  });
+}
+
 //have to pass either mens or coed as docName to enter new data into each document
 async function addToFirestore(coll, data = null) {
   return new Promise((resolve, reject) => {
@@ -182,5 +227,7 @@ export {
   listTeamDocs,
   deleteFromFirestore,
   addPropertyToDoc,
+  unsubscribeToCheckedInUpdates,
+  getCheckedInTeams,
   auth,
 };

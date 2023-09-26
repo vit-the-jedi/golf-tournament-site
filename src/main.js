@@ -21,6 +21,7 @@ import adminSignIn from "@/views/adminSignIn.vue";
 import winnersCircle from "@/views/winnersCircle.vue";
 import signIn from "@/views/signIn.vue";
 import checkIn from "@/views/CheckIn.vue";
+import adminCheckIn from "@/views/adminCheckIn.vue";
 
 const checkTeam = (to, from, next) => {
   const teamInStore = store.getters.getTeam;
@@ -95,6 +96,11 @@ const router = createRouter({
       path: "/check-in",
       name: "checkIn",
       component: checkIn,
+    },
+    {
+      path: "/admin/check-in",
+      name: "adminCheckIn",
+      component: adminCheckIn,
     },
   ],
 });
