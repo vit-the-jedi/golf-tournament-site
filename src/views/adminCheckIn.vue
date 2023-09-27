@@ -6,19 +6,68 @@ import adminPanel from "../components/adminPanel.vue";
 <template>
   <secondaryNav />
   <div class="container row m-0">
-    <div class="col-md-10 col-12 mx-auto">
-      <div class="admin--card">
+    <div class="admin--card col-12 mx-auto">
+      <div class="d-flex justify-content-between checked-in--stats">
+        <h5>
+          Total Players Checked In:
+          <span class="ui-info paid">{{ this.totalPlayersCheckedIn }}</span>
+        </h5>
+        <h5>
+          Total Players Not Checked In:
+          <span class="ui-info unpaid">{{
+            this.totalPlayersNotCheckedIn
+          }}</span>
+        </h5>
+      </div>
+    </div>
+    <div class="col-md-6 col-12 mx-auto">
+      <div class="admin--card mt-0">
+        <h1>Men's League</h1>
         <div
           class="row admin--row data w-100"
           v-for="team in this.checkedInTeams"
         >
           <div class="admin--column">
-            <p>{{ team.teamName }}</p>
             <div class="admin--item">
-              <div v-for="item in this.checkedInTeams">
+              <div class="d-flex justify-content-between">
+                <h6 class="team-name">{{ team.teamName }}</h6>
+                <span>Total players: {{ team.numOfPlayers }}</span>
+              </div>
+              <div
+                class="player checked--in justify-content-between d-flex"
+                v-for="item in team.checkedInPlayers"
+              >
+                <span>{{ item.first_name }}&nbsp;</span>
+                <span>{{ item.last_name }}</span>
+                <span class="ui-info paid">CHECKED IN</span>
+              </div>
+              <div
+                class="player checked--in justify-content-between d-flex"
+                v-for="item in team.notCheckedInPlayers"
+              >
+                <span>{{ item.first_name }}&nbsp;</span>
+                <span>{{ item.last_name }}</span>
+                <span class="ui-info unpaid">CHECKED IN</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-12 mx-auto">
+      <div class="admin--card mt-0">
+        <h1>Co-ed League</h1>
+        <div
+          class="row admin--row data w-100"
+          v-for="team in this.notCheckedInTeams"
+        >
+          <div class="admin--column">
+            <div class="admin--item">
+              <h6 class="team-name">{{ team.teamName }}</h6>
+              <div v-for="item in this.notCheckedInTeams">
                 <div
-                  class="player checked--in d-flex"
-                  v-for="player in item.checkedInPlayers"
+                  class="player checked--in justify-content-between d-flex"
+                  v-for="player in item.notCheckedInPlayers"
                 >
                   <span>{{ player.first_name }}&nbsp;</span>
                   <span>{{ player.last_name }}</span>
@@ -28,7 +77,7 @@ import adminPanel from "../components/adminPanel.vue";
               <div>
                 <div v-for="item in this.checkedInTeams">
                   <div
-                    class="player d-flex"
+                    class="player justify-content-between d-flex"
                     v-for="player in item.notCheckedInPlayers"
                   >
                     <span>{{ player.first_name }}&nbsp;</span>
@@ -56,8 +105,6 @@ export default {
     return {
       adminChoices: {
         league: null,
-        renderCoedList: true,
-        renderMensList: true,
         renderCheckedIn: true,
         renderNotCheckedIn: true,
         filteredTeams: {
@@ -68,6 +115,8 @@ export default {
       },
       checkedInTeams: [],
       notCheckedInTeams: [],
+      totalPlayersCheckedIn: 0,
+      totalPlayersNotCheckedIn: 0,
     };
   },
   methods: {
@@ -107,15 +156,20 @@ export default {
             }
           }
         );
-        //push all checked in players in =to our array
+        //push all checked in players in to our array
         checkedInTeamObj.checkedInPlayers = checkedInPlayersArray;
 
         //push remaining into other array
         checkedInTeamObj.notCheckedInPlayers = notCheckedInPlayersArray;
-
+        checkedInTeamObj.numOfPlayers = teamObj.numOfPlayers;
         checkedInTeamObj.teamName = teamObj.teamName;
         this.checkedInTeams.push(checkedInTeamObj);
         console.log(this.checkedInTeams);
+
+        //calculate the number of people checked in
+        this.totalPlayersCheckedIn += checkedInPlayersArray.length;
+        //calculate the number of people not checked in
+        this.totalPlayersNotCheckedIn += notCheckedInPlayersArray.length;
       }, this);
     },
     createNotCheckedInTeamsData(team, league) {
@@ -203,14 +257,19 @@ export default {
 
 <style>
 @import "../assets/admin.css";
-
-.player {
-  justify-content: space-evenly;
+.admin--column {
+  flex-grow: 1;
 }
-.player .ui-info {
-  min-width: 118px;
-  text-align: center;
-  width: 100%;
-  display: block;
+.player {
+  margin: 0.25em auto;
+}
+.player span {
+  font-size: 14px;
+}
+.player.checked--in .unpaid {
+  text-decoration: line-through;
+}
+.checked-in--stats .ui-info {
+  font-size: 1em;
 }
 </style>

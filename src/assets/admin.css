@@ -25,6 +25,7 @@
 .admin--item {
   justify-content: space-between;
   padding: 5vh 2vh;
+  flex-grow: 1;
 }
 .admin--row {
   margin: auto;
