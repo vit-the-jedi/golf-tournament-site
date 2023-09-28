@@ -101,6 +101,9 @@ const router = createRouter({
       path: "/admin/check-in",
       name: "adminCheckIn",
       component: adminCheckIn,
+      meta: {
+        requiresAuth: true
+      }
     },
   ],
 });
