@@ -31,7 +31,12 @@ import adminPanel from "../components/adminPanel.vue";
             <div class="admin--item">
               <div class="d-flex justify-content-between">
                 <h6 class="team-name">{{ team.teamName }}</h6>
-                <span>Total players: {{ team.numOfPlayers }}</span>
+                <span
+                  >Checked In:
+                  <span class="ui-info unpaid" style="display: inline">0</span>
+                </span>
+                <span>Total Players: {{ team.numOfPlayers }}</span>
+                <!-- <button class="secondary--button more-info">More Info</button> -->
               </div>
               <div
                 class="player checked--in justify-content-between d-flex"
@@ -60,7 +65,13 @@ import adminPanel from "../components/adminPanel.vue";
             <div class="admin--item">
               <div class="d-flex justify-content-between">
                 <h6 class="team-name">{{ team.teamName }}</h6>
-                <span>Total players: {{ team.numOfPlayers }}</span>
+                <span
+                  >Checked In:
+                  <span class="ui-info paid" style="display: inline">{{
+                    team.checkedInPlayers.length
+                  }}</span></span
+                >
+                <span>Total Players: {{ team.numOfPlayers }}</span>
               </div>
               <div
                 class="player checked--in justify-content-between d-flex"
@@ -269,6 +280,8 @@ export default {
 }
 .player {
   margin: 0.25em auto;
+  height: 0;
+  overflow: hidden;
 }
 .player span {
   font-size: 14px;
