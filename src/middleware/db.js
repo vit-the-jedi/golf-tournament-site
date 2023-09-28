@@ -91,7 +91,7 @@ async function getCheckedInTeams(collectionName) {
 
     const teams = await listTeamDocs(collectionName);
     const checkedInTeamsResolveObj = {
-      data: null,
+      data: {},
       error: null
     }
     const checkedInTeams = teams.data.filter((team) => {
@@ -101,8 +101,20 @@ async function getCheckedInTeams(collectionName) {
       }
     });
 
+    const notCheckedInTeams = teams.data.filter((team) => {
+      const teamData = team[Object.keys(team)[0]];
+      if (!teamData.hasOwnProperty("checkedIn")) {
+        return teamData;
+      }
+    });
+
     if (checkedInTeams.length > 0) {
-      checkedInTeamsResolveObj.data = checkedInTeams;
+      checkedInTeamsResolveObj.data.checkedInTeams = [];
+      checkedInTeamsResolveObj.data.checkedInTeams = checkedInTeams;
+    }
+    if (notCheckedInTeams.length > 0) {
+      checkedInTeamsResolveObj.data.notCheckedInTeams = [];
+      checkedInTeamsResolveObj.data.notCheckedInTeams = notCheckedInTeams;
     } else {
       checkedInTeamsResolveObj.error = "No teams checked in yet, try again soon.";
     }

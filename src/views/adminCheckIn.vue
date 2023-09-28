@@ -25,6 +25,35 @@ import adminPanel from "../components/adminPanel.vue";
         <h1>Men's League</h1>
         <div
           class="row admin--row data w-100"
+          v-for="team in this.notCheckedInTeams"
+        >
+          <div class="admin--column">
+            <div class="admin--item">
+              <div class="d-flex justify-content-between">
+                <h6 class="team-name">{{ team.teamName }}</h6>
+                <span>Total players: {{ team.numOfPlayers }}</span>
+              </div>
+              <div
+                class="player checked--in justify-content-between d-flex"
+                v-for="item in team.players"
+              >
+                <span>{{ item.first_name }}&nbsp;</span>
+                <span>{{ item.last_name }}</span>
+                <span class="ui-info unpaid">CHECKED IN</span>
+              </div>
+              <div
+                class="player checked--in justify-content-between d-flex"
+                v-for="item in team.notCheckedInPlayers"
+              >
+                <span>{{ item.first_name }}&nbsp;</span>
+                <span>{{ item.last_name }}</span>
+                <span class="ui-info unpaid">CHECKED IN</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="row admin--row data w-100"
           v-for="team in this.checkedInTeams"
         >
           <div class="admin--column">
@@ -57,38 +86,6 @@ import adminPanel from "../components/adminPanel.vue";
     <div class="col-md-6 col-12 mx-auto">
       <div class="admin--card mt-0">
         <h1>Co-ed League</h1>
-        <div
-          class="row admin--row data w-100"
-          v-for="team in this.notCheckedInTeams"
-        >
-          <div class="admin--column">
-            <div class="admin--item">
-              <h6 class="team-name">{{ team.teamName }}</h6>
-              <div v-for="item in this.notCheckedInTeams">
-                <div
-                  class="player checked--in justify-content-between d-flex"
-                  v-for="player in item.notCheckedInPlayers"
-                >
-                  <span>{{ player.first_name }}&nbsp;</span>
-                  <span>{{ player.last_name }}</span>
-                  <span class="ui-info paid">CHECKED IN</span>
-                </div>
-              </div>
-              <div>
-                <div v-for="item in this.checkedInTeams">
-                  <div
-                    class="player justify-content-between d-flex"
-                    v-for="player in item.notCheckedInPlayers"
-                  >
-                    <span>{{ player.first_name }}&nbsp;</span>
-                    <span>{{ player.last_name }}</span>
-                    <span class="ui-info unpaid">CHECKED IN</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -126,9 +123,13 @@ export default {
         import.meta.env.MODE === "development" ? "testing" : "mens-league"
       ).then((checkInTeamData) => {
         //initial call successfull, now let's make sure we get updates
-        if (checkInTeamData.data && !checkInTeamData.error) {
-          checkInTeamData.data.forEach(function (team) {
+        if (!checkInTeamData.error) {
+          checkInTeamData.data.checkedInTeams.forEach(function (team) {
             this.createCheckedInTeamsData(team);
+          }, this);
+
+          checkInTeamData.data.notCheckedInTeams.forEach(function (team) {
+            this.createNotCheckedInTeamsData(team);
           }, this);
         } else {
           this.$toast.error(checkInTeamData.error);
@@ -164,7 +165,6 @@ export default {
         checkedInTeamObj.numOfPlayers = teamObj.numOfPlayers;
         checkedInTeamObj.teamName = teamObj.teamName;
         this.checkedInTeams.push(checkedInTeamObj);
-        console.log(this.checkedInTeams);
 
         //calculate the number of people checked in
         this.totalPlayersCheckedIn += checkedInPlayersArray.length;
@@ -174,7 +174,14 @@ export default {
     },
     createNotCheckedInTeamsData(team, league) {
       Object.values(team).forEach(function (teamObj) {
-        this.notCheckedInTeamsData[league][teamObj.id] = teamObj;
+        const notCheckedInTeamObj = {};
+        //push remaining into other array
+        notCheckedInTeamObj.players = teamObj.players;
+        notCheckedInTeamObj.numOfPlayers = teamObj.numOfPlayers;
+        notCheckedInTeamObj.teamName = teamObj.teamName;
+        this.notCheckedInTeams.push(notCheckedInTeamObj);
+        //calculate the number of people not checked in
+        this.totalPlayersNotCheckedIn += 1;
       }, this);
     },
     scrollToActionHandler(ev) {
