@@ -36,23 +36,29 @@ import adminPanel from "../components/adminPanel.vue";
                   <span class="ui-info unpaid" style="display: inline">0</span>
                 </span>
                 <span>Total Players: {{ team.numOfPlayers }}</span>
-                <!-- <button class="secondary--button more-info">More Info</button> -->
               </div>
               <div
                 class="player checked--in justify-content-between d-flex"
-                v-for="item in team.players"
+                v-for="(item, index) in team.players"
               >
-                <span>{{ item.first_name }}&nbsp;</span>
-                <span>{{ item.last_name }}</span>
-                <span class="ui-info unpaid">CHECKED IN</span>
+                <ul class="player--list d-flex justify-content-center">
+                  <li>{{ index + 1 }}</li>
+                  <li>
+                    <span>{{ item.first_name }}&nbsp;</span>
+                  </li>
+                  <li>
+                    <span>{{ item.last_name }}</span>
+                  </li>
+                  <li><span class="ui-info unpaid">CHECKED IN</span></li>
+                </ul>
               </div>
-              <div
-                class="player checked--in justify-content-between d-flex"
-                v-for="item in team.notCheckedInPlayers"
-              >
-                <span>{{ item.first_name }}&nbsp;</span>
-                <span>{{ item.last_name }}</span>
-                <span class="ui-info unpaid">CHECKED IN</span>
+              <div class="col-12 row">
+                <button
+                  @click="showTeamDetails"
+                  class="secondary--button more-info"
+                >
+                  More Info
+                </button>
               </div>
             </div>
           </div>
@@ -75,19 +81,41 @@ import adminPanel from "../components/adminPanel.vue";
               </div>
               <div
                 class="player checked--in justify-content-between d-flex"
-                v-for="item in team.checkedInPlayers"
+                v-for="(item, index) in team.checkedInPlayers"
               >
-                <span>{{ item.first_name }}&nbsp;</span>
-                <span>{{ item.last_name }}</span>
-                <span class="ui-info paid">CHECKED IN</span>
+                <ul class="player--list d-flex justify-content-center">
+                  <li>{{ index + 1 }}</li>
+                  <li>
+                    <span>{{ item.first_name }}&nbsp;</span>
+                  </li>
+                  <li>
+                    <span>{{ item.last_name }}</span>
+                  </li>
+                  <li><span class="ui-info paid">CHECKED IN</span></li>
+                </ul>
               </div>
               <div
                 class="player checked--in justify-content-between d-flex"
-                v-for="item in team.notCheckedInPlayers"
+                v-for="(item, index) in team.notCheckedInPlayers"
               >
-                <span>{{ item.first_name }}&nbsp;</span>
-                <span>{{ item.last_name }}</span>
-                <span class="ui-info unpaid">CHECKED IN</span>
+                <ul class="player--list d-flex justify-content-center">
+                  <li>{{ index + 1 }}</li>
+                  <li>
+                    <span>{{ item.first_name }}&nbsp;</span>
+                  </li>
+                  <li>
+                    <span>{{ item.last_name }}</span>
+                  </li>
+                  <li><span class="ui-info unpaid">CHECKED IN</span></li>
+                </ul>
+              </div>
+              <div class="col-12 row">
+                <button
+                  @click="showTeamDetails"
+                  class="secondary--button more-info"
+                >
+                  More Info
+                </button>
               </div>
             </div>
           </div>
@@ -265,6 +293,36 @@ export default {
       //quick and dirty scroll to top for mobile users
       document.body.scrollTop = document.documentElement.scrollTop = 0;
     },
+    showTeamDetails(e) {
+      const parent = e.currentTarget.closest(".admin--item");
+      const listContainer = [...parent.querySelectorAll(".player")];
+      let playerListHeight = 0;
+      listContainer.forEach((container) => {
+        for (const list of container.querySelectorAll(".player--list")) {
+          playerListHeight += list.getBoundingClientRect().height;
+        }
+      });
+
+      if (e.currentTarget.classList.contains("info--open")) {
+        listContainer.forEach((container) => {
+          container.style.height = `0px`;
+        });
+
+        e.currentTarget.classList.remove("info--open");
+      } else {
+        e.currentTarget.classList.add("info--open");
+        e.currentTarget.textContent = "Less Info";
+        listContainer.forEach((container) => {
+          if (parent.querySelectorAll(".player").length > 1) {
+            container.style.height = `${
+              playerListHeight / parent.querySelectorAll(".player").length
+            }px`;
+          } else {
+            container.style.height = `${playerListHeight}px`;
+          }
+        });
+      }
+    },
   },
   //await the call to firebase for teams list
   async mounted() {
@@ -282,6 +340,15 @@ export default {
   margin: 0.25em auto;
   height: 0;
   overflow: hidden;
+}
+.player--list {
+  list-style-type: none;
+  max-width: 100%;
+  width: 100%;
+  padding: 1em;
+}
+.player--list li {
+  flex-grow: 1;
 }
 .player span {
   font-size: 14px;
