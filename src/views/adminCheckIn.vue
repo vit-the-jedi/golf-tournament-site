@@ -2,22 +2,30 @@
 //components
 import secondaryNav from "../components/secondaryNav.vue";
 import adminPanel from "../components/adminPanel.vue";
+import checkInForm from "../components/checkInForm.vue";
 </script>
 <template>
   <secondaryNav />
   <div class="container row m-0">
-    <div class="admin--card col-12 mx-auto">
-      <div class="d-flex justify-content-between checked-in--stats">
-        <h5>
-          Total Players Checked In:
-          <span class="ui-info paid">{{ this.totalPlayersCheckedIn }}</span>
-        </h5>
-        <h5>
-          Total Players Not Checked In:
-          <span class="ui-info unpaid">{{
-            this.totalPlayersNotCheckedIn
-          }}</span>
-        </h5>
+    <div class="col-md-6 col-12 mx-auto">
+      <div class="admin--card">
+        <checkInForm />
+      </div>
+    </div>
+    <div class="col-md-6 col-12 mx-auto">
+      <div class="admin--card">
+        <div class="d-flex flex-column checked-in--stats">
+          <h5>
+            Total Players Checked In:
+            <span class="ui-info paid">{{ this.totalPlayersCheckedIn }}</span>
+          </h5>
+          <h5>
+            Total Players Not Checked In:
+            <span class="ui-info unpaid">{{
+              this.totalPlayersNotCheckedIn
+            }}</span>
+          </h5>
+        </div>
       </div>
     </div>
     <div class="col-md-6 col-12 mx-auto">
@@ -133,6 +141,8 @@ import adminPanel from "../components/adminPanel.vue";
 import {
   unsubscribeToCheckedInUpdates,
   getCheckedInTeams,
+  listTeamDocs,
+  addPropertyToDoc,
 } from "../middleware/db.js";
 
 export default {
@@ -153,9 +163,78 @@ export default {
       notCheckedInTeams: [],
       totalPlayersCheckedIn: 0,
       totalPlayersNotCheckedIn: 0,
+      searchResult: {
+        players: [],
+        teamName: null,
+        id: null,
+      },
     };
   },
   methods: {
+    findPlayer: async function (ev) {
+      ev.preventDefault();
+      console.log(this);
+      await listTeamDocs(
+        import.meta.env.MODE === "development"
+          ? "testing"
+          : `${this.checkInPlayer__division}-league`
+      ).then((teams) => {
+        for (const team of teams.data) {
+          const id = Object.keys(team)[0];
+          team[id].players.forEach((player, index, arr) => {
+            if (
+              player.first_name.toLowerCase().replaceAll(" ", "") ===
+                this.findPlayer__firstName.toLowerCase() &&
+              player.last_name.toLowerCase().replaceAll(" ", "") ===
+                this.findPlayer__lastName.toLowerCase()
+            ) {
+              this.searchResult.players = team[id].players;
+              this.searchResult.teamName = team[id].teamName;
+              this.searchResult.id = team[id].id;
+              this.searchResult.divison = this.checkInPlayer__division;
+              this.searchResult.foundIndex = index;
+            }
+          });
+        }
+      });
+    },
+    checkPlayerIn: async function (ev) {
+      ev.preventDefault();
+      const checkInObj = {
+        checkedIn: [],
+      };
+      //track players by index
+      checkInObj.checkedIn.push(this.searchResult.foundIndex);
+      //pass division, team id, and obj w/ key as new field name and value as the value for the field
+      const propertyAdded = await addPropertyToDoc(
+        import.meta.env.MODE === "development"
+          ? "testing"
+          : `${this.checkInPlayer__division}-league`,
+        this.searchResult.id,
+        checkInObj
+      );
+
+      //if promise resolved to true, our player was successfully checked in
+      if (propertyAdded.value) {
+        this.$toast.success("Player checked in successfully.");
+      }
+      //else there was an issue
+      else {
+        //handles condition where player is already checked in
+        if (propertyAdded.error.includes("checked in")) {
+          this.$toast.warning(propertyAdded.error);
+        }
+        //handles error from firebase
+        else {
+          this.$toast.error(
+            "There was a problem checking you in, please try again."
+          );
+        }
+        this.searchResult.players = [];
+        this.searchResult.teamName = null;
+        this.searchResult.id = null;
+      }
+    },
     async getCheckedInTeamsHandler() {
       //create data partition for mens and coed league so we can filter them
       await getCheckedInTeams(
