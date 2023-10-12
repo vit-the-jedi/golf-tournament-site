@@ -8,7 +8,7 @@ import check from "../components/Check.vue";
 export default {
   data() {
     return {
-      date: "October 7th, 2023",
+      date: "October 21st, 2023",
       time: "10:00am",
       golfCourse: "East Mountain Golf Course",
       golfCourseAddress: "171 E Mountain Rd, Waterbury, CT 06706",
