@@ -61,11 +61,7 @@ header {
   padding: 2.5vh 5vw 12vh 5vw;
 }
 .top-content {
-  background-image: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.15) 00%,
-      rgba(0, 0, 0, 0.75) 100%
-    ),
+  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0.15) 00%, rgba(0, 0, 0, 0.75) 100%),
     url("../assets/hero.jpg");
   background-size: cover;
   background-repeat: no-repeat;
@@ -87,7 +83,7 @@ header {
   width: 80%;
 }
 .top-content .top-info {
-  max-width: 450px;
+  max-width: 550px;
   margin: auto;
   width: 100%;
   color: white;

@@ -94,18 +94,18 @@ export default {
         </div>
         <div class="card sub--card entry--info">
           <div class="row">
-            <div class="col-md-6 col-12">
-              <h2>When &amp; where?</h2>
-              <p>{{ outputDate }}</p>
-              <p>TEE TIMES 9AM - 11:30AM</p>
-              <p>{{ outputGolfCourse }},</p>
-              <p>{{ outputGolfCourseAddress }}</p>
+            <div class="col-md-12 col-12 text-center">
+              <h1>When &amp; where?</h1>
+              <h4>{{ outputDate }}</h4>
+              <h4>Shotgun Start @ 9am (in carts by 8:45)</h4>
+              <h4>{{ outputGolfCourse }},</h4>
+              <h4>{{ outputGolfCourseAddress }}</h4>
             </div>
-            <div class="col-md-6 col-12">
+            <!-- <div class="col-md-6 col-12">
               <h2>Note:</h2>
               <p>Contact Ant Lowell for tee time accomodations.</p>
-              <p>We will do our best to fit youre team in as early as possible.</p>
-            </div>
+              <p>We will do our best to fit your team in as early as possible.</p>
+            </div> -->
           </div>
         </div>
       </div>
