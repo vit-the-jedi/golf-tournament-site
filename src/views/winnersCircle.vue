@@ -37,7 +37,7 @@ export default {
         {
           year: 2023,
           division: "Co-Ed",
-          team: ["Nicole Vitello", "Kiara", "Dan Duffy", "Al Vitello"],
+          team: ["Nicole Vitello", "Kiara Bonilla", "Dan Duffy", "Al Vitello"],
         },
         {
           year: 2022,
