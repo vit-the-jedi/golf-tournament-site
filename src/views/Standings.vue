@@ -1,12 +1,16 @@
 <script setup>
+import secondaryNav from "../components/secondaryNav.vue";
 import StandingsList from "../components/standingsList.vue";
 </script>
 
 <template>
-  <div class="container m-0">
+  <secondaryNav />
+  <div class="container">
     <div class="standings">
-      <h1>Standings</h1>
-      <h4>Standings are updated on a real-time basis</h4>
+      <div class="text-center">
+        <h1>Standings</h1>
+        <h4>Standings are updated on a real-time basis</h4>
+      </div>
       <StandingsList />
     </div>
   </div>

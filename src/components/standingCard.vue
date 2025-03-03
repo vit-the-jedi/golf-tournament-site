@@ -24,8 +24,8 @@ export default {
   },
   methods: {
     createPlacement(index) {
-      let placements = ["1st", "2nd", "3rd"];
-      return index <= 2 ? `${placements[index]} Place` : "";
+      let placements = ["1st", "2nd", "3rd", "4th"];
+      return index <= 4 ? `${placements[index]} Place` : "";
     },
   },
 };
