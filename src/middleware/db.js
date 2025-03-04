@@ -20,6 +20,7 @@ import {
   orderBy,
   limit,
 } from "firebase/firestore";
+import { list } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -83,7 +84,6 @@ async function listTeamDocs(collectionName) {
       });
   });
 }
-
 //have to pass either mens or coed as docName to enter new data into each document
 async function addToFirestore(coll, data = null) {
   return new Promise((resolve, reject) => {
@@ -126,24 +126,53 @@ async function deleteFromFirestore(coll, docName) {
       });
   });
 }
+async function listPlayers(teamName, league) {
+  const teamDocRef = doc(db, league, teamName);
+  const teamDoc = await getDoc(teamDocRef);
 
+  if (teamDoc.exists()) {
+    return teamDoc.data().players;
+  }
+  return null;
+}
 //this function opens a stream to the standings collection, providing real-time updates to standings
-function useStandings() {
+function useStandings(coll) {
   const standings = ref([]);
   const unsubscribe = onSnapshot(collection(db, "standings"), (snapshot) => {
     //update standings array with new data
     //sort by score so that component re-renders with sorting of highest->lowest score first
-    standings.value = snapshot.docs
-      .map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }))
-      .sort((a, b) => b.score - a.score);
+    //refactor to transform data to mens a coed leagues
+    // standings.value = snapshot.docs
+    //   .map((doc) => ({
+    //     id: doc.id,
+    //     ...doc.data(),
+    //   }))
+    //   .sort((a, b) => b.score - a.score);
+    snapshot.docs.forEach(async (league) => {
+      const snapshotData = league.data();
+      standings.value[league.id.split("-")[0]] = await Promise.all(
+        Object.keys(snapshotData).map(async (teamName) => ({
+          id: teamName,
+          players: await listPlayers(teamName, league.id),
+          ...snapshotData[teamName],
+        }))
+      );
+    });
+    // standings.value.mens = snapshot.docs
+    //   .filter((doc) => doc.data().id === "mens-league")
+    //   .map((doc) => ({
+    //     id: doc.id,
+    //     ...doc.data(),
+    //   }))
+    //   .sort((a, b) => b.score - a.score);
   });
   onUnmounted(unsubscribe);
 
-  const sendNewStanding = (value) => {
-    addDoc(collection(db, "standings"), value);
+  const sendNewStanding = (coll, value) => {
+    const docRef = doc(db, coll, value.id);
+    setDoc(docRef, coll, value).then((resp) =>
+      console.log(`new standing resp: ${resp}`)
+    );
   };
   return { standings, sendNewStanding };
 }

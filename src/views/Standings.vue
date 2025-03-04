@@ -7,9 +7,14 @@ import StandingsList from "../components/standingsList.vue";
   <secondaryNav />
   <div class="container">
     <div class="standings">
-      <div class="text-center">
+      <div class="text-center col-md-6 mx-auto col-12">
         <h1>Standings</h1>
         <h4>Standings are updated on a real-time basis</h4>
+        <small
+          >Results are 100% reliant on teams accurately + frequently updating
+          their data. The final standings will be calculated when all teams have
+          submitted their scorecard.</small
+        >
       </div>
       <StandingsList />
     </div>
