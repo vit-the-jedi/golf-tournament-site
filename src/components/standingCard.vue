@@ -2,17 +2,6 @@
   <div class="team-container">
     <h3>{{ createPlacement(index) }}</h3>
     <h4 class="team-name">{{ team.id }}</h4>
-    <div v-if="team.players" class="players">
-      <div class="row m-auto">
-        <div
-          class="col-6 text-left"
-          v-for="(player, index) of team.players"
-          :key="player"
-        >
-          <p>{{ index + 1 }}. {{ player }}</p>
-        </div>
-      </div>
-    </div>
     <ul class="score-list">
       <li class="score-item">
         <span class="score">Score: {{ team.score }}</span>
@@ -24,6 +13,18 @@
         <span class="score">Hole Started On: {{ team.holeStartedOn }}</span>
       </li>
     </ul>
+    <div v-if="team.players" class="players pt-4">
+      <h5>PLAYERS</h5>
+      <div class="row m-auto">
+        <div
+          class="col-6 text-left"
+          v-for="(player, index) of team.players"
+          :key="player"
+        >
+          <p>{{ index + 1 }}. {{ player }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

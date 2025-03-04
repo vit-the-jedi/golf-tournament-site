@@ -4,9 +4,8 @@ import { useStandings } from "../middleware/db.js";
 import standingCard from "./standingCard.vue";
 import Accordion from "./accordion.vue";
 import { transformForAccordion } from "../utils/transformForAccordion.js";
-const { standings, sendNewStanding } = useStandings();
+const { standings, sendNewStanding, unsubscribe } = useStandings();
 console.log(standings);
-console.log(standings.mens);
 </script>
 
 <template>
@@ -17,14 +16,39 @@ console.log(standings.mens);
         <small>(Top 3 teams from each division receive trophies)</small>
       </div>
     </div>
-    <div class="row">
+    <form class="standings-filter">
+      <fieldset class="row m-0">
+        <label :class="{ active: selectedDivision === 'mens' }" class="col-6">
+          <input
+            type="radio"
+            v-model="selectedDivision"
+            value="mens"
+            name="standingFilter"
+          />
+          Mens
+        </label>
+        <label :class="{ active: selectedDivision === 'coed' }" class="col-6">
+          <input
+            type="radio"
+            v-model="selectedDivision"
+            value="coed"
+            name="standingFilter"
+          />
+          Coed
+        </label>
+      </fieldset>
+    </form>
+    <div class="row" v-if="standings && standings[selectedDivision]">
       <standingCard
-        v-for="(standing, index) of standings.mens.slice(0, 3)"
+        v-for="(standing, index) of standings[selectedDivision].slice(0, 3)"
         :key="standing.id"
         class="col-md-6 col-12"
         :team="standing"
         :index="index"
       />
+    </div>
+    <div v-else class="mt-4 pt-4 col-6 mx-auto">
+      <p class="text-center">loading...</p>
     </div>
     <div v-if="standings.length > 4" class="accordion-holder col-12 mt-4 pt-4">
       <h4 class="text-center">Up and comers ⛳️</h4>
@@ -34,9 +58,15 @@ console.log(standings.mens);
 </template>
 
 <script>
+import { onUnmounted } from "vue";
+
 export default {
+  data() {
+    return {
+      selectedDivision: "mens",
+    };
+  },
   setup() {
-    //const bottom = ref(null)
     const standings = ref([]);
     watch(
       standings,
@@ -57,7 +87,26 @@ export default {
       standing.value = "";
     };
 
+    onUnmounted(() => {
+      unsubscribe();
+    });
+
     return { standings, standing, send };
   },
 };
 </script>
+
+<style scoped>
+.standings-filter label {
+  border: 2px solid var(--mainColor);
+  padding: 4px 8px;
+}
+.standings-filter label.active,
+.standings-filter label:hover {
+  background: var(--mainColor);
+  color: white;
+}
+.standings-filter input {
+  display: none;
+}
+</style>

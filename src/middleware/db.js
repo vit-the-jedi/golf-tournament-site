@@ -166,7 +166,6 @@ function useStandings(coll) {
     //   }))
     //   .sort((a, b) => b.score - a.score);
   });
-  onUnmounted(unsubscribe);
 
   const sendNewStanding = (coll, value) => {
     const docRef = doc(db, coll, value.id);
@@ -174,7 +173,7 @@ function useStandings(coll) {
       console.log(`new standing resp: ${resp}`)
     );
   };
-  return { standings, sendNewStanding };
+  return { standings, sendNewStanding, unsubscribe };
 }
 
 export {
