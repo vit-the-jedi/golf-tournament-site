@@ -16,7 +16,7 @@ console.log(standings);
         <small>(Top 3 teams from each division receive trophies)</small>
       </div>
     </div>
-    <form class="standings-filter">
+    <form class="standings-filter col-md-4 col-6 mx-auto">
       <fieldset class="row m-0">
         <label :class="{ active: selectedDivision === 'mens' }" class="col-6">
           <input
