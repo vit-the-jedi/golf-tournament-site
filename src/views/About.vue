@@ -1,6 +1,23 @@
 <script setup>
 //components
 import secondaryNav from "../components/secondaryNav.vue";
+import MasonryWall from "@yeger/vue-masonry-wall";
+//get all images from assets/gallery
+// This will import all .jpg files from the specified directory
+const importImages = import.meta.glob("@/assets/gallery/*.jpg", {
+  eager: true,
+});
+//return an object with netlify cdn path and order
+//and sort by order
+const images = Object.values(importImages)
+  .map((module) => {
+    const path = module.default || module;
+    return {
+      url: path.replace("/src/assets/gallery", "/optimized/gallery"),
+      order: Number(path.match(/(\d+)\.jpg/)[1]), // Extract the number from the filename
+    };
+  })
+  .sort((a, b) => a.order - b.order);
 </script>
 <template>
   <secondaryNav />
@@ -49,40 +66,43 @@ import secondaryNav from "../components/secondaryNav.vue";
     </div>
     <div class="gallery">
       <h2 class="my-4 text-center">A Look Through the Years</h2>
-      <div class="grid">
+
+      <masonry-wall
+        class="mt-4"
+        :items="images"
+        :max-columns="3"
+        :column-width="300"
+        :gap="32"
+      >
+        <template #default="{ item, index }">
+          <!-- <div
+            :style="{
+              backgroundImage: `url(${item})`,
+              height: `${(Math.random() + 1) * 200}px`,
+            }"
+          > 
+          </div>-->
+          <img :src="item.url" :alt="'Gallery Image' + (index + 1)" />
+        </template>
+      </masonry-wall>
+      <!-- <div class="grid">
         <div class="grid-sizer"></div>
-        <div
-          class="grid-item lazy-background grid-item--width2 grid-item--height3"
-        ></div>
-        <div
-          class="grid-item lazy-background grid-item--width2 grid-item--height3"
-        ></div>
-        <div class="grid-item lazy-background grid-item--height3"></div>
-        <div
-          class="grid-item lazy-background grid-item--width1 grid-item--height3"
-        ></div>
-        <div
-          class="grid-item lazy-background grid-item--width2 grid-item--height3"
-        ></div>
-        <div
-          class="grid-item lazy-background grid-item--width2 grid-item--height3"
-        ></div>
-        <div
-          class="grid-item lazy-background grid-item--width2 grid-item--height3"
-        ></div>
-        <div
-          class="grid-item lazy-background grid-item--width3 grid-item--height3"
-        ></div>
-        <div
-          class="grid-item lazy-background grid-item--width2 grid-item--height3"
-        ></div>
-        <div
-          class="grid-item lazy-background grid-item--width2 grid-item--height3"
-        ></div>
-        <div
-          class="grid-item lazy-background grid-item--width1 grid-item--height3"
-        ></div>
-      </div>
+
+        <div v-for="image in images" :key="image">
+          <div
+            :class="
+              'grid-item lazy-background' +
+              ' grid-item--width' +
+              (Math.floor(Math.random() * 3) + 1) +
+              ' grid-item--height' +
+              (Math.floor(Math.random() * 3) + 1)
+            "
+            :key="i"
+          >
+            <img :src="image" alt="Image" />
+          </div>
+        </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -128,13 +148,16 @@ h1 {
 h1 span {
   display: block;
 }
+img.rotate {
+  transform: rotate(90deg);
+}
 .about .top-content {
   background-image: linear-gradient(
       180deg,
       rgba(0, 0, 0, 0.15) 00%,
       rgba(0, 0, 0, 0.75) 100%
     ),
-    url("../assets/about-desktop.jpg");
+    url("/optimized/images/about-desktop.jpg");
   min-height: 75vh;
   position: relative;
   background-size: 100%;
@@ -196,52 +219,6 @@ p {
 .visible {
   opacity: 1;
 }
-.visible:nth-child(2) {
-  background-image: url("../assets/IMG_0119.JPG");
-  background-position: center 50%;
-}
-.visible:nth-child(3) {
-  background-image: url("../assets/IMG_4850.JPG");
-}
-.visible:nth-child(4) {
-  background-image: url("../assets/IMG_1328.JPG");
-}
-.visible:nth-child(5) {
-  background-image: url("../assets/e44a7ab4-eed6-4128-bee3-e5e91c9eb7a4.jpg");
-}
-.visible:nth-child(6) {
-  background-image: url("../assets/9b364b36-eccd-4904-a045-c55a526e2327.jpg");
-}
-.visible:nth-child(7) {
-  background-image: url("../assets/1b223711-afa1-4f33-b2a2-31c139543a99.jpg");
-  background-position: 25% center;
-  background-size: 125%;
-}
-.visible:nth-child(8) {
-  background-image: url("../assets/5f3a57ee-83ea-47fd-9912-30bd5f6dd347.jpg");
-  background-position: 25% center;
-  background-size: 125%;
-}
-.visible:nth-child(9) {
-  background-image: url("../assets/9512c9e7-779d-48bc-84be-f97742e08d58.jpg");
-  background-position: center 34%;
-  background-size: 125%;
-}
-.visible:nth-child(10) {
-  background-image: url("../assets/f687f79e-420a-4aa0-ad7a-875c391bc285.jpg");
-  background-position: center 34%;
-  background-size: 125%;
-}
-.visible:nth-child(11) {
-  background-image: url("../assets/90bd71d5-d4d7-4ac1-920e-ef750ebe4cda.jpg");
-  background-position: center 34%;
-  background-size: 125%;
-}
-.visible:nth-child(12) {
-  background-image: url("../assets/2acbd12e-1690-4ba7-adbd-b3b28b70aef6.jpg");
-  background-position: center 34%;
-  background-size: 170%;
-}
 .grid-item--width2 {
   width: 40%;
 }
@@ -258,6 +235,9 @@ p {
 .grid-item--height4 {
   height: 360px;
 }
+.masonry-item > img {
+  max-width: 90%;
+}
 @media screen and (max-width: 767px) {
   .about .top-content {
     min-height: 40vh;
@@ -273,7 +253,7 @@ p {
         rgba(0, 0, 0, 0.15) 00%,
         rgba(0, 0, 0, 0.75) 100%
       ),
-      url("../assets/about-mobile.jpg");
+      url("/optimized/images/about-mobile.jpg");
     background-size: cover;
   }
 }
