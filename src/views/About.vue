@@ -13,11 +13,12 @@ const images = Object.values(importImages)
   .map((module) => {
     const path = module.default || module;
     return {
-      url: path.replace("/src/assets/gallery", "/optimized/gallery"),
+      url: path.replace("/src/assets/gallery", "/gallery"),
       order: Number(path.match(/(\d+)\.jpg/)[1]), // Extract the number from the filename
     };
   })
   .sort((a, b) => a.order - b.order);
+console.log(images);
 </script>
 <template>
   <secondaryNav />
@@ -75,34 +76,9 @@ const images = Object.values(importImages)
         :gap="32"
       >
         <template #default="{ item, index }">
-          <!-- <div
-            :style="{
-              backgroundImage: `url(${item})`,
-              height: `${(Math.random() + 1) * 200}px`,
-            }"
-          > 
-          </div>-->
           <img :src="item.url" :alt="'Gallery Image' + (index + 1)" />
         </template>
       </masonry-wall>
-      <!-- <div class="grid">
-        <div class="grid-sizer"></div>
-
-        <div v-for="image in images" :key="image">
-          <div
-            :class="
-              'grid-item lazy-background' +
-              ' grid-item--width' +
-              (Math.floor(Math.random() * 3) + 1) +
-              ' grid-item--height' +
-              (Math.floor(Math.random() * 3) + 1)
-            "
-            :key="i"
-          >
-            <img :src="image" alt="Image" />
-          </div>
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
@@ -157,7 +133,7 @@ img.rotate {
       rgba(0, 0, 0, 0.15) 00%,
       rgba(0, 0, 0, 0.75) 100%
     ),
-    url("/optimized/images/about-desktop.jpg");
+    url("/src/assets/about-desktop.jpg");
   min-height: 75vh;
   position: relative;
   background-size: 100%;
@@ -253,7 +229,7 @@ p {
         rgba(0, 0, 0, 0.15) 00%,
         rgba(0, 0, 0, 0.75) 100%
       ),
-      url("/optimized/images/about-mobile.jpg");
+      url("/src/assets/about-mobile.jpg");
     background-size: cover;
   }
 }

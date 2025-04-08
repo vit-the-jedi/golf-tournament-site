@@ -13,11 +13,11 @@
 
 # ======== Images redirection 
 [[redirects]]
-from = "/optimized/gallery/*"
-to = "/.netlify/images?url=/src/assets/gallery/:splat&q=60&fit=contain&w=750&h=1050"
+from = "/gallery/*"
+to = "/.netlify/images?url=/dist/assets/gallery/:splat&q=60&fit=contain&w=750&h=1050"
 status = 200
 
 [[redirects]]
-from = "/optimized/images/*"
-to = "/.netlify/images?url=/src/assets/:splat&q=90&fit=contain"
+from = "/images/*"
+to = "/.netlify/images?url=/dist/assets/:splat&q=70&fit=contain"
 status = 200

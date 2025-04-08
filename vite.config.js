@@ -14,7 +14,13 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        assetFileNames: `assets/[name].[ext]`,
+        assetFileNames: ({ name: filename }) => {
+          if (filename?.includes("gallery")) {
+            return "assets/gallery/[name][extname]";
+          } else {
+            return "assets/[name][extname]";
+          }
+        },
       },
     },
   },
