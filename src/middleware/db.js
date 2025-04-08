@@ -1,14 +1,16 @@
 "use strict";
 
-
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { onUnmounted, computed, ref } from "vue";
 
 import {
   getFirestore,
   collection,
   getDocs,
+  addDoc,
+  onSnapshot,
   getDoc,
   setDoc,
   deleteDoc,
@@ -18,6 +20,7 @@ import {
   orderBy,
   limit,
 } from "firebase/firestore";
+import { list } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -34,7 +37,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth();
 
-
 async function getUserPermissions(db, id) {
   //check if user attempting to sign in is admin
   const adminDocRef = doc(db, "admins", id);
@@ -42,8 +44,8 @@ async function getUserPermissions(db, id) {
 
   const adminData = {
     permissionLevel: null,
-    displayName: null
-  }
+    displayName: null,
+  };
   if (docSnap.exists()) {
     adminData.permissionLevel = "admin";
     adminData.displayName = docSnap.data().displayName;
@@ -58,31 +60,30 @@ async function listTeamDocs(collectionName) {
     const teamsRef = collection(db, collectionName);
     const orderedDataQuery = query(teamsRef, orderBy("teamName", "asc"));
 
-    await getDocs(orderedDataQuery).then((orderedData) => {
-      //order data highest -> lowest
-      let dataArr = [];
-      orderedData.forEach((doc) => {
-        //create empty obj to store values
-        const nestedDataObj = {};
-        nestedDataObj[doc.id] = doc.data();
-        //push to array so we can preserve the correct order we got from firebase query
-        dataArr.push(nestedDataObj);
+    await getDocs(orderedDataQuery)
+      .then((orderedData) => {
+        //order data highest -> lowest
+        let dataArr = [];
+        orderedData.forEach((doc) => {
+          //create empty obj to store values
+          const nestedDataObj = {};
+          nestedDataObj[doc.id] = doc.data();
+          //push to array so we can preserve the correct order we got from firebase query
+          dataArr.push(nestedDataObj);
+        });
+        resolve({
+          data: dataArr,
+          error: null,
+        });
+      })
+      .catch((error) => {
+        resolve({
+          data: null,
+          error: error,
+        });
       });
-      resolve({
-        data: dataArr,
-        error: null
-      })
-    }).catch((error) => {
-      resolve({
-        data: null,
-        error: error
-      })
-    });
-
-  })
-
+  });
 }
-
 //have to pass either mens or coed as docName to enter new data into each document
 async function addToFirestore(coll, data = null) {
   return new Promise((resolve, reject) => {
@@ -92,8 +93,8 @@ async function addToFirestore(coll, data = null) {
     const docRef = doc(db, coll, data.id);
     const resolveObj = {
       error: null,
-      value: null
-    }
+      value: null,
+    };
     setDoc(docRef, data, { merge: true })
       .then(() => {
         resolveObj.value = true;
@@ -105,25 +106,74 @@ async function addToFirestore(coll, data = null) {
         resolve(resolveObj);
       });
   });
-
 }
 async function deleteFromFirestore(coll, docName) {
   return new Promise((resolve, reject) => {
     const docRefToDelete = doc(db, coll, docName);
     const resolveObj = {
       error: null,
-      value: null
-    }
-    deleteDoc(docRefToDelete).then(() => {
-      resolveObj.value = true;
-      resolve(resolveObj);
-    })
+      value: null,
+    };
+    deleteDoc(docRefToDelete)
+      .then(() => {
+        resolveObj.value = true;
+        resolve(resolveObj);
+      })
       .catch((error) => {
         resolveObj.error = error;
         resolveObj.value = false;
         resolve(resolveObj);
-      })
-  })
+      });
+  });
+}
+async function listPlayers(teamName, league) {
+  const teamDocRef = doc(db, league, teamName);
+  const teamDoc = await getDoc(teamDocRef);
+
+  if (teamDoc.exists()) {
+    return teamDoc.data().players;
+  }
+  return null;
+}
+//this function opens a stream to the standings collection, providing real-time updates to standings
+function useStandings(coll) {
+  const standings = ref([]);
+  const unsubscribe = onSnapshot(collection(db, "standings"), (snapshot) => {
+    //update standings array with new data
+    //sort by score so that component re-renders with sorting of highest->lowest score first
+    //refactor to transform data to mens a coed leagues
+    // standings.value = snapshot.docs
+    //   .map((doc) => ({
+    //     id: doc.id,
+    //     ...doc.data(),
+    //   }))
+    //   .sort((a, b) => b.score - a.score);
+    snapshot.docs.forEach(async (league) => {
+      const snapshotData = league.data();
+      standings.value[league.id.split("-")[0]] = await Promise.all(
+        Object.keys(snapshotData).map(async (teamName) => ({
+          id: teamName,
+          players: await listPlayers(teamName, league.id),
+          ...snapshotData[teamName],
+        }))
+      );
+    });
+    // standings.value.mens = snapshot.docs
+    //   .filter((doc) => doc.data().id === "mens-league")
+    //   .map((doc) => ({
+    //     id: doc.id,
+    //     ...doc.data(),
+    //   }))
+    //   .sort((a, b) => b.score - a.score);
+  });
+
+  const sendNewStanding = (coll, value) => {
+    const docRef = doc(db, coll, value.id);
+    setDoc(docRef, coll, value).then((resp) =>
+      console.log(`new standing resp: ${resp}`)
+    );
+  };
+  return { standings, sendNewStanding, unsubscribe };
 }
 
 export {
@@ -134,5 +184,6 @@ export {
   getUserPermissions,
   listTeamDocs,
   deleteFromFirestore,
+  useStandings,
   auth,
 };
