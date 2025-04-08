@@ -1,24 +1,7 @@
 <script setup>
 //components
+import Gallery from "../components/gallery.vue";
 import secondaryNav from "../components/secondaryNav.vue";
-import MasonryWall from "@yeger/vue-masonry-wall";
-//get all images from assets/gallery
-// This will import all .jpg files from the specified directory
-const importImages = import.meta.glob("@/assets/gallery/*.jpg", {
-  eager: true,
-});
-//return an object with netlify cdn path and order
-//and sort by order
-const images = Object.values(importImages)
-  .map((module) => {
-    const path = module.default || module;
-    return {
-      url: `/gallery/${path.match(/([^/]+)\.jpg$/)[1]}.jpg`,
-      order: Number(path.match(/(\d+)\.jpg/)[1]), // Extract the number from the filename
-    };
-  })
-  .sort((a, b) => a.order - b.order);
-console.log(images);
 </script>
 <template>
   <secondaryNav />
@@ -68,17 +51,7 @@ console.log(images);
     <div class="gallery">
       <h2 class="my-4 text-center">A Look Through the Years</h2>
 
-      <masonry-wall
-        class="mt-4"
-        :items="images"
-        :max-columns="3"
-        :column-width="300"
-        :gap="32"
-      >
-        <template #default="{ item, index }">
-          <img :src="item.url" :alt="'Gallery Image' + (index + 1)" />
-        </template>
-      </masonry-wall>
+      <Gallery />
     </div>
   </div>
 </template>
