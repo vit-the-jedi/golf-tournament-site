@@ -13,7 +13,7 @@ const images = Object.values(importImages)
   .map((module) => {
     const path = module.default || module;
     return {
-      url: path.replace("/src/assets/gallery", "/gallery"),
+      url: `/gallery/${path.match(/([^/]+)\.jpg$/)[1]}.jpg`,
       order: Number(path.match(/(\d+)\.jpg/)[1]), // Extract the number from the filename
     };
   })
