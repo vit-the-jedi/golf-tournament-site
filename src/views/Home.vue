@@ -9,7 +9,7 @@ export default {
   data() {
     return {
       addBanner: false,
-      date: "September 28th, 2024",
+      date: "September 27th, 2025",
       time: "9:00am",
       golfCourse: "Western Hills Golf Course",
       golfCourseAddress: "600 Park Rd, Waterbury, CT 06708",
@@ -18,11 +18,11 @@ export default {
         "18 holes of golf",
         "Coffee & at check-in",
         "Golf Cart",
-        "Snacks and drinks",
+        "Food and drinks",
         "Trophies (1st, 2nd, 3rd place per division, plus longest drive and closest to pin for both front and back 9)",
       ],
       pricing: {
-        ticketPrice: "$95.00",
+        ticketPrice: "$110.00",
         trophies: [
           "First Place",
           "Second Place",
@@ -75,8 +75,8 @@ export default {
       <div class="col-md-6 col-12 info--item"><p>Trophies Awarded</p></div>
       <div class="col-md-6 col-12 info--item"><p>Charitable Donations</p></div>
       <p class="pt-3 mb-0">
-        The PJA Tournament is organized by the Vitello family, and growing annually thanks to participation of amazing
-        family and friends.
+        The PJA Tournament is organized by the Vitello family, and growing
+        annually thanks to participation of amazing family and friends.
       </p>
       <router-link to="/about">Learn More</router-link>
     </div>
@@ -123,9 +123,11 @@ export default {
                   {{ item }}
                 </li>
                 <li>
-                  All proceeds after operational expenses will be donated to The Vitello Family Fund, a charity within
-                  the
-                  <a href="https://www.valleyfoundation.org/" target="_blank">Valley Community Foundation</a>.
+                  All proceeds after operational expenses will be donated to The
+                  Vitello Family Fund, a charity within the
+                  <a href="https://www.valleyfoundation.org/" target="_blank"
+                    >Valley Community Foundation</a
+                  >.
                 </li>
               </ul>
             </div>

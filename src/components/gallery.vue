@@ -27,6 +27,8 @@ const imageUrls = [
   "https://imagedelivery.net/rEILj_XbpSP1zDbvwbVxLQ/9cd2841e-3d8f-4bb8-b4db-1cacd1f2d200/public",
   "https://imagedelivery.net/rEILj_XbpSP1zDbvwbVxLQ/ffd4f70d-9255-4900-0c0b-db6603fc2d00/public",
   "https://imagedelivery.net/rEILj_XbpSP1zDbvwbVxLQ/68cc7af5-b499-43d1-2500-e137eb056300/public",
+  "https://imagedelivery.net/rEILj_XbpSP1zDbvwbVxLQ/143dfca8-ab21-4116-28ef-d4826b749600/public",
+  "https://imagedelivery.net/rEILj_XbpSP1zDbvwbVxLQ/e862d0ec-78ad-4e4f-6c95-65c2543c5e00/public",
 ];
 </script>
 <template>
