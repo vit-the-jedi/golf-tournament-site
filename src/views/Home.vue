@@ -9,20 +9,21 @@ export default {
   data() {
     return {
       addBanner: false,
-      date: "September 27th, 2025",
+      date: `September 27th, ${new Date().getFullYear()}`,
       time: "9:00am",
       golfCourse: "Western Hills Golf Course",
       golfCourseAddress: "600 Park Rd, Waterbury, CT 06708",
       charity: "Valley Community Foundation",
       addOns: [
         "18 holes of golf",
-        "Coffee & at check-in",
+        "Coffee/pastries",
+        "Water and snacks",
+        "Buffet Dinner",
         "Golf Cart",
-        "Food and drinks",
         "Trophies (1st, 2nd, 3rd place per division, plus longest drive and closest to pin for both front and back 9)",
       ],
       pricing: {
-        ticketPrice: "$110.00",
+        ticketPrice: "$135.00",
         trophies: [
           "First Place",
           "Second Place",
@@ -131,6 +132,16 @@ export default {
                 </li>
               </ul>
             </div>
+            <div class="col-12">
+              <p>
+                * $40 guest price for buffet only - must RSVP with guest name to
+                Anthony Lowell (<a
+                  href="tel:+12034357206"
+                  style="color: var(--secondColor)"
+                  >203-435-7206</a
+                >) and be paid by 9/17
+              </p>
+            </div>
           </div>
           <h2 class="text-center">Payment Methods</h2>
           <div class="row pricing--payment">
@@ -164,7 +175,7 @@ export default {
                 <li>Paul Vitello</li>
                 <li>Janice Vitello</li>
                 <li>Matt Vitello</li>
-                <li>Nicole Vitello</li>
+                <li>Nicole Vitello Lowell</li>
                 <li>Anthony Lowell</li>
               </ul>
             </div>
