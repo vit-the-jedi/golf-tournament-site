@@ -175,7 +175,7 @@ export default {
                 <li>Paul Vitello</li>
                 <li>Janice Vitello</li>
                 <li>Matt Vitello</li>
-                <li>Nicole Vitello</li>
+                <li>Nicole Vitello Lowell</li>
                 <li>Anthony Lowell</li>
               </ul>
             </div>

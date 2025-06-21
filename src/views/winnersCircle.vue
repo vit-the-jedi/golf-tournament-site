@@ -43,7 +43,7 @@ export default {
         {
           year: 2024,
           division: "Co-Ed",
-          team: ["Nicole Vitello-Lowell", "Hannah Dill", "Brian Dill"],
+          team: ["Nicole Vitello Lowell", "Hannah Dill", "Brian Dill"],
         },
         {
           year: 2023,
