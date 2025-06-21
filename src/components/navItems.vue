@@ -17,12 +17,12 @@
           <slot name="navItemText">Sign Up</slot>
         </router-link>
       </div>
-      <div class="menu--item col-6">
+      <!-- <div class="menu--item col-6">
         <router-link to="/standings">
           <img src="../assets/icons/crown-solid.svg" alt="Sign up" />
           <slot name="navItemText">Standings</slot>
         </router-link>
-      </div>
+      </div> -->
       <div class="menu--item col-6">
         <router-link to="/about">
           <img src="../assets/icons/info.svg" alt="About" />

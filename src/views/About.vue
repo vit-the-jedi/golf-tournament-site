@@ -2,6 +2,8 @@
 //components
 import Gallery from "../components/gallery.vue";
 import secondaryNav from "../components/secondaryNav.vue";
+
+const tournamentAge = new Date().getFullYear() - 1989;
 </script>
 <template>
   <secondaryNav />
@@ -10,7 +12,7 @@ import secondaryNav from "../components/secondaryNav.vue";
       <h1>A VITELLO FAMILY <span>TRADITION</span></h1>
     </div>
     <div class="container">
-      <h2>34 Years and counting</h2>
+      <h2>{{ tournamentAge }} Years and counting</h2>
 
       <div class="mt-4">
         <h3>We are fun</h3>
