@@ -125,9 +125,7 @@ export default {
       this.teamsSignedUp.mens = {};
       this.teamsSignedUp.coed = {};
       //create data partition for mens and coed league so we can filter them
-      await listTeamDocs(
-        import.meta.env.MODE === "development" ? "testing" : "mens-league"
-      )
+      await listTeamDocs("mens-league")
         .then((listTeamData) => {
           if (listTeamData.data && !listTeamData.error) {
             listTeamData.data.forEach(function (team) {
@@ -140,9 +138,7 @@ export default {
           }
         })
         .catch((error) => {});
-      await listTeamDocs(
-        import.meta.env.MODE === "development" ? "testing" : "coed-league"
-      )
+      await listTeamDocs("coed-league")
         .then((listTeamData) => {
           if (listTeamData.data && !listTeamData.error) {
             listTeamData.data.forEach(function (team) {

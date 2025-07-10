@@ -57,7 +57,9 @@ async function getUserPermissions(db, id) {
 
 async function listTeamDocs(collectionName) {
   return new Promise(async (resolve) => {
-    const teamsRef = collection(db, collectionName);
+    const year = new Date().getFullYear().toString(); // "2025"
+    // 1. Build a valid path to the subcollection
+    const teamsRef = collection(db, "players", year, collectionName);
     const orderedDataQuery = query(teamsRef, orderBy("teamName", "asc"));
 
     await getDocs(orderedDataQuery)
@@ -85,16 +87,26 @@ async function listTeamDocs(collectionName) {
   });
 }
 //have to pass either mens or coed as docName to enter new data into each document
-async function addToFirestore(coll, data = null) {
+async function addToFirestore(collectionName, data = null) {
   return new Promise((resolve, reject) => {
+    const year = new Date().getFullYear().toString(); // "2025"
+    // 1. Build a valid path to the subcollection
+    const collectionRef = collection(db, "players", year, collectionName);
+
+    // 2. Ensure the object has an id
     if (!data.hasOwnProperty("id")) {
       data.id = self.crypto.randomUUID();
     }
-    const docRef = doc(db, coll, data.id);
+
+    // 3. Create a document reference in that subcollection
+    const docRef = doc(collectionRef, data.id);
+
+    // 4. Set the document (with optional merge)
     const resolveObj = {
       error: null,
       value: null,
     };
+
     setDoc(docRef, data, { merge: true })
       .then(() => {
         resolveObj.value = true;
