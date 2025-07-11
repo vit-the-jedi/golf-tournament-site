@@ -156,14 +156,32 @@
 <script>
 export default {
   props: ["teamInfo"],
+  data() {
+    return {
+      divisionChanged: false,
+      groupedTeam: false,
+    };
+  },
   methods: {
     submitTeamChangesHandler(e) {
       e.preventDefault();
       this.$emit("submit-changes");
+      if (this.divisionChanged) {
+        this.$emit("division-changed", this.teamInfo);
+      }
       this.closeEditModal();
     },
     closeEditModal(ev) {
       this.$emit("close-modal");
+    },
+  },
+  watch: {
+    "teamInfo.division"(newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.divisionChanged = true;
+      } else {
+        this.divisionChanged = false;
+      }
     },
   },
 };

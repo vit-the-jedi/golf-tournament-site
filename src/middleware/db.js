@@ -4,7 +4,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { onUnmounted, computed, ref } from "vue";
-
+import { store } from "../store/index.js";
 import {
   getFirestore,
   collection,
@@ -21,7 +21,6 @@ import {
   limit,
 } from "firebase/firestore";
 import { list } from "firebase/storage";
-
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyA1edFnLIXTMe98ey2m1XnS3de0xTzX17E",
@@ -57,9 +56,13 @@ async function getUserPermissions(db, id) {
 
 async function listTeamDocs(collectionName) {
   return new Promise(async (resolve) => {
-    const year = new Date().getFullYear().toString(); // "2025"
     // 1. Build a valid path to the subcollection
-    const teamsRef = collection(db, "players", year, collectionName);
+    const teamsRef = collection(
+      db,
+      "players",
+      store.state.currentYear.string,
+      collectionName
+    );
     const orderedDataQuery = query(teamsRef, orderBy("teamName", "asc"));
 
     await getDocs(orderedDataQuery)
@@ -89,9 +92,13 @@ async function listTeamDocs(collectionName) {
 //have to pass either mens or coed as docName to enter new data into each document
 async function addToFirestore(collectionName, data = null) {
   return new Promise((resolve, reject) => {
-    const year = new Date().getFullYear().toString(); // "2025"
     // 1. Build a valid path to the subcollection
-    const collectionRef = collection(db, "players", year, collectionName);
+    const collectionRef = collection(
+      db,
+      "players",
+      store.state.currentYear.string,
+      collectionName
+    );
 
     // 2. Ensure the object has an id
     if (!data.hasOwnProperty("id")) {
@@ -121,7 +128,11 @@ async function addToFirestore(collectionName, data = null) {
 }
 async function deleteFromFirestore(coll, docName) {
   return new Promise((resolve, reject) => {
-    const docRefToDelete = doc(db, coll, docName);
+    const docRefToDelete = doc(
+      db,
+      `players/${store.state.currentYear.string}/${coll}`,
+      docName
+    );
     const resolveObj = {
       error: null,
       value: null,

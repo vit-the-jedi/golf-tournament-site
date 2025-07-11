@@ -63,6 +63,7 @@ import teamSignUpForm from "../components/teamSignUpForm.vue";
     :teamInfo="teamInfo"
     @close-modal="closeEditModal"
     @submit-changes="submitTeamChanges"
+    @division-changed="divisionChanged"
   />
   <groupTeamModal
     v-if="isGrouping"
@@ -181,20 +182,17 @@ export default {
     closeGroupModal() {
       this.isGrouping = false;
     },
-    async deleteTeam(team) {
-      const answer = prompt(
-        `Are you sure you want to delete ${team.teamName}?
-        Type YES (all caps) below to delete.`
-      );
-      if (answer === "YES") {
-        //delete team from db collection
-        //re-hydrate ui w/ new list of teams
-        await deleteFromFirestore(
-          import.meta.env.MODE === "development"
-            ? "testing"
-            : `${team.division}-league`,
-          team.id
-        ).then(async (teamDeleted) => {
+    async deleteTeam(team, bypassConfirm = false) {
+      if (!bypassConfirm) {
+        //confirm delete
+        if (!confirm(`Are you sure you want to delete ${team.teamName}?`)) {
+          return;
+        }
+      }
+      //delete team from db collection
+      //re-hydrate ui w/ new list of teams
+      await deleteFromFirestore(`${team.division}-league`, team.id).then(
+        async (teamDeleted) => {
           if (teamDeleted.value) {
             //success message
             this.$toast.success("Team deleted", {
@@ -209,18 +207,21 @@ export default {
             });
             console.error(teamDeleted.error);
           }
-        });
-      } else {
-        //msg to try again
-        return;
-      }
+        }
+      );
+    },
+    divisionChanged() {
+      // Handle division change logic here if needed
+      // For example, you might want to update the UI or perform some action
+      const oldTeamInfo = { ...this.teamInfo };
+      //we want opposite of current selection here so we can delete the old team from the legue it ws in before change
+      oldTeamInfo.division =
+        this.teamInfo.division === "mens" ? "coed" : "mens";
+      this.deleteTeam(oldTeamInfo, true);
     },
     editTeam(team) {
-      this.teamInfo.players = team.players;
-      this.teamInfo.teamName = team.teamName;
-      this.teamInfo.id = team.id;
-      this.teamInfo.division = team.division;
-      this.teamInfo.paid = team.paid;
+      console.log(team);
+      this.teamInfo = team;
       //quick and dirty scroll to top for mobile users
       document.body.scrollTop = document.documentElement.scrollTop = 0;
       this.isEditing = true;
@@ -238,9 +239,7 @@ export default {
     },
     async submitTeamChanges() {
       await addToFirestore(
-        import.meta.env.MODE === "development"
-          ? "testing"
-          : `${this.teamInfo.division}-league`,
+        `${this.teamInfo.division}-league`,
         this.teamInfo
       ).then(async (teamAdded) => {
         if (teamAdded.value) {

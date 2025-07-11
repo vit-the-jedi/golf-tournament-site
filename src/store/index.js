@@ -15,6 +15,10 @@ const store = createStore({
     },
     loading: false,
     team: null,
+    currentYear: {
+      string: new Date().getFullYear().toString(), // "2025"
+      number: new Date().getFullYear(), // 2025
+    },
   },
   mutations: {
     //Mutation to update the user state
@@ -39,7 +43,7 @@ const store = createStore({
       state.user.userData.permissionLevel = value;
     },
     setUserDisplayName(state, value) {
-      state.user.userData.displayName = value
+      state.user.userData.displayName = value;
     },
     setLoadingState(state, value) {
       state.loading = value;
@@ -68,7 +72,7 @@ const store = createStore({
     },
     getUserDisplayName(state) {
       const displayName = state.user.userData.displayName;
-      return displayName !== null ? displayName : "Admin"
+      return displayName !== null ? displayName : "Admin";
     },
     getUser(state) {
       return state.user.userData;
