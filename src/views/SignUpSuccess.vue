@@ -44,7 +44,7 @@ export default {
   data() {
     return {
       user: null,
-      ticketPrice: "$95.00",
+      ticketPrice: "$135.00",
     };
   },
 };
