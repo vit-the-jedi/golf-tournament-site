@@ -119,9 +119,12 @@ async function addToFirestore(collectionName, data = null) {
       });
   });
 }
-async function deleteFromFirestore(coll, docName) {
+async function deleteFromFirestore(collectionName, docName) {
   return new Promise((resolve, reject) => {
-    const docRefToDelete = doc(db, coll, docName);
+    const year = new Date().getFullYear().toString(); // "2025"
+    // 1. Build a valid path to the subcollection
+    const collectionRef = collection(db, "players", year, collectionName);
+    const docRefToDelete = doc(collectionRef, docName);
     const resolveObj = {
       error: null,
       value: null,
@@ -167,7 +170,7 @@ function useStandings(coll) {
           id: teamName,
           players: await listPlayers(teamName, league.id),
           ...snapshotData[teamName],
-        }))
+        })),
       );
     });
     // standings.value.mens = snapshot.docs
@@ -182,7 +185,7 @@ function useStandings(coll) {
   const sendNewStanding = (coll, value) => {
     const docRef = doc(db, coll, value.id);
     setDoc(docRef, coll, value).then((resp) =>
-      console.log(`new standing resp: ${resp}`)
+      console.log(`new standing resp: ${resp}`),
     );
   };
   return { standings, sendNewStanding, unsubscribe };

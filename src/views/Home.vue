@@ -14,32 +14,6 @@ export default {
       ...tournamentInfo,
     };
   },
-  computed: {
-    // a computed getter
-    outputDate() {
-      // `this` points to the component instance
-      return this.date;
-    },
-    outputTime() {
-      // `this` points to the component instance
-      return this.time;
-    },
-    outputGolfCourse() {
-      // `this` points to the component instance
-      return this.golfCourse;
-    },
-    outputGolfCourseAddress() {
-      // `this` points to the component instance
-      return this.golfCourseAddress;
-    },
-    outputPrice() {
-      // `this` points to the component instance
-      return this.pricing.ticketPrice;
-    },
-    outputCharity() {
-      return this.charity;
-    },
-  },
 };
 </script>
 <template>
@@ -48,7 +22,7 @@ export default {
     <div class="logo py-3"><img src="../assets/logo.svg" alt="PJA logo" /></div>
     <div class="top-info row py-3">
       <div class="col-md-6 col-12 info--item">
-        <p>{{ outputDate }}</p>
+        <p>{{ date }}</p>
       </div>
       <div class="col-md-6 col-12 info--item"><p>100+ Players</p></div>
       <div class="col-md-6 col-12 info--item"><p>Trophies Awarded</p></div>
@@ -75,10 +49,10 @@ export default {
           <div class="row">
             <div class="col-md-12 col-12 text-center">
               <h1>When &amp; where?</h1>
-              <h4>{{ outputDate }}</h4>
-              <h4>Shotgun Start @ 9am (in carts by 8:45)</h4>
-              <h4>{{ outputGolfCourse }},</h4>
-              <h4>{{ outputGolfCourseAddress }}</h4>
+              <h4>{{ date }}</h4>
+              <h4>Shotgun Start @ 9am (in carts by {{ playersInCartBy }})</h4>
+              <h4>{{ golfCourse }},</h4>
+              <h4>{{ golfCourseAddress }}</h4>
             </div>
             <!-- <div class="col-md-6 col-12">
               <h2>Note:</h2>
@@ -93,7 +67,7 @@ export default {
           <div class="row">
             <div class="col-md-6 col-12">
               <h1>Pricing</h1>
-              <h2>Entry fee: {{ outputPrice }} per&nbsp;player</h2>
+              <h2>Entry fee: {{ pricing.ticketPrice }} per&nbsp;player</h2>
             </div>
             <div class="col-md-6 col-12">
               <h2>What's included:</h2>
