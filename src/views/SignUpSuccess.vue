@@ -3,6 +3,8 @@ import teamInfo from "../components/teamInfo.vue";
 import secondaryNav from "../components/secondaryNav.vue";
 import venmo from "../components/Venmo.vue";
 import check from "../components/Check.vue";
+
+import {tournamentInfo} from "../data/info.js";
 </script>
 <template>
   <secondaryNav />
@@ -12,13 +14,13 @@ import check from "../components/Check.vue";
         <h1 class="pt-4">All Set!</h1>
         <h4>Review your details below</h4>
       </div>
-      <teamInfo />
+      <teamInfo :info="tournamentInfo"/>
       <div class="payment--info row col-md-10 mx-auto p-4">
         <h2 class="text-center w-100 pt-4">Payment Methods</h2>
         <div class="my-4 row mx-auto w-100">
           <div class="col-md-12 text-center">
             <h3>Ticket Price:</h3>
-            <h5>{{ ticketPrice }} per player</h5>
+            <h5>{{ pricing.ticketPrice }} per player</h5>
           </div>
           <div class="col-md-10 row my-4 mx-auto">
             <div class="col-md-6"><check /></div>
@@ -33,7 +35,7 @@ import check from "../components/Check.vue";
           <a href="mailto:pjatournament@gmail.com">pjatournament@gmail.com</a>.
         </p>
         <p>
-          Please provide your team name, team id and division in your inquiry.
+          Please provide your team name and division in your inquiry.
         </p>
       </div>
     </div>
@@ -44,7 +46,7 @@ export default {
   data() {
     return {
       user: null,
-      ticketPrice: "$135.00",
+      ...tournamentInfo,
     };
   },
 };

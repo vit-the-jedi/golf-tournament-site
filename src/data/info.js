@@ -1,0 +1,28 @@
+export const tournamentInfo = {
+  date: `September 26th, ${new Date().getFullYear()}`,
+  time: "9:00am",
+  golfCourse: "Western Hills Golf Course",
+  golfCourseAddress: "600 Park Rd, Waterbury, CT 06708",
+  charity: "Valley Community Foundation",
+  playersInCartBy: "8:45am",
+  addOns: [
+    "18 holes of golf",
+    "Coffee/pastries",
+    "Water and snacks",
+    "Buffet Dinner",
+    "Golf Cart",
+    "Trophies (1st, 2nd, 3rd place per division, plus longest drive and closest to pin for both front and back 9)",
+  ],
+  pricing: {
+    ticketPrice: "$150.00",
+    trophies: [
+      "First Place",
+      "Second Place",
+      "Third Place",
+      "longest drive (front 9)",
+      "longest drive (back 9)",
+      "closest to pin (front 9)",
+      "closest to pin  (back 9)",
+    ],
+  },
+};

@@ -2,6 +2,8 @@
 import mainNav from "../components/mainNav.vue";
 import venmo from "../components/Venmo.vue";
 import check from "../components/Check.vue";
+
+import {tournamentInfo} from "../data/info.js";
 </script>
 
 <script>
@@ -9,31 +11,7 @@ export default {
   data() {
     return {
       addBanner: false,
-      date: `September 27th, ${new Date().getFullYear()}`,
-      time: "9:00am",
-      golfCourse: "Western Hills Golf Course",
-      golfCourseAddress: "600 Park Rd, Waterbury, CT 06708",
-      charity: "Valley Community Foundation",
-      addOns: [
-        "18 holes of golf",
-        "Coffee/pastries",
-        "Water and snacks",
-        "Buffet Dinner",
-        "Golf Cart",
-        "Trophies (1st, 2nd, 3rd place per division, plus longest drive and closest to pin for both front and back 9)",
-      ],
-      pricing: {
-        ticketPrice: "$135.00",
-        trophies: [
-          "First Place",
-          "Second Place",
-          "Third Place",
-          "longest drive (front 9)",
-          "longest drive (back 9)",
-          "closest to pin (front 9)",
-          "closest to pin  (back 9)",
-        ],
-      },
+      ...tournamentInfo,
     };
   },
   computed: {
