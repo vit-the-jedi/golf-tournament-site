@@ -30,16 +30,51 @@ export default {
   data() {
     return {
       winners: [
-        // {
-        //   year: 2023,
-        //   division: "Men's",
-        //   team: [],
-        // },
-        // {
-        //   year: 2023,
-        //   division: "Co-Ed",
-        //   team: [],
-        // },
+        {
+          year: 2025,
+          division: "Men's",
+          team: [
+            "Joe Lowell",
+            "Ryan Carey",
+            "Ethan Cheffer",
+            "Greyson Chopskie",
+          ]
+        },
+        {
+          year: 2025,
+          division: "Co-Ed",
+          team: ["Nicole Vitello Lowell", "Kiara Bonilla", "Al Vitello", "Paul Vitello"],
+        },
+        {
+          year: 2024,
+          division: "Men's",
+          team: [
+            "Mike Capetta",
+            "Ryan Capetta",
+            "Chad Sciarra",
+            "John Johnson",
+          ],
+        },
+        {
+          year: 2024,
+          division: "Co-Ed",
+          team: ["Nicole Vitello Lowell", "Hannah Dill", "Brian Dill"],
+        },
+        {
+          year: 2023,
+          division: "Men's",
+          team: [
+            "Colin Roberts",
+            "Justin Williams",
+            "Ryan Mcllelan",
+            "Mike Zacciarello",
+          ],
+        },
+        {
+          year: 2023,
+          division: "Co-Ed",
+          team: ["Nicole Vitello", "Kiara Bonilla", "Dan Duffy", "Al Vitello"],
+        },
         {
           year: 2022,
           division: "Men's",

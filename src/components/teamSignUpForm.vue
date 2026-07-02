@@ -443,12 +443,11 @@ export default {
     },
     formSubmitHandler: async function () {
       const team = this.teamObj;
-      addToFirestore(
-        import.meta.env.MODE === "development"
-          ? "testing"
-          : `${team.division}-league`,
-        team
-      ).then((teamAdded) => {
+      // const collectionName =
+      //   import.meta.env.MODE === "development"
+      //     ? "testing"
+      //     : `${team.division}-league`;
+      addToFirestore(`${team.division}-league`, team).then((teamAdded) => {
         if (teamAdded.value) {
           //show success msg
           this.$toast.success("Team signed up successfully!", {

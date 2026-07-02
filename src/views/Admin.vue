@@ -125,9 +125,7 @@ export default {
       this.teamsSignedUp.mens = {};
       this.teamsSignedUp.coed = {};
       //create data partition for mens and coed league so we can filter them
-      await listTeamDocs(
-        import.meta.env.MODE === "development" ? "testing" : "mens-league"
-      )
+      await listTeamDocs("mens-league")
         .then((listTeamData) => {
           if (listTeamData.data && !listTeamData.error) {
             listTeamData.data.forEach(function (team) {
@@ -140,9 +138,7 @@ export default {
           }
         })
         .catch((error) => {});
-      await listTeamDocs(
-        import.meta.env.MODE === "development" ? "testing" : "coed-league"
-      )
+      await listTeamDocs("coed-league")
         .then((listTeamData) => {
           if (listTeamData.data && !listTeamData.error) {
             listTeamData.data.forEach(function (team) {
@@ -242,9 +238,7 @@ export default {
     },
     async submitTeamChanges() {
       await addToFirestore(
-        import.meta.env.MODE === "development"
-          ? "testing"
-          : `${this.teamInfo.division}-league`,
+        `${this.teamInfo.division}-league`,
         this.teamInfo
       ).then(async (teamAdded) => {
         if (teamAdded.value) {
@@ -302,15 +296,11 @@ export default {
       );
       if (answer === "YES") {
         await addToFirestore(
-          import.meta.env.MODE === "development"
-            ? "testing"
-            : `${this.teamInfo.division}-league`,
+          `${this.teamInfo.division}-league`,
           this.teamInfo
         ).then(async (teamAdded) => {
           await deleteFromFirestore(
-            import.meta.env.MODE === "development"
-              ? "testing"
-              : `${teamToMerge.division}-league`,
+            `${teamToMerge.division}-league`,
             teamToMerge.id
           ).then(async () => {
             this.$toast.success("Teams grouped sucessfully");

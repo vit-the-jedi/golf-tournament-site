@@ -4,56 +4,56 @@
     <h3 class="w-100 text-center" v-if="this.$store.getters.checkAdmin">
       Hello, {{ this.$store.getters.getUserDisplayName }}
     </h3>
-    <div class="menu--row">
-      <div class="menu--item">
+    <div class="menu--row row">
+      <div class="menu--item col-6">
         <router-link to="/">
           <img src="../assets/icons/home.svg" alt="Home" />
           <slot name="navItemText">Home</slot>
         </router-link>
       </div>
-
-      <div class="menu--item">
+      <div class="menu--item col-6">
         <router-link to="/sign-up">
           <img src="../assets/icons/signUp.svg" alt="Sign up" />
           <slot name="navItemText">Sign Up</slot>
         </router-link>
       </div>
-    </div>
-    <div class="menu--row">
-      <div class="menu--item">
+      <!-- <div class="menu--item col-6">
+        <router-link to="/standings">
+          <img src="../assets/icons/crown-solid.svg" alt="Sign up" />
+          <slot name="navItemText">Standings</slot>
+        </router-link>
+      </div> -->
+      <div class="menu--item col-6">
         <router-link to="/about">
           <img src="../assets/icons/info.svg" alt="About" />
           <slot name="navItemText">About</slot>
         </router-link>
       </div>
-
-      <div class="menu--item">
+      <div class="menu--item col-6">
         <router-link to="/winners-circle">
           <img src="../assets/icons/trophy.svg" alt="Winner's Circle" />
           <slot name="navItemText">Winner's Circle</slot>
         </router-link>
       </div>
-    </div>
-    <div class="menu--row">
-      <div class="menu--item" v-if="this.$store.getters.checkAdmin">
+      <div class="menu--item col-6" v-if="this.$store.getters.checkAdmin">
         <router-link to="/admin">
           <img src="../assets/icons/admin.svg" alt="admin page" />
           <slot name="navItemText">Admin</slot>
         </router-link>
       </div>
-      <div class="menu--item" v-if="!this.$store.getters.getLoginState">
+      <div class="menu--item col-6" v-if="!this.$store.getters.getLoginState">
         <router-link to="/sign-in">
           <img src="../assets/icons/sign-in.svg" alt="sign-in page" />
           <slot name="navItemText">Sign In</slot>
         </router-link>
       </div>
-      <div class="menu--item" v-if="this.$store.getters.getLoginState">
+      <div class="menu--item col-6" v-if="this.$store.getters.getLoginState">
         <button id="menu-sign-out" class="sign-out" @click="signOutHandler">
           Sign Out
         </button>
       </div>
+      <span class="delete" @click="closeMenuHandler"></span>
     </div>
-    <span class="delete" @click="closeMenuHandler"></span>
   </div>
   <div id="menu--bg" class="ui--backdrop"></div>
 </template>
@@ -146,7 +146,6 @@ export default {
 }
 .menu--row {
   display: flex;
-  flex-wrap: nowrap;
   justify-content: space-between;
   align-content: center;
   margin: 10vh auto;
@@ -164,6 +163,7 @@ export default {
   flex-basis: 50%;
   cursor: pointer;
   text-align: center;
+  margin: 5vh auto;
 }
 .menu--item a {
   display: flex;

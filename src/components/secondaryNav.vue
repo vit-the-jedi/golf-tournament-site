@@ -4,9 +4,7 @@ import navItems from "./navItems.vue";
 
 <template>
   <nav class="nav-container">
-    <router-link to="/"
-      ><img src="../assets/logo-secondary.svg" alt="PJA Tournament logo"
-    /></router-link>
+    <router-link to="/"><img src="../assets/logo-secondary.svg" alt="PJA Tournament logo" /></router-link>
     <navItems />
   </nav>
 </template>
@@ -19,7 +17,7 @@ nav {
 }
 nav img {
   max-width: 100px;
-  height: auto;
+  height: 100px;
   position: relative;
   left: 20px;
 }
@@ -31,6 +29,7 @@ nav img {
   .nav-container img {
     margin: unset;
     max-width: 65px;
+    height: 65px;
   }
 }
 </style>

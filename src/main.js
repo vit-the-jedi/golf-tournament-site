@@ -9,7 +9,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { store } from "./store/index.js";
 
 //toast messages
-import ToastPlugin from 'vue-toast-notification';
+import ToastPlugin from "vue-toast-notification";
 
 //views
 import Home from "@/views/Home.vue";
@@ -20,6 +20,7 @@ import Admin from "@/views/Admin.vue";
 import adminSignIn from "@/views/adminSignIn.vue";
 import winnersCircle from "@/views/winnersCircle.vue";
 import signIn from "@/views/signIn.vue";
+import Standings from "@/views/Standings.vue";
 
 const checkTeam = (to, from, next) => {
   const teamInStore = store.getters.getTeam;
@@ -56,7 +57,7 @@ const router = createRouter({
       component: SignUp,
       meta: {
         //requiresAuth: true
-      }
+      },
       //beforeEnter: loginRequired,
     },
     {
@@ -72,6 +73,11 @@ const router = createRouter({
       beforeEnter: checkTeam,
     },
     {
+      path: "/standings",
+      name: "Standings",
+      component: Standings,
+    },
+    {
       path: "/admin/sign-in",
       name: "adminSignIn",
       component: adminSignIn,
@@ -81,8 +87,8 @@ const router = createRouter({
       name: "admin",
       component: Admin,
       meta: {
-        requiresAuth: true
-      }
+        requiresAuth: true,
+      },
       //beforeEnter: loginRequired,
     },
     {
@@ -97,22 +103,26 @@ function getCurrentUser() {
     const unsubscribe = onAuthStateChanged(
       auth,
       (user) => {
-        unsubscribe()
-        resolve(user)
+        unsubscribe();
+        resolve(user);
       },
       reject
-    )
-  })
+    );
+  });
 }
 const auth = getAuth();
 router.beforeEach(async (to) => {
-  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth)
+  const requiresAuth = to.matched.some((record) => record.meta.requiresAuth);
   if (requiresAuth && !(await getCurrentUser())) {
-    return `/sign-in?redirect=${to.fullPath}`
+    return `/sign-in?redirect=${to.fullPath}`;
   }
-})
+});
 
 //create app and init router on it
-createApp(App).use(router).use(store).use(ToastPlugin, {
-  position: 'bottom-right'
-}).mount("#app");
+createApp(App)
+  .use(router)
+  .use(store)
+  .use(ToastPlugin, {
+    position: "bottom-right",
+  })
+  .mount("#app");

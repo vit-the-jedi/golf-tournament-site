@@ -66,13 +66,19 @@ header {
       rgba(0, 0, 0, 0.15) 00%,
       rgba(0, 0, 0, 0.75) 100%
     ),
-    url("../assets/hero.jpg");
+    url("https://imagedelivery.net/rEILj_XbpSP1zDbvwbVxLQ/49f38933-bfea-4654-c495-a5c916b30b00/public");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 100% center;
   justify-content: center;
   align-content: center;
   flex-wrap: wrap;
+}
+.masonry-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .top-content h1 {
   color: #fff;
@@ -87,7 +93,7 @@ header {
   width: 80%;
 }
 .top-content .top-info {
-  max-width: 450px;
+  max-width: 550px;
   margin: auto;
   width: 100%;
   color: white;
