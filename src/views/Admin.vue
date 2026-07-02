@@ -238,9 +238,7 @@ export default {
     },
     async submitTeamChanges() {
       await addToFirestore(
-        import.meta.env.MODE === "development"
-          ? "testing"
-          : `${this.teamInfo.division}-league`,
+        `${this.teamInfo.division}-league`,
         this.teamInfo
       ).then(async (teamAdded) => {
         if (teamAdded.value) {
@@ -298,15 +296,11 @@ export default {
       );
       if (answer === "YES") {
         await addToFirestore(
-          import.meta.env.MODE === "development"
-            ? "testing"
-            : `${this.teamInfo.division}-league`,
+          `${this.teamInfo.division}-league`,
           this.teamInfo
         ).then(async (teamAdded) => {
           await deleteFromFirestore(
-            import.meta.env.MODE === "development"
-              ? "testing"
-              : `${teamToMerge.division}-league`,
+            `${teamToMerge.division}-league`,
             teamToMerge.id
           ).then(async () => {
             this.$toast.success("Teams grouped sucessfully");

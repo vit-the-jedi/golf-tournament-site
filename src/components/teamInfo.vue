@@ -1,6 +1,7 @@
 <script>
 import { store } from "../store/index";
 export default {
+  props: ["info"],
   data() {
     return {
       team: store.getters.getTeam,
@@ -20,7 +21,6 @@ export default {
         <p>
           Division: <span>{{ this.team.division }}</span>
         </p>
-        <p>Team ID: {{ team.id }}</p>
       </div>
       <div class="players col-md-7 p-0">
         <div class="table row m-auto">
@@ -29,6 +29,18 @@ export default {
           </div>
           <!-- <span v-if="team.players.length >= 2" class="line line-h"></span>
           <span class="line line-v"></span> -->
+        </div>
+      </div>
+        <div class="col-md-10 p-0 m-auto">
+        <h3 class="text-center">Tournament Info:</h3>
+        <div class="row mx-auto mt-4">
+          <div class="col-md-6 mx-auto">
+            <p><strong>Date:</strong> {{ info.date }}</p>
+            <p><strong>Location:</strong> {{ info.golfCourse }}</p>
+            <p><strong>Address:</strong> {{ info.golfCourseAddress }}</p>
+            <p><strong>Time:</strong> {{ info.time }}</p>
+            <p><strong>Players in Cart By:</strong> {{ info.playersInCartBy }}</p>  
+          </div>
         </div>
       </div>
     </div>

@@ -2,6 +2,8 @@
 import mainNav from "../components/mainNav.vue";
 import venmo from "../components/Venmo.vue";
 import check from "../components/Check.vue";
+
+import {tournamentInfo} from "../data/info.js";
 </script>
 
 <script>
@@ -9,58 +11,8 @@ export default {
   data() {
     return {
       addBanner: false,
-      date: `September 27th, ${new Date().getFullYear()}`,
-      time: "9:00am",
-      golfCourse: "Western Hills Golf Course",
-      golfCourseAddress: "600 Park Rd, Waterbury, CT 06708",
-      charity: "Valley Community Foundation",
-      addOns: [
-        "18 holes of golf",
-        "Coffee/pastries",
-        "Water and snacks",
-        "Buffet Dinner",
-        "Golf Cart",
-        "Trophies (1st, 2nd, 3rd place per division, plus longest drive and closest to pin for both front and back 9)",
-      ],
-      pricing: {
-        ticketPrice: "$135.00",
-        trophies: [
-          "First Place",
-          "Second Place",
-          "Third Place",
-          "longest drive (front 9)",
-          "longest drive (back 9)",
-          "closest to pin (front 9)",
-          "closest to pin  (back 9)",
-        ],
-      },
+      ...tournamentInfo,
     };
-  },
-  computed: {
-    // a computed getter
-    outputDate() {
-      // `this` points to the component instance
-      return this.date;
-    },
-    outputTime() {
-      // `this` points to the component instance
-      return this.time;
-    },
-    outputGolfCourse() {
-      // `this` points to the component instance
-      return this.golfCourse;
-    },
-    outputGolfCourseAddress() {
-      // `this` points to the component instance
-      return this.golfCourseAddress;
-    },
-    outputPrice() {
-      // `this` points to the component instance
-      return this.pricing.ticketPrice;
-    },
-    outputCharity() {
-      return this.charity;
-    },
   },
 };
 </script>
@@ -70,11 +22,13 @@ export default {
     <div class="logo py-3"><img src="../assets/logo.svg" alt="PJA logo" /></div>
     <div class="top-info row py-3">
       <div class="col-md-6 col-12 info--item">
-        <p>{{ outputDate }}</p>
+        <p>{{ date }}</p>
       </div>
       <div class="col-md-6 col-12 info--item"><p>100+ Players</p></div>
       <div class="col-md-6 col-12 info--item"><p>Trophies Awarded</p></div>
       <div class="col-md-6 col-12 info--item"><p>Charitable Donations</p></div>
+      <div class="col-md-6 col-12 info--item"><p>50/50 Raffle</p></div>
+      <div class="col-md-6 col-12 info--item"><p>Raffle Prizes</p></div>
       <p class="pt-3 mb-0">
         The PJA Tournament is organized by the Vitello family, and growing
         annually thanks to participation of amazing family and friends.
@@ -97,10 +51,10 @@ export default {
           <div class="row">
             <div class="col-md-12 col-12 text-center">
               <h1>When &amp; where?</h1>
-              <h4>{{ outputDate }}</h4>
-              <h4>Shotgun Start @ 9am (in carts by 8:45)</h4>
-              <h4>{{ outputGolfCourse }},</h4>
-              <h4>{{ outputGolfCourseAddress }}</h4>
+              <h4>{{ date }}</h4>
+              <h4>Shotgun Start @ 9am (in carts by {{ playersInCartBy }})</h4>
+              <h4>{{ golfCourse }},</h4>
+              <h4>{{ golfCourseAddress }}</h4>
             </div>
             <!-- <div class="col-md-6 col-12">
               <h2>Note:</h2>
@@ -115,7 +69,7 @@ export default {
           <div class="row">
             <div class="col-md-6 col-12">
               <h1>Pricing</h1>
-              <h2>Entry fee: {{ outputPrice }} per&nbsp;player</h2>
+              <h2>Entry fee: {{ pricing.ticketPrice }} per&nbsp;player</h2>
             </div>
             <div class="col-md-6 col-12">
               <h2>What's included:</h2>
@@ -221,6 +175,12 @@ export default {
 .top-content .info--item:nth-of-type(4)::before {
   background-image: url("../assets/icons/golf-charity.svg");
 }
+.top-content .info--item:nth-of-type(5)::before {
+  background-image: url("../assets/icons/ticket-solid-full.svg");
+}
+.top-content .info--item:nth-of-type(6)::before {
+  background-image: url("../assets/icons/award-solid-full.svg");
+}
 .top-info p {
   color: white;
   display: inline-block;
@@ -287,6 +247,9 @@ export default {
 }
 
 @media screen and (min-width: 768px) {
+  .top-content .info--item:nth-of-type(5)::before {
+  background-size: 20px 20px;
+  }
   .card:has(.entry--info)::before {
     max-width: 20vw;
   }
@@ -311,6 +274,23 @@ export default {
   }
   .pricing .pricing--payment ul {
     max-width: 60%;
+  }
+  .info--item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 300px;
+    margin: 0 auto auto 15vw;
+  }
+  .info--item p {
+    width: 100%;
+    text-align: left;
+    margin-left: 20px;
+    margin-top: 10px;
+  }
+  .top-content .info--item::before {
+    width: 20px;
+    height: 20px;
   }
 }
 </style>

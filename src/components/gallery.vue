@@ -29,6 +29,11 @@ const imageUrls = [
   "https://img.pjatournament.golf/rEILj_XbpSP1zDbvwbVxLQ/68cc7af5-b499-43d1-2500-e137eb056300/public",
   "https://img.pjatournament.golf/rEILj_XbpSP1zDbvwbVxLQ/143dfca8-ab21-4116-28ef-d4826b749600/public",
   "https://img.pjatournament.golf/rEILj_XbpSP1zDbvwbVxLQ/e862d0ec-78ad-4e4f-6c95-65c2543c5e00/public",
+  "https://imagedelivery.net/rEILj_XbpSP1zDbvwbVxLQ/8a051c39-b5fb-4373-cc9e-7e3dbf23c100/public",
+  "https://imagedelivery.net/rEILj_XbpSP1zDbvwbVxLQ/0e585893-8f3b-43fc-d81e-96afcc718b00/public",
+  "https://imagedelivery.net/rEILj_XbpSP1zDbvwbVxLQ/37ef073d-d3ee-4792-b606-d5dcf0259700/public",
+  "https://imagedelivery.net/rEILj_XbpSP1zDbvwbVxLQ/5c8d2d33-cf68-4e93-9c9a-671534b7f800/public",
+  "https://imagedelivery.net/rEILj_XbpSP1zDbvwbVxLQ/786c376d-a9c4-4661-f9e9-84e0aab02200/public"
 ];
 </script>
 <template>
