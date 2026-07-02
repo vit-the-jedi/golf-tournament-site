@@ -27,6 +27,8 @@ export default {
       <div class="col-md-6 col-12 info--item"><p>100+ Players</p></div>
       <div class="col-md-6 col-12 info--item"><p>Trophies Awarded</p></div>
       <div class="col-md-6 col-12 info--item"><p>Charitable Donations</p></div>
+      <div class="col-md-6 col-12 info--item"><p>50/50 Raffle</p></div>
+      <div class="col-md-6 col-12 info--item"><p>Raffle Prizes</p></div>
       <p class="pt-3 mb-0">
         The PJA Tournament is organized by the Vitello family, and growing
         annually thanks to participation of amazing family and friends.
@@ -173,6 +175,12 @@ export default {
 .top-content .info--item:nth-of-type(4)::before {
   background-image: url("../assets/icons/golf-charity.svg");
 }
+.top-content .info--item:nth-of-type(5)::before {
+  background-image: url("../assets/icons/ticket-solid-full.svg");
+}
+.top-content .info--item:nth-of-type(6)::before {
+  background-image: url("../assets/icons/award-solid-full.svg");
+}
 .top-info p {
   color: white;
   display: inline-block;
@@ -239,6 +247,9 @@ export default {
 }
 
 @media screen and (min-width: 768px) {
+  .top-content .info--item:nth-of-type(5)::before {
+  background-size: 20px 20px;
+  }
   .card:has(.entry--info)::before {
     max-width: 20vw;
   }
@@ -263,6 +274,23 @@ export default {
   }
   .pricing .pricing--payment ul {
     max-width: 60%;
+  }
+  .info--item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 300px;
+    margin: 0 auto auto 15vw;
+  }
+  .info--item p {
+    width: 100%;
+    text-align: left;
+    margin-left: 20px;
+    margin-top: 10px;
+  }
+  .top-content .info--item::before {
+    width: 20px;
+    height: 20px;
   }
 }
 </style>

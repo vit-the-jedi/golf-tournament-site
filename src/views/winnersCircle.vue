@@ -31,6 +31,21 @@ export default {
     return {
       winners: [
         {
+          year: 2025,
+          division: "Men's",
+          team: [
+            "Joe Lowell",
+            "Ryan Carey",
+            "Ethan Cheffer",
+            "Greyson Chopskie",
+          ]
+        },
+        {
+          year: 2025,
+          division: "Co-Ed",
+          team: ["Nicole Vitello Lowell", "Kiara Bonilla", "Al Vitello", "Paul Vitello"],
+        },
+        {
           year: 2024,
           division: "Men's",
           team: [

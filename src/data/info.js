@@ -6,6 +6,8 @@ export const tournamentInfo = {
   charity: "Valley Community Foundation",
   playersInCartBy: "8:45am",
   addOns: [
+    "50/50 Raffle",
+    "Raffle Prizes",
     "18 holes of golf",
     "Coffee/pastries",
     "Water and snacks",
