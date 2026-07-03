@@ -74,7 +74,7 @@ export default {
             <div class="col-md-6 col-12">
               <h2>What's included:</h2>
               <ul>
-                <li v-for="item in addOns">
+                <li v-for="item in addOns.filter((a) => a !== '50/50 Raffle' && a !== 'Raffle Prizes')" :key="item">
                   {{ item }}
                 </li>
                 <li>
